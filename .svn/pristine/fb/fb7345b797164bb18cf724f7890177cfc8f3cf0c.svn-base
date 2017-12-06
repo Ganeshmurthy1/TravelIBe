@@ -1,0 +1,100 @@
+<%@taglib prefix="s" uri="/struts-tags"%>
+ 
+      <div class="bg">
+        <!-- Header Ends -->
+ 
+<article class="container" style="height: 94%;">
+  <h1 class="text-center margin-top-btm">Contact Us</h1>
+
+  <address class="text-center">
+Tayyarah.com<br> 
+# 19 "The Oyster", 2nd floor, <br>
+Nandi durga road, Jayamahal extension,<br>
+Bengaluru-560046<br>
+Phone:<a href="tel:+91-080-42855555"> +91-080-42855555</a><br>
+Email:<a href="mailto:care@tayyarah.com"> care@tayyarah.com</a>
+</address>
+</article>
+
+<!-- START: FOOTER -->
+
+<%--   <footer id="footer">    
+    <div class="main-footer">
+      <div class="container clear-padding">
+        <div class="col-md-3 col-sm-6 about-box">
+          <h3>Tayyarah</h3>
+          <p>Tayyarah.com today is the leading consolidator provider of consumer-direct
+travel services in India. Based in Bangalore-India, Tayyarah.com is a one-stop-shop for all travel-related services.</p>
+          <a href="#/about">READ MORE</a>
+        </div>
+        <div class="col-md-3 col-sm-6 links">
+          <!-- <h4>Popular Tours</h4>
+          <ul>
+           <li><a href="index.html">Romantic France</a></li>
+            <li><a href="index.html">Wonderful Lodnon</a></li>
+            <li><a href="index.html">Awesome Amsterdam</a></li>
+            <li><a href="index.html">Wild Africa</a></li>
+            <li><a href="index.html">Beach Goa</a></li>
+            <li><a href="index.html">Casino Los Vages</a></li>
+            <li><a href="index.html">Romantic France</a></li>
+          </ul> -->
+        </div>
+        <div class="clearfix visible-sm-block"></div>
+        <div class="col-md-3 col-sm-6 links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#/">Flights</a></li>
+            <li><a href="#/hotel">Hotels</a></li>                   
+            <li><a href="#/bus">Bus</a></li>
+            <li><a href="#/EnquiryForm">Customized Holiday Packages</a></li>  
+             <!-- <li><a href="index.html">Meetings &amp; Events</a></li>
+            <li><a href="index.html">Off-Shore Services</a></li> 
+            <li><a href="index.html">Affiliate Program</a></li>  -->
+          </ul>
+        </div>
+        <div class="col-md-3 col-sm-6 contact-box">
+          <h4>Contact Us</h4>
+          <p class="clearfix"><i class="tayyarah-home4"></i> <span>
+            # 19 "The Oyster",2nd floor, 
+Nandi durga road, Jaymahal extension,
+Bengaluru-560046</span></p>
+          <p class="clearfix"><i class="tayyarah-phone"></i>+91-080-42855555</p>
+          <p><i class="tayyarah-envelope"></i> care@tayyarah.com</p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-12 text-center we-accept">
+          <h4>We Accept</h4>
+          <ul>
+            <li><img src="images/card/mastercard.png" alt="mastercard"></li>
+            <li><img src="images/card/visa.png" alt="visa"></li>
+            <li><img src="images/card/american-express.png" alt="visa"></li>
+            <li><img src="images/card/mastercard.png" alt="visa"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+ <!--    <div class="main-footer-nav ">
+      <div class="container clear-padding">
+        <div class="col-md-6 col-sm-6">
+          <p>Copyright &copy; 2015 tayyarah. All Rights Reserved.</p>
+        </div>
+        
+      </div>
+    </div> -->
+  </footer> --%>
+
+<!-- END: FOOTER -->
+        <!-- Your site ends -->
+ <script>
+              $(document).ready(function(){
+                  $('#login-trigger').click(function() {
+                      $(this).next('#login-content').slideToggle();
+                      $(this).toggleClass('active');                    
+                      
+                      if ($(this).hasClass('active')) $(this).find('span').html('&#x25B2;')
+                          else $(this).find('span').html('&#x25BC;')
+                      })
+              });
+        </script>
+         
+ 

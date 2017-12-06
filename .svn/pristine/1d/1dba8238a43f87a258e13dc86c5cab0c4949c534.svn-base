@@ -1,0 +1,120 @@
+'use strict';
+
+/**
+ * @ngdoc service
+ * @name myApp
+ * @description
+ * Factory in the myApp.
+ */
+angular.module('myApp')
+  .factory('flightServices', function (transporter) {
+   
+   var dataFactory = {};
+   
+	
+   dataFactory.searchCity = function(param) {
+       return transporter.get('Search/bycity/', param).then(function(response) {
+    	  
+        return response;
+        
+         });
+    };
+    dataFactory.FlightSearch = function(params) {
+    	
+        return transporter.get('flight/search',params).then(function(response) {
+         return response;
+          });
+     };
+     
+     dataFactory.FlightQuotePriceSearch = function(params) {
+     	
+         return transporter.get('flight/Quote/search',params).then(function(response) {
+          return response;
+           });
+      };
+     
+     dataFactory.Bookflight = function(params) {
+     	
+         return transporter.get('airprice/response',params).then(function(response) {
+          return response;
+           });
+      };
+     
+     
+    dataFactory.Flightbook = function(param) {
+       return transporter.post('booking/details', param).then(function(response) {
+        return response;
+         });
+    };
+    
+    dataFactory.UserBookingConfirmed = function(param) {
+        return transporter.get('payment/response', param).then(function(response) {
+         return response;
+          });
+     };
+     dataFactory.downloadPdfFile = function(param){
+    	  return transporter.getmethod('/getpdf/flight?'+param,{ responseType: 'arraybuffer'}).then(function(response){
+    		  return response;
+    	  });
+      }
+     dataFactory.FlightHoldbooking = function(param) {
+         return transporter.post('holdbooking/details', param).then(function(response) {
+          return response;
+           });
+      };
+      dataFactory.ConfirmHeldTicket = function(param) {
+          return transporter.post('confirmticket/details', param).then(function(response) {
+           return response;
+            });
+       };
+       dataFactory.cancelHeldTicket = function(param) {
+           return transporter.post('cancelticket/response', param).then(function(response) {
+            return response;
+             });
+        };
+        dataFactory.CurrencyConvert = function(param) {
+            return transporter.getmethod('currency/convert/'+ param+'/INR',{headers:{'Content-Type': 'application/json'},ignoreLoadingBar: true}).then(function(response) {
+             return response;
+              });
+         };
+         dataFactory.InsertNotification = function(param) {        	 
+             return transporter.getmethod('notification/insertCustomNotification', param).then(function(response) {
+              
+            	 return response;
+               });
+          };  
+          dataFactory.getCountNotification = function(param) {
+              return transporter.getmethod('notification/getCustomNotifications', param).then(function(response) {
+               return response;
+                });
+           };
+           dataFactory.expireNotification = function(param) {
+               return transporter.getmethod('notification/updateCustomNotification?notificationId='+param).then(function(response) {
+                return response;
+                 });
+            };
+            dataFactory.expireAllNotification = function(param) { 
+                return transporter.getmethod('notification/updateAllCustomNotification?companyId='+param.companyId+'&userId='+param.userId).then(function(response) {
+                 return response;
+                  });
+             };
+            dataFactory.CacheSearchList = function(){
+            	return transporter.get('FlightSearchCache/List').then(function(response) {
+                    return response;
+                     });
+            }
+            dataFactory.insurancePolicyDetails = function(param) {
+                return transporter.post('insurance/plan', param,{headers:{'Content-Type': 'application/json'}}).then(function(response) {
+                 return response;
+                  });
+             };
+             dataFactory.getRmDetailFields = function(param){            	 
+             	return transporter.get('employee/empdetailsById?id='+param).then(function(response) {
+                     return response;
+                      });
+             }
+           
+             dataFactory.flighttime = 60;
+    return dataFactory;
+    });
+

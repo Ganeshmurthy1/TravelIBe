@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"   
+"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="false" />
+    <constant name="struts.custom.i18n.resources" value="global" />
+	<package name="default" extends="struts-default"  namespace="/">
+	<result-types>
+			<result-type name="tiles"
+				class="org.apache.struts2.views.tiles.TilesResult" />
+		</result-types>
+		
+		<interceptors>
+			<interceptor name="authentication" class="com.lintas.session.SessionInterceptor"></interceptor>
+			<interceptor-stack name="authStack">
+				<interceptor-ref name="authentication"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- <default-interceptor-ref name="authStack"></default-interceptor-ref> -->
+
+		<global-results>
+			<result name="expired" type="redirect">/flightindex.jsp
+			</result>
+		</global-results>  
+
+        <action name="SearchFlightHotel" class="com.lintas.admin.SearchAction"	method="SearchFlightHotel">	
+			<result name="success" type="redirect">${actionUrl}</result>					 
+           <result name="error">/</result>
+		</action>
+
+		<!-- <action name="Usersignup" class="com.lintas.action.FrontUsers"	method="FrontuserRegister">
+			<result name="success">flightindex.jsp</result>
+			<result name="error">user-register.jsp</result>
+		</action> -->
+		<!-- <action name="UserLogin" class="com.lintas.action.FrontUsers"	method="FrontUserLogin">
+			<result name="success" >flightindex.jsp</result>
+			<result name="error" >flightindex.jsp</result>
+		</action> -->
+		<action name="UserLogout" class="com.lintas.action.FrontUsers"	method="UserLogout">
+			<result name="success" >flightindex.jsp</result>			
+		</action>
+		<!-- <action name="Userupdate" class="com.lintas.action.FrontUsers"	method="UpdateProfile">
+			<result name="success" type="redirect">/#/UserProfile</result>	
+			<result name="error" type="redirect">/#/UserProfile</result>			
+		</action> -->
+     <!--   <action name="UserHistory" class="com.lintas.action.FrontUsers"	method="UserbookingHistroy">
+        <interceptor-ref name="authStack" />     
+			<result name="success" type="redirect" >/#/BookingHistory</result>	
+			<result name="error" type="redirect">/#/BookingHistory</result>			
+		</action> -->
+		<!-- <action name="SearchFlightHistory" class="com.lintas.action.FrontUsers"	method="SearchuserbookingHistory">
+        <interceptor-ref name="authStack" />     
+			<result name="success" >/#/BookingHistory</result>	
+			<result name="error" >/#/BookingHistory</result>			
+		</action> -->
+		<!-- <action name="UserHotelHistory" class="com.lintas.action.FrontUsers"	method="UserHotelbookingHistory">
+        <interceptor-ref name="authStack" />
+		<result name="success" >HotelBookingHistory.jsp</result>	
+			<result name="error" >HotelBookingHistory.jsp</result>			
+		</action> -->
+	<!-- 	<action name="SearchHotelHistory" class="com.lintas.action.FrontUsers"	method="SearchuserHotelbookingHistory">
+        <interceptor-ref name="authStack" />
+		<result name="success" >HotelBookingHistory.jsp</result>	
+			<result name="error" >HotelBookingHistory.jsp</result>			
+		</action> -->
+		
+		<action name="UserProfile" >
+			<result name="success">UserProfile.jsp</result>
+			<result name="error">UserProfile.jsp</result>
+		</action>
+		<action name="UserRegister" >
+			<result name="success">user-register.jsp</result>
+			<result name="error">user-register.jsp</result>
+		</action>
+		
+		 <action name="SearchHistroy" class="com.lintas.action.FrontUsers"	method="SearchuserbookingHistroy">
+			<result name="success" >BookingHistroy.jsp</result>	
+			<result name="error" >BookingHistroy.jsp</result>			
+		</action>
+		 <action name="RecoverPassword" class="com.lintas.action.FrontUsers"	method="ForgotPassword">
+			<result name="success" >flightindex.jsp</result>	
+			<result name="error" >flightindex.jsp</result>			
+		</action>
+		
+		
+		<!-- Agent Purpose -->
+		
+		<action name="AgentsPage">
+			<result name="success" >agent-login.jsp</result>
+			<result name="error" >agent-login.jsp</result>
+		</action>
+		
+          <action name="Agents" class="com.lintas.action.Agents" method="AgentLoginPage">
+			<result name="success" >agent-login.jsp</result>
+			<result name="error" >flightindex.jsp</result>
+		</action>		 
+	<!-- 	<action name="AgentLogin" class="com.lintas.action.Agents" method="AgentLogin">
+			<result name="success" >index.jsp</result>
+			<result name="error" >index.jsp</result>
+		</action> -->
+	<!-- 	<action name="AgentLogin" method="AgentLogin"	class="com.lintas.action.Agents">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action> -->
+		
+		
+		<action name="AgentLogout" class="com.lintas.action.Agents"	method="AgentLogout">
+			<result name="success" >index.jsp</result>			
+		</action>
+		<action name="AgentPassword" class="com.lintas.action.Agents"	method="Forgotpassword">
+			<result name="success" >agent-login.jsp</result>			
+		</action>
+		
+		<action name="GetDirectUser" class="com.lintas.action.Agents"	method="GetDirectUser">
+			<result name="success" >flightindex.jsp</result>			
+		</action>
+		
+		
+		
+		<action name="Flights" >
+			<result name="success" >flightindex.jsp</result>	
+				<result name="error" >flightindex.jsp</result>				
+		</action>
+		<action name="SearchOneTrip" >
+			<result name="success" >content_flightsearch_response.jsp</result>	
+			<result name="error" >content_flightsearch_response.jsp</result>			
+		</action>
+		<action name="SearchRoundTrip" >
+			<result name="success" >flight-search-round.jsp</result>	
+			<result name="error" >flight-search-round.jsp</result>			
+		</action>
+		<action name="SearchDomRoundTrip" >
+			<result name="success" >flight-search-spclround.jsp</result>	
+			<result name="error" >flight-search-spclround.jsp</result>			
+		</action>
+		<action name="OneTripSummary" >
+			<result name="success" >booking-details.jsp</result>	
+			<result name="error" >booking-details.jsp</result>			
+		</action>
+		<action name="HoldOneTripSummary" >
+			<result name="success" >holdbooking-details.jsp</result>	
+			<result name="error" >holdbooking-details.jsp</result>			
+		</action>
+		<action name="RoundTripSummary" >
+			<result name="success" >booking-rounddetails.jsp</result>	
+			<result name="error" >booking-rounddetails.jsp</result>			
+		</action>
+		<action name="HoldFlight" >
+			<result name="success" >AgentFlightHeldBookingConfirmation.jsp</result>	
+			<result name="error" >AgentFlightHeldBookingConfirmation.jsp</result>			
+		</action>
+		<action name="FlightBook" >
+			<result name="success" >AgentFlightBookingConfirmation.jsp</result>	
+			<result name="error" >AgentFlightBookingConfirmation.jsp</result>			
+		</action>
+		<action name="UserFlightBook" >
+			<result name="success" >GetFlightconfirmation.jsp</result>	
+			<result name="error" >GetFlightconfirmation.jsp</result>			
+		</action>
+		<action name="UserConfirmFlightBook" >
+			<result name="success" >booking-conformation.jsp</result>	
+			<result name="error" >booking-conformation.jsp</result>			
+		</action>
+		<!-- Hotels -->
+		
+		<action name="Hotels" >
+			<result name="success" >Hotelindex.jsp</result>	
+			<result name="error" >Hotelindex.jsp</result>			
+		</action>
+		<!-- <action name="SearchHotels" >
+			<result name="success" >/#/Hotel-List</result>	
+			<result name="error" >/#/Hotel-List</result>		
+		</action> -->
+		<action name="/Hotel-List" >
+			<result name="success" >/Hotel-List</result>	
+			<result name="error" >/Hotel-List</result>		
+		</action>
+		<action name="/Hotel-Details" >
+			<result name="success" >/Hotel-Details</result>	
+			<result name="error" >/Hotel-Details</result>		
+		</action>
+		
+		<action name="HotelRooms" >
+			<result name="success" >hotel-detail.jsp</result>	
+			<result name="error" >hotel-detail.jsp</result>			
+		</action>
+		<action name="HotelSummary" >
+			<result name="success" >booking-hotel-details.jsp</result>	
+			<result name="error" >booking-hotel-details.jsp</result>			
+		</action>
+		<action name="HotelBook" >
+			<result name="success" >AgentHotelBookingConfirmation.jsp</result>	
+			<result name="error" >AgentHotelBookingConfirmation.jsp</result>			
+		</action>
+		<action name="UserHotelBook" >
+			<result name="success" >GetHotelconfirmation.jsp</result>	
+			<result name="error" >GetHotelconfirmation.jsp</result>			
+		</action>
+		<action name="UserConfirmHotelBook" >
+			<result name="success" >booking-hotel-conformation.jsp</result>	
+			<result name="error" >booking-hotel-conformation.jsp</result>			
+		</action>
+		<!-- Contact us -->
+		
+		<action name="SendQuery" class="com.lintas.action.FrontUsers"	method="SendQuerytoLintas">
+			<result name="success" >contact-us.jsp</result>			
+		</action>
+		
+		
+		 <action name="locale" class="com.lintas.model.Locale"   method="execute">
+         <result name="success">flightindex.jsp</result>
+      </action>
+      
+     <!-- 	Footer -->
+
+    	<action name="Privacypolicy" >
+			<result name="success" >privacy-policy.jsp</result>			
+		</action>
+		<action name="TermsandConditions" >
+			<result name="success" >terms-conditions.jsp</result>			
+		</action>
+		<action name="Cancellationpolicy" >
+			<result name="success" >cancellation-refund-policy.jsp</result>			
+		</action>
+		 <action name="Disclaimer" >
+			<result name="success" >Disclaimer.jsp</result>			
+		</action>
+		<action name="About" >
+			<result name="success" >about-us.jsp</result>			
+		</action>
+		<action name="Enqueryform" >
+			<result name="success" >enqueryform.jsp</result>			
+		</action>
+		
+		<action name="IBELogin" class="com.lintas.action.Agents"
+			method="FromAdminToIBELogin">
+			<result name="success" type="redirect">/#/</result>
+			<result name="error" type="redirect">/#/</result>
+		</action>
+		
+		<!-- <action name="SendTravelQuery" class="com.lintas.action.EnquiryAction"	method="SaveQueryForm">
+			<result name="success" >enqueryform.jsp</result>		
+			<result name="error" >enqueryform.jsp</result>			
+		</action> -->
+		
+	</package>
+<package name="com.lintas.action.Agents" extends="json-default">
+		<action name="GetDirectUserAppKey" class="com.lintas.action.AgentWalletBalance"	method="GetDirectUserAppKey">
+	<result type="json">
+			<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>	
+				</result>
+		</action>
+		<action name="GetCompanyThemes" class="com.lintas.action.AgentWalletBalance"	method="GetCompanyThemes">
+	<result type="json">
+			<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>	
+				</result>
+		</action>
+		<action name="GetwalletBalance" method="GetwalletBalance"	class="com.lintas.action.AgentWalletBalance">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		<action name="UserFlightHistory" class="com.lintas.action.AgentWalletBalance"	method="UserFlightHistory">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		<action name="UserHotelHistory" class="com.lintas.action.AgentWalletBalance"	method="UserHotelHistory">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		<action name="UserBusHistory" class="com.lintas.action.AgentWalletBalance"	method="UserBusHistory">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		<action name="GetRmDeatils" method="GetRmDeatils"	class="com.lintas.action.AgentWalletBalance">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		<action name="GetCompanyEntity" method="GetCompanyEntity"	class="com.lintas.action.AgentWalletBalance">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		
+		<action name="AgentLogin" method="AgentLogin"	class="com.lintas.action.Agents">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+			<action name="AgentLoginFromWhiteLabel" method="AgentLoginFromWhiteLabel"	class="com.lintas.action.Agents">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>			
+			</action>
+			
+		<action name="corporateWhiteLabelLogin" method="corporateWhiteLabelLogin"	class="com.lintas.action.Agents">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		<action name="CorporateLogin" method="corporateLogin"	class="com.lintas.action.Agents">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		<action name="Forgotpassword" class="com.lintas.action.Agents"	method="Forgotpassword">
+			<result type="json">
+			<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>	
+				</result>
+		</action>
+		<action name="FrontUserLogin" method="FrontUserLogin"	class="com.lintas.action.FrontUsers">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		<action name="FrontuserRegister" method="FrontuserRegister"	class="com.lintas.action.FrontUsers">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+		<action name="UpdateProfile" class="com.lintas.action.FrontUsers"	method="UpdateProfile">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>			
+		</action>
+		<action name="ForgotPassword" class="com.lintas.action.FrontUsers"	method="ForgotPassword">
+			<result type="json">
+			<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>	
+				</result>
+		</action>
+		<action name="SearchuserbookingHistory" class="com.lintas.action.FrontUsers"	method="SearchuserbookingHistory">
+        <result type="json">
+			<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>	
+				</result>			
+		</action>
+		<action name="SearchuserHotelbookingHistory" class="com.lintas.action.FrontUsers"	method="SearchuserHotelbookingHistory">
+        <result type="json">
+			<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>	
+				</result>			
+		</action>
+		 <action name="SendTravelQuery" method="SaveQueryForm"	class="com.lintas.action.EnquiryAction">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action> 			
+	<action name="GetCorporateEmployeeList" class="com.lintas.action.AgentWalletBalance" method="GetCorporateEmployeeList">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+		</action>	
+  <action name="SetPricevalue" class="com.lintas.action.AgentWalletBalance"	method="setsessionvalue">
+	<result type="json">
+			<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>	
+				</result>
+		</action>
+		
+		
+		
+	</package>
+	<package name="com.intelli.util" extends="json-default">
+		<action name="SavePayResponse" class="com.intelli.util.PaymentUtil"	method="savePaymentResponse">
+	<result type="json">
+			<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>	
+				</result>
+		</action>
+
+		</package>
+		<package name="com.admin.flight.fin.sheet.action" extends="json-default">
+		<action name="InsertFlightQuote" class="com.admin.flight.fin.sheet.action.FlightTravelRequestQuotationAction"
+			method="createFlightRequestTravelQuotationIBE">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+		</action>
+		<action name="InsertRoundFlightQuote" class="com.admin.flight.fin.sheet.action.FlightTravelRequestQuotationAction"
+			method="createRoundFlightRequestTravelQuotation">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+		</action>
+		<action name="UpdateFlightQuote" class="com.admin.flight.fin.sheet.action.FlightTravelRequestQuotationAction"
+			method="updateQuotation">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+		</action>
+	</package>
+	<package name="com.admin.hotel.fin.sheet.action" extends="json-default">
+		<action name="InsertQuote" class="com.admin.hotel.fin.sheet.action.HotelTravelRequestQuotationAction"
+			method="createHotelRequestTravelQuotation">
+			<result type="json">
+				<param name="noCache">true</param>
+				<param name="excludeNullProperties">true</param>
+			</result>
+		</action>
+	</package>
+	
+<package name="com.lintas.Imageaction" extends="struts-default" >	
+	<result-types>
+			<result-type name="imageResult"	class="com.lintas.Imageaction.CustomStreamResult" />
+		</result-types>
+		
+		<action name="AgentImageAction" class="com.lintas.Imageaction.ImageAction">
+			<result name="success" type="imageResult">
+			 <param name="parse">false</param>  
+            <param name="contentType">customContentType</param>  
+            <param name="inputName">imageStream</param>  
+            <param name="bufferSize">1024</param>  
+            <param name="contentDisposition">customContentDisposition</param>
+			</result>
+		</action>
+		
+		</package>
+</struts>      

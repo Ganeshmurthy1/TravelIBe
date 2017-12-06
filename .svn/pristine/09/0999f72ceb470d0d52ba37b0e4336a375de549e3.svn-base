@@ -1,0 +1,131 @@
+
+<div class="container margin-top30px">
+	<div class="insuranceModalBody">
+		<div class="text-center">
+			<h3>Insurance Terms and Conditions</h3>
+		</div>
+		<div class="col-md-12 padZero">
+
+			<div class="col-md-2 col-sm-2 padZero ">
+				<div class="itenary_pack minBorder400">
+					<ul>
+						<li class="active"><a data-toggle="pill"
+							data-target="#product">Product Details</a></li>
+						<li><a data-toggle="pill" data-target="#FAQs">FAQs</a></li>
+						<li><a data-toggle="pill" data-target="#policyWord">Policy
+								Wording</a></li>
+						<li><a data-toggle="pill" data-target="#claimProcedure">Claim
+								Procedure</a></li>
+						<li><a data-toggle="pill" data-target="#TagProcedure">Contact
+								Trawel tag</a></li>
+						<li><a data-toggle="pill" data-target="#terms">Terms &
+								Condition</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-10 padZero minBorder">
+
+				<div class="tab-content ">
+					<div id="product"
+						class="tab-pane fade in active overallBorder minBorder400">
+						<div class="col-md-12">
+							<div class="travwel-Head">TrawellTag Cover-More - Travel
+								Protection Exclusive for Tayyarah Passengers</div>
+							<div class="col-md-9">
+								<h3>Domestic Insurance Plan Details</h3>
+							</div>
+							<div class="col-md-3 pull-right">
+								<img alt="travelTag-Logo" src="./images/traveltag-logo.jpg">
+							</div>
+						</div>
+						<div class="col-md-12 borderedGrey padInsZero">
+							<div class="text-center coverage borderBtm">Coverage
+								Benefits</div>
+							<div class="col-md-12 coverage borderBtm">
+								<div class="col-md-8">Assistance Services</div>
+								<div class="col-md-4">Coverages</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Domestic Roadside Assistance</div>
+								<div class="col-md-4">Covered</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Domestic Medical Assistance</div>
+								<div class="col-md-4">Covered</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Travel Insurance Policy</div>
+								<div class="col-md-4">Covered</div>
+							</div>
+						</div>
+
+
+						<div class="col-md-12 borderedGrey padInsZero margin-top30px">
+							<div class="text-center coverage borderBtm">Insurance
+								Benefits (In INR)</div>
+							<div class="col-md-12 coverage borderBtm">
+								<div class="col-md-8">Emergency Accidental Hospitalisation
+									& Accidental Evacuation / Repatriation</div>
+								<div class="col-md-4">200,000</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Accidental OPD Expenses</div>
+								<div class="col-md-4">10,000</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Personal Accident (Death) &
+									Disablement</div>
+								<div class="col-md-4">750,000</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Loss of Baggage (Checked In)</div>
+								<div class="col-md-4">20,000</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Missed Connections</div>
+								<div class="col-md-4">10,000</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Deductibles</div>
+								<div class="col-md-4">20%</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Bounced Hotel Bookings</div>
+								<div class="col-md-4">20,000</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Deductibles</div>
+								<div class="col-md-4">20%</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Trip Cancellation due to
+									Hospitalisation / Death / Curfew</div>
+								<div class="col-md-4">25,000</div>
+							</div>
+							<div class="col-md-12 padtopBtm10px">
+								<div class="col-md-8">Trip Delay (Beyond 6hrs)</div>
+								<div class="col-md-4">10,500</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="FAQs" class="tab-pane fade overallBorder minBorder400">
+						FAQ's</div>
+					<div id="policyWord"
+						class="tab-pane fade overallBorder minBorder400">Policy
+						Wordings</div>
+					<div id="claimProcedure"
+						class="tab-pane fade overallBorder minBorder400">Claim
+						Procedure</div>
+					<div id="TagProcedure"
+						class="tab-pane fade overallBorder minBorder400">Contact
+						Trawel Tag</div>
+					<div id="terms" class="tab-pane fade overallBorder minBorder400">
+						Terms and Conditions.</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,10 @@
+.logo img {
+       border: medium none;
+    border-radius: 0px;
+    outline: medium none;
+    height: 75px;
+    width: 135px;
+}
+.header.fixed.clearfix.liceheader, .navbar.navbar-default.liceheader, .navbar .navbar-default, #navbar2 {
+      background-color: transparent !important;
+}

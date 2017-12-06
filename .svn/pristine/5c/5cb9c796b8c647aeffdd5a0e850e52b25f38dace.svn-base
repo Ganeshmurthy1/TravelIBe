@@ -1,0 +1,10 @@
+var app = angular.module('myApp');
+app.controller('InsuranceProductCtrl',function($scope,$modalInstance) {
+	$scope.init = function(){
+		
+	}
+	$scope.close = function(){
+		 $modalInstance.dismiss('');
+	}
+	$scope.init();
+});

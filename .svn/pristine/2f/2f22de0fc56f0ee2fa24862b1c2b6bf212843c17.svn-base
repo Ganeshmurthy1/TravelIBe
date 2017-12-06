@@ -1,0 +1,362 @@
+var app = angular.module('myApp');
+app.controller('FlightBookConfirmed', function($scope,localStorageService,flightServices,$location,commonService,$modal,$log,$route) {
+	$scope.init = function(){
+		$scope.FlightBooking = {};	
+		var appkey = "zqJ3R9cGpNWgNXG55ub/WQ==";
+		$scope.bookingComments  = "";
+		$scope.pdfloader = false;
+		$scope.errordiv = false;	 
+		$scope.bookconfirmloader = true;
+		$scope.contentloaded = false;
+		$scope.adultarray = [];
+		$scope.childarray = [];
+		$scope.infantarray = [];
+		$scope.FlightBooking.app_key = appkey;
+		/*$scope.FlightBooking.refno = $scope.userFlightBookData.refno;*/
+		$scope.FlightBooking.refno = $location.search().refno;
+		$scope.FlightBooking.transaction_id = $location.search().transaction_id;
+		$scope.FlightBooking.payment_status = $location.search().payment_status;
+		$scope.FlightBooking.AuthCode = $location.search().AuthCode;
+		$scope.bookingComments  = "";
+		$scope.BookingConformation();
+		$scope.apiUrl = commonService.baseUrl;
+		 $scope.successprint=false;
+   	  $scope.successprintRound = false;
+	}
+	$scope.ErrorFlightTravelDetails = {};
+	  $scope.ErrorFlightTravelDetails.origin = "";
+	  $scope.ErrorFlightTravelDetails.destination = "";
+	  $scope.ErrorFlightTravelDetails.depDate = "";
+	  $scope.ErrorFlightTravelDetails.arvlDate = "";
+	  $scope.ErrorFlightTravelDetails.cabinClass = "";
+	  $scope.ErrorFlightTravelDetails.showData = false;
+	  
+	function pad(n){return n<10 ? '0'+n : n};
+	var data;
+	$scope.BookingConformation = function(){
+		flightServices.UserBookingConfirmed($scope.FlightBooking).then(function(res){
+			//console.log("flightBook",res);
+			 data = res.data;
+			 if(data.fareFlightSegment != null){
+			 $scope.bookconfirmloader = false;			
+			 $scope.contentloaded = true;	
+			 $scope.confirmationNumber = data.confirmationNumber;
+				if(data.fareFlightSegmentSpecial != null){
+					$scope.returnconfirmationNumber = data.confirmationNumberSpecial;
+					$scope.orderid = $scope.confirmationNumber;
+					$scope.orderid2 = $scope.returnconfirmationNumber
+					 calldataplugin1();					
+				}
+				else{
+					$scope.orderid = $scope.confirmationNumber;
+					 calldataplugin();
+				}
+		}
+		else{
+			$scope.bookingComments = "Booking Failed. Your PaymentId is " +data.paymentId +". Please Contact Our Customer Care."
+		}
+		},function(errorResponse){
+
+			data = errorResponse.data;
+			if(data.debugMessage == 'Payment failed, try again' || data.debugMessage == null)
+			{
+
+				$scope.bookingComments = "Booking Failed. Please Contact Our Customer Care."
+			}
+
+			if(data.debugMessage == 'Payment Successful, Booking failed' || data.debugMessage != null)
+			{	
+				if($scope.orderid2 != null || $scope.orderid2 != undefined){
+					$scope.bookingComments = data.debugMessage +". Your OrderId's are " + $scope.orderid +","+$scope.orderid2+". Your PaymentId is " +data.paymentId +".Please Contact Our Customer Care.";
+				}else{
+					$scope.bookingComments = data.debugMessage +". Your OrderId is " + $scope.orderid +". Your PaymentId is " +data.paymentId +".Please Contact Our Customer Care.";
+				}
+				
+			}
+			else
+			{
+				$scope.bookingComments = data.debugMessage
+			}		
+
+
+			$scope.errordiv = true;
+			/*$scope.contentloaded = false;*/
+			$scope.errorDisplay($scope.bookingComments,$scope.ErrorFlightTravelDetails);
+		});
+		
+	};
+	  function calldataplugin(sessionKey)
+	  {
+		  $scope.bookconfirmloader = true;
+		 	
+	          var ApiURL=  $scope.apiUrl;
+	         // console.log("ApiURL",ApiURL);
+	            var formURL = ApiURL+'Email/getHtmlTemplateById?orderid='+$scope.orderid+'&emailType=2';     
+	          $.ajax({
+	            url : formURL,
+	            type : "GET",
+	            dataType : "html",
+	            success : function(data,textStatus,jqXHR) { 
+	              
+	              if (jqXHR.status == 200) {
+	            	  $scope.bookconfirmloader = false;		
+	            	  $scope.successprint=true;
+	            	  $scope.successprintRound = false;
+	            	  if(data == 'Data is not avaible currently, Plese try again later'){
+	            		  calldataplugin('');
+	            	  }else{
+	                  $("#display-api-content").html(data);
+	                  
+	            	  }
+	                
+	              } 
+	            },
+	            error : function(jqXHR,textStatus,errorThrown) {	             
+	              $scope.bookconfirmloader =false;
+	              $scope.successprintRound = false;
+            	  $scope.successprint=true;
+	              $(".display-api-content").html("We could not get the content, please contact administrator.");
+	            }
+	          });
+	       
+	   
+	  }
+	  function calldataplugin1(sessionKey)
+	  {
+		  $scope.bookconfirmloader = true;
+	          var ApiURL=  $scope.apiUrl;
+	         // console.log("ApiURL",ApiURL);
+	            var formURL = ApiURL+'Email/getHtmlTemplateById?orderid='+$scope.orderid+'&emailType=2';     
+	          
+	         // console.debug("fullUrl",formURL);
+	          $.ajax({
+	            url : formURL,
+	            type : "GET",
+	            dataType : "html",
+	            success : function(data,textStatus,jqXHR) { 
+	              
+	              if (jqXHR.status == 200) {
+	            	  $scope.bookconfirmloader = false;
+	            	  $scope.successprint = false;
+	            	  $scope.successprintRound = true;
+	            	  if(data == 'Data is not avaible currently, Plese try again later'){
+	            		  calldataplugin1('');
+	            	  
+	              }else{
+	                $("#display-api-Roundcontent").html(data);
+	                calldataplugin2();
+	                }
+	              
+	              } 
+	            },
+	            error : function(jqXHR,textStatus,errorThrown) {	             
+	              $scope.bookconfirmloader =false;
+	              $scope.successprint=false;
+            	  $scope.successprintRound = true;
+	              $(".display-api-content").html("We could not get the content, please contact administrator.");
+	            }
+	          });
+	       
+	   
+	  }
+	  function calldataplugin2(sessionKey)
+	  {
+		  $scope.bookconfirmloader =true;
+	          var ApiURL=  $scope.apiUrl;
+	          var formURL = ApiURL+'Email/getHtmlTemplateById?orderid='+$scope.orderid2+'&emailType=2';     
+	          $.ajax({
+	            url : formURL,
+	            type : "GET",
+	            dataType : "html",
+	            success : function(data,textStatus,jqXHR) { 
+	              
+	              if (jqXHR.status == 200) {
+	            	  $scope.bookconfirmloader =false;
+	            	  $scope.successprint=false;
+	            	  $scope.successprintRound = true;
+	            	  if(data == 'Data is not avaible currently, Plese try again later'){
+	            		  calldataplugin2('');
+	            	  }else{
+	            		  $("#display-api-Roundcontent2").html(data);
+	            	  }
+	             } 
+	            },
+	            error : function(jqXHR,textStatus,errorThrown) {	             
+	              $scope.bookconfirmloader =false;
+	              $scope.successprint=false;
+            	  $scope.successprintRound = true;
+	              $(".display-api-content").html("We could not get the content, please contact administrator.");
+	            }
+	          });
+	       
+	   
+	  }
+	$scope.returnIndex = function(){
+  		window.location.href = window.location.href.replace(/#.*$/, '');
+  	}
+
+	//Download or Open PDF
+	$scope.downloadFile = function () {
+		$scope.pdfloader = true;
+		var data = "";
+		if($scope.returnconfirmationNumber!=undefined)
+			data = "orderids="+$scope.confirmationNumber;
+		else
+			data = "orderids="+$scope.confirmationNumber;
+
+		flightServices.downloadPdfFile(data).then(function(response){
+			
+			var url = response.config.url; 
+			window.location.href = url;
+			$scope.pdfloader = false;
+		
+
+		},function(){
+			// console.log(data);
+		});
+	};
+	$scope.downloadFile2 = function () {
+		$scope.pdfloader = true;
+		var data = "";
+		if($scope.returnconfirmationNumber!=undefined)
+			data = "orderids="+$scope.returnconfirmationNumber;
+		else
+			data = "orderids="+$scope.confirmationNumber;
+
+		flightServices.downloadPdfFile(data).then(function(response){
+			
+			var url = response.config.url; 
+		window.location.href = url;
+		$scope.pdfloader = false;
+		
+		},function(){
+			// console.log(data);
+		});
+	};
+	$scope.datecompare11 = function(obj1,obj2)
+	{
+
+		var arrtime = new Date(obj2);
+		var deptime = new Date(obj1);
+		var tseconds = (arrtime.getTime() - deptime.getTime())/1000;   
+		var conversions = {
+				'ss': angular.identity,
+				'mm': function(value) { return value * 60; },
+				'hh': function(value) { return value * 3600; }
+		};
+
+		var padding = function(value, length) {
+			var zeroes = length - ('' + (value)).length,
+			pad = '';
+			while(zeroes-- > 0) pad += '0';
+			return pad + value;
+		}; 
+		var totalSeconds = conversions['ss'](tseconds),
+		hh = Math.floor(totalSeconds / 3600),
+		mm = Math.floor((totalSeconds % 3600) / 60),
+		ss = totalSeconds % 60;    
+		var format = 'hh:mm';
+		var isPadded = angular.isDefined(isPadded)? isPadded: true;
+		hh = isPadded? padding(hh, 2): hh;
+		mm = isPadded? padding(mm, 2): mm;
+		ss = isPadded? padding(ss, 2): ss;
+		return format.replace(/hh/, hh).replace(/mm/, mm).replace(/ss/, ss);
+	}
+
+	/* Get Datatime to Time */
+	$scope.getDateObject = function(dt){
+		var date = new Date(dt);
+		var hours = date.getHours();
+		if(hours < 10) hours = '0' + hours;
+		var min = date.getMinutes();
+		if(min < 10) min = '0' + min;
+		return hours + ':' + min;
+
+	}
+	function escapeRegExp(string) {
+		return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+	}
+	function replaceAll(string, find, replace) {
+		return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+	}
+
+
+	function replaceAll1(string, find, replace) {
+		return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+	}
+
+
+	$scope.ReloadToindex = function(){
+		window.location.href = window.location.href.replace(/#.*$/, '');	
+	}
+	$scope.init();
+});
+
+
+/* Convert Mintues to Hours */
+app.filter('totaltime', function() {
+
+	var conversions = {
+			'ss': angular.identity,
+			'mm': function(value) { return value * 60; },
+			'hh': function(value) { return value * 3600; }
+	};
+
+	var padding = function(value, length) {
+		var zeroes = length - ('' + (value)).length,
+		pad = '';
+		while(zeroes-- > 0) pad += '0';
+		return pad + value;
+	};
+
+	return function(value, unit, format, isPadded) {
+
+		var totaldur = 0;
+		angular.forEach(value, function(obj,index) { 
+
+			totaldur = totaldur + parseInt(obj.duration);         
+		});
+
+		var totalSeconds = conversions[unit || 'ss'](totaldur),
+		hh = Math.floor(totalSeconds / 3600),
+		mm = Math.floor((totalSeconds % 3600) / 60),
+		ss = totalSeconds % 60;
+
+		format = format || 'hh:mm:ss';
+		isPadded = angular.isDefined(isPadded)? isPadded: true;
+		hh = isPadded? padding(hh, 2): hh;
+		mm = isPadded? padding(mm, 2): mm;
+		ss = isPadded? padding(ss, 2): ss;
+
+		return format.replace(/hh/, hh).replace(/mm/, mm).replace(/ss/, ss);
+	};
+});
+app.filter('time', function() {
+
+	var conversions = {
+			'ss': angular.identity,
+			'mm': function(value) { return value * 60; },
+			'hh': function(value) { return value * 3600; }
+	};
+
+	var padding = function(value, length) {
+		var zeroes = length - ('' + (value)).length,
+		pad = '';
+		while(zeroes-- > 0) pad += '0';
+		return pad + value;
+	};
+
+	return function(value, unit, format, isPadded) {
+		var totalSeconds = conversions[unit || 'ss'](value),
+		hh = Math.floor(totalSeconds / 3600),
+		mm = Math.floor((totalSeconds % 3600) / 60),
+		ss = totalSeconds % 60;
+
+		format = format || 'hh:mm:ss';
+		isPadded = angular.isDefined(isPadded)? isPadded: true;
+		hh = isPadded? padding(hh, 2): hh;
+		mm = isPadded? padding(mm, 2): mm;
+		ss = isPadded? padding(ss, 2): ss;
+		return format.replace(/hh/, hh).replace(/mm/, mm).replace(/ss/, ss);
+	};
+});

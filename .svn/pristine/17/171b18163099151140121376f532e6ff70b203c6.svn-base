@@ -1,0 +1,56 @@
+{
+  "origin": "hyderabad",
+  "destination": "bangalore",
+  "onwardDate": "2017-06-28",
+  "status": {
+    "code": 1,
+    "message": "Success"
+  },
+  "orderId": "TYBU23",
+  "searchkey": "BSK23",
+  "transactionkey": "BTK23",
+  "pgRefNo": "PGB23",
+  "blockTicketKey": "ETS0S192343232",
+  "busPaxDetails": [
+    {
+      "gender": "M",
+      "firstName": "Vimal",
+      "lastName": "Susai",
+      "age": "29",
+      "seatNbr": "L9",
+      "isPrimaryPax": true,
+      "isSleeper": false,
+      "isAc": false,
+      "isladiesSeat": false
+    }
+  ],
+  "blockBusDetail": {
+    "busOperator": "Bethel Transport",
+    "busType": "2+1 AC Classy Sleeper",
+    "boardingPoint": {
+      "id": "2238",
+      "loc": "K.P.H.B,|Beside R.S Brothers",
+      "time": "08:45PM"
+    },
+    "droppingPoint": null,
+    "departureTime": "8:00 PM",
+    "arrivalTime": "06:00 AM",
+    "mTicketAllowed": false,
+    "partialCancellationAllowed": false
+  },
+  "blockFareDetail": {
+    "basePrice": 1378,
+    "taxes": 0,
+    "apiPrice": 1378,
+    "priceWithOutMarkup": 1378,
+    "bookingPrice": 1528,
+    "totalPayableAmount": 1428,
+    "busServiceTax": {
+      "baseServicetax": 0,
+      "totalServiceTax": 0,
+      "managementFee": 0,
+      "sbc": 0,
+      "kkc": 0
+    }
+  }
+}

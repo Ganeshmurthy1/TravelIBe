@@ -1,0 +1,353 @@
+<%-- <%@ page session="true" %>
+${sessionScope}  --%>
+
+<%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="dj" uri="/struts-dojo-tags"%>
+
+	<title>Tayyarah Corporate Travel</title>
+ <div data-ng-controller="CorporateheaderCtrl">
+	<div class="header-top dark corporate">
+		<div class="container">
+		<div class="row">
+							<div class="col-xs-3 col-sm-7 col-md-6">
+								<div class="header-top-first clearfix">
+									<ul class="list-inline">
+										<li><i class="tayyarah-phone pr-5 pl-10"></i>  080-42855555</li>
+										<li>	
+										<a id="emailLnk" href="#"><i class="tayyarah-envelope-o pr-5 pl-10"></i> care@tayyarah.com </a></li>
+									</ul>
+								</div>								
+								</div>
+								
+								<div class="col-xs-9 col-sm-5 col-md-6">
+									<div id="header-top-second" class="clearfix">
+									<div class="header-top-dropdown text-right">					
+									
+									 <ul>
+			<s:if test="#session.emulateFlag == true">
+                 <li class="EMUC"><a>Emulated By Company : <s:property value="#session.emulateByCompany.companyname" /></a>
+                 <a>Emulated By User : <s:property value="#session.emulateByUser.username" /></a>
+                 </li>   
+                 </s:if>
+ 		 <input type="hidden" name="companyId" id="cmpanyId" value="<s:property value="%{#session.agent.Companyid}"/>" >
+      		 <input type="hidden" name="userid" id="userid" value="<s:property value="%{#session.agent.id}"/>">
+                <input type="hidden" id="isuserloggedin" value="yes">
+                <input type="hidden" id="adminurl" value="{{AdminDashboardUrl}}">
+                    <input type="hidden" id="thelink" name="adminlink" value="<s:property value="#session.EncryptedAdminlink" />">  
+		
+          
+             
+
+             <li class="dropdown">
+          
+             <input type="hidden" name="companyId" id="cmpanyId" value="<s:property value="%{#session.agent.Companyid}"/>" >
+      		 <input type="hidden" name="userid" id="userid" value="<s:property value="%{#session.agent.id}"/>">
+              <input type="hidden" id="isuserloggedin" value="yes">
+       <%--  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="tayyarah-user"></i><s:property value="#session.agent.Firstname" />
+       	<b class="caret"></b></a> --%> 
+       	 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Welcome &nbsp<span class="fontBold"><s:property value="#session.agent.Firstname" /></span>
+       	<b class="caret"></b></a>      	
+        <ul id="header-top-corporate-dropdown" class="dropdown-menu">
+         			<li><a href="#/UserProfile"><i class="tayyarah-circle-o-notch"></i>My Profile</a></li>
+					<li><a class="logout-form" data-target="UserLogout"><i class="tayyarah-sign-out"></i> Log Out</a> </li>
+           </ul> 
+            <!-- <li ng-if="isAdminDashboard" ><a onclick="adminform()">Dash board</a></li>   -->        
+             <li class="creditDetails"><span >Credit:&nbsp;<i class="tayyarah-<s:property value="#session.agent.agentWallet.currencyCode" />"></i> 
+             <span class="" id="agentbal" value="" data-ng-bind="agentbal"></span>
+             &nbsp; Deposit:&nbsp;<i class="tayyarah-<s:property value="#session.agent.agentWallet.currencyCode" />"></i>
+             <span class="" id="agentDepbal" value="" data-ng-bind="agentDepbal"></span>
+             </span>
+             </li>       
+          </ul>					
+								</div>
+									<!--  header top dropdowns end -->
+								</div>
+								<!-- header-top-second end -->
+							</div>	
+							</div>
+		</div>
+		</div>
+							
+<header class="header fixed clearfix corporateheader">
+   <div class="container ">
+    <nav class="navbar navbar-default corporateheader" role="navigation" id="navbar2">
+      <!-- Brand and toggle get grouped for better mobile display -->      
+        <div class="navbar-header cnavbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>                
+              <div class="logo">
+                  <h1  ><a data-ng-href="#flights" ><img src="images/t-n.png" class="img-responsive" alt="tayyarah"></a></h1>
+              </div>
+               <%-- <div class="logo logo-xs visible-xs">
+                  <h1  ><a data-ng-href="#/UserProfile" >
+                  <input id="uesrimageid" type="hidden" value="<s:property value="#session.agent.imagepath" />">
+                  <img src="<s:url action='AgentImageAction?imageId=%{#session.agent.imagepath}'/>"  id="imgres" width="120" class="img-responsive" onerror="imgError(this);"></a></h1>
+                  <img src={{AdminImageUrl}}  id="imgres" width="120" class="img-responsive" onerror="imgError(this);"></a></h1>
+              
+              </div> --%>
+        </div>
+      
+       
+      
+        <div class="col-xs-12 nav-mob-xs visible-xs">
+       
+        <div class="col-xs-3 mob-img">
+        <div class="logo logo-xs visible-xs">
+                  <h1  ><a data-ng-href="#/UserProfile" >
+                  <input id="uesrimageid" type="hidden" value="<s:property value="#session.agent.imagepath" />">
+                 <%--  <img src="<s:url action='AgentImageAction?imageId=%{#session.agent.imagepath}'/>"  id="imgres" width="120" class="img-responsive" onerror="imgError(this);"></a></h1> --%>
+                  <img src={{AdminImageUrl}}  id="imgres" width="120" class="img-responsive" onerror="imgError(this);"></a></h1>
+              
+              
+               </div>
+              </div>
+              <div class="col-xs-9 mob320pxwidth">
+               <div class="col-xs-12">
+        	 <a href="#" class="dropdown-toggle pull-right fontnew10" data-toggle="dropdown">Welcome &nbsp<s:property value="#session.agent.Firstname" />
+       	<b class="caret"></b></a>      	
+        <ul id="header-top-corporate-dropdown" class="dropdown-menu">
+         			<li><a href="#/UserProfile"><i class="tayyarah-circle-o-notch"></i>My Profile</a></li>
+					<li><a class="logout-form" data-target="UserLogout"><i class="tayyarah-sign-out"></i> Log Out</a> </li>
+           </ul> 
+        </div>
+              <div class="col-xs-12 mob320pxwidth">
+                 <div class="col-md-6 col-sm-6 col-xs-6 mob320pxwidth">                 
+           <span class="font10" >Credit:&nbsp;<i class="tayyarah-<s:property value="#session.agent.agentWallet.currencyCode" />"></i>
+             <span class="" id="agentbal" value="" data-ng-bind="agentbal"></span></span>
+             </div>
+             <div class="col-md-6 col-sm-6 col-xs-6 mob320pxwidth"> 
+            <span class="font10" > Deposit:&nbsp;<i class="tayyarah-<s:property value="#session.agent.agentWallet.currencyCode" />"></i>
+             <span class="" id="agentDepbal" value="" data-ng-bind="agentDepbal"></span>
+             </span>
+             </div>
+             </div>
+              </div>
+             <!--  <div class="col-xs-4">
+              <div class="row">
+              <div class="col-md-5 mob320width">
+               <a onclick="adminform()">Dash board</a> </div>
+               <div class="col-md-5">
+               <a class="logout-form" data-target="UserLogout"><i class="tayyarah-sign-out"></i> Log Out</a> </div>
+               </div>
+              </div> -->
+        </div>
+        <div class="nav-header-right clearfix">          
+          <div class="nav-bag clearfix">
+            <div class="collapse navbar-collapse navbar-ex1-collapse ">
+              <ul class="nav navbar-nav navbar-right hidden-xs" id="id">  
+               <li data-ng-class="{ active: isActive('/')}"><i class="corpoateflight"></i><a data-ng-href="#flights" data-ng-click="returnIndex()" > <img class="airimg  "></img> <Span>Flight</Span></a></li>
+                <li  data-ng-class="{ active: isActive('/hotel')}"><a data-ng-href="#/hotel" data-ng-click="returnHotelIndex()"><i class="tayyarah-hotel visible-xs-inline"></i> <img class="hotimg  "></img><Span>Hotel</Span></a></li> 
+                 <li  data-ng-class="{ active: isActive('/bus')}"><a data-ng-href="#/bus" data-ng-click="returnBusIndex()"><i class="tayyarah-bus visible-xs-inline"></i> <img class="busimg  "></img><Span>Bus</Span></a></li>         
+               <li  data-ng-class="{ active: isActive('/EnquiryForm')}"><a data-ng-href="#/EnquiryForm" ><i class="tayyarah-directions_bus visible-xs-inline"></i><img class="enimg  "></img> <Span>Enquiry</Span></a></li>						
+                <li  data-ng-class="{ active: isActive('/about')}"><a data-ng-href="#/about"><i class="tayyarah-user visible-xs-inline"></i><img class="abtimg  "></img> <Span>About Us</Span></a></li>
+              
+              </ul>
+               <ul class="nav navbar-nav navbar-right widthHeader100per visible-xs" id="id">                 
+                <li data-ng-class="{ active: isActive('/')}"><a data-ng-href="#flights" data-ng-click="returnIndex()"><i class="visible-xs-inline"></i><img class="airimg  "></img> <Span>Flight</Span></a></li>
+                <li data-ng-class="{ active: isActive('/hotel')}"><a data-ng-href="#/hotel"  data-ng-click="returnHotelIndex()"><i class="visible-xs-inline"></i><img class="hotimg  "></img> <Span>Hotel</Span></a></li>     
+                <li  data-ng-class="{ active: isActive('/EnquiryForm')}"><a data-ng-href="#/EnquiryForm" ><i class="tayyarah-directions_bus visible-xs-inline"></i><img class="enimg  "></img> <Span>Enquiry</Span></a></li>						
+                <li  data-ng-class="{ active: isActive('/about')}"><a data-ng-href="#/about"><i class="tayyarah-user visible-xs-inline"></i><img class="abtimg  "></img> <Span>About Us</Span></a></li>
+                <li><a id="signup-trigger" href="#/UserRegister"><i class="tayyarah-edit  pr-5"></i> <Span>Register Now </Span></a></li>
+                <li><a class="logout-form" data-target="UserLogout"><i class="tayyarah-sign-out"></i> Log Out</a> </li>
+              </ul>
+            </div>
+            
+          </div>
+        </div> 
+        
+        <div class="navbar-header cnavbar-header hidden-xs">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>                
+              <div class="logo ">
+                  <h1  ><a data-ng-href="#/UserProfile" >
+                  <input id="uesrimageid" type="hidden" value="<s:property value="#session.agent.imagepath" />">
+                 <%--  <img src="<s:url action='AgentImageAction?imageId=%{#session.agent.imagepath}'/>"  id="imgres" width="120" class="img-responsive" onerror="imgError(this);"></a></h1> --%>
+                  <img src={{AdminImageUrl}}  id="imgres" width="120" class="img-responsive" onerror="imgError(this);"></a></h1>
+              
+              </div>
+        </div>
+        <div class="navbar-header notifyhead hidden-xs">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>                
+              <div class="logo">
+               <a class="dropdown-toggle textdecorNone corporateDecor" data-ng-show="NotifyCount" data-ng-click="showDetailNotifications()" role="button" data-toggle="dropdown"  >
+                  <span class="icon-with-child hidden-xs">
+                    <span class="tayyarah-bell bellOver"></span>
+                    <span class="badge badge-danger badge-above right bellBadge" data-ng-bind="notificationCount"></span>
+                  </span>
+                  <span class="visible-xs-block">
+                    <span class="tayyarah-bell"></span>
+                    <span class="badge badge-danger pull-right" data-ng-bind="notificationCount"></span>
+                    Notifications
+                  </span>
+                </a>
+                <div class="dropdown-menu dropNotification dropdown-menu-lg " >
+                  <div class="dropdown-header headerBackground col-md-12 ">
+                   <h5 class="dropdown-heading NoteHead col-md-7">Recent Notifications</h5>
+                    <a class="dropdown-link col-md-5" data-ng-click="markallasread()">Mark all as read</a>                   
+                  </div>
+                  <div class="dropdown-body">
+                    <div class="custom-scrollable-area" >
+                    <ul class="list-group list-group-divided customNew-scrollbar">
+                    <li class="list-group list-group-divided " data-ng-repeat="notted in NoteDetails track by $index" >
+                      <div class="col-md-12 list-group-item clearfix backgroundColour"  id='{{$index}}'>
+                        <a class="notification " data-ng-click="viewdetail($index,notted)">
+                          <div class="notification-content" >
+                          <h5 class="notification-heading" > {{notted.details[0].title}}</h5>
+                           <div class="col-md-12">
+                            <small class="notification-timestamp" style="color: #999;">{{notted.details[0].comments}} </small>
+                            <small class="notification-timestamp pull-right" style="color: #999;">{{convertToHours(notted.createdAt)}}</small>
+                            </div>
+                           
+                          </div>
+                        </a>
+                                              
+                        </div> 
+                     
+                    </li>
+                   </ul>
+                    </div>
+                    </div>
+                  </div>
+              </div>
+        </div>  
+    </nav>
+    
+    </div>
+</header>
+			
+		
+		</div>
+		 <script>
+
+		 function adminform(){
+			 
+
+			 var url = $('#adminurl').val();
+			 var data = $('#thelink').val();
+			  var mapForm = document.createElement("form");
+			    mapForm.target = "Map";
+			    mapForm.method = "POST"; 
+			     
+			 mapForm.action = url; 
+			    var mapInput = document.createElement("input");
+			    mapInput.type = "hidden";
+			    mapInput.name = "encryptedid";
+			    mapInput.value = data;
+			    mapForm.appendChild(mapInput);
+			    console.log("mapForm",mapForm);
+
+			     document.body.appendChild(mapForm);
+
+			   
+			    mapForm.submit();
+			if (map) {
+			  
+			   
+			} else {
+			 
+			}  
+			 }
+</script>
+		
+		
+	<script>
+
+$('.logout-form').click(function()
+/* function logoutform()  */{
+
+	  var totUrl = $(location).attr('href');
+  
+  	var newUrl = totUrl.substr(0, totUrl.lastIndexOf('/#/') + 1);
+ 	var fUrl = newUrl+"AgentLogout";
+	 // var URL = "http://192.168.1.63:8000/weather/logout/";
+	  $.ajax({
+	    url : fUrl,
+	    type: "POST",
+	    xhrFields: {
+	      withCredentials: true
+	    }
+	  }).success(function(res) {
+		  location.reload();
+		 window.location = newUrl;
+	    hide_error();
+	  }).error(function(res) {
+	    console.log(res);	  
+	  });
+	});
+	
+	
+
+</script> 
+
+  <script type="text/javascript">
+                       $("#id li a").click(function() {                    
+                    	  $('.navbar .navbar-nav>.active>a').css("color","#555");
+                    	  $(this).css("color","#D50000");
+                        $('.tayyarah-home-tabs .active-tab li').removeClass('active');                    
+                        var currentactiveele = $(this).text()+'li';                       
+                         $('#'+currentactiveele.trim()).addClass('active');                        
+                       }); 
+                     
+                </script>
+                <script>
+                function imgError(image) {
+                    image.style.display = 'none';
+                }
+                
+                $(document).ready(function() {
+                    $("#emailLnk").attr('href',"mailto:care@tayyarah.com");
+                });
+                
+                 </script>
+                
+                 <script>
+    $(document).ready(function(){
+     $("#forgot_link").click(function(){
+         $("#forgot_div").slideToggle();
+     }); 
+    });
+        </script>
+         <script>
+    // Toggle Function
+    $(document).ready(function() {
+
+        $('.form1').hide();
+
+      
+
+        $(".toggle").click(function() {
+            $('.lgi').hide();
+
+            $(".form1").fadeIn(1500, function() {
+                $(".form1").fadeIn(1000);
+            });
+            return false;
+        });
+
+
+        $(".tog").click(function() {
+            $('.form1').hide();
+
+            $(".lgi").fadeIn(1500, function() {
+                $(".lgi").fadeIn(1000);
+            });
+            return false;
+        });
+
+    });
+    </script>       
+
+

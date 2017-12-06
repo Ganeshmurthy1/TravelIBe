@@ -1,0 +1,11 @@
+var app = angular.module('myApp');
+app.controller('InsuranceTermsCtrl', function ($scope,$modalInstance) {
+$scope.init = function(){
+		
+	}
+	$scope.close = function(){
+		 $modalInstance.dismiss('');
+	}
+	$scope.init();
+	
+});

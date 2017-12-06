@@ -1,0 +1,1 @@
+!function(a){"use strict";a.autoPrint=function(){var a;return this.internal.events.subscribe("postPutResources",function(){a=this.internal.newObject(),this.internal.write("<< /S/Named /Type/Action /N/Print >>","endobj")}),this.internal.events.subscribe("putCatalog",function(){this.internal.write("/OpenAction "+a+" 0 R")}),this}}(jsPDF.API);

@@ -1,0 +1,564 @@
+<%@taglib prefix="s" uri="/struts-tags"%>
+ 
+<div class="">
+
+
+	<div class="container" data-ng-style="{'display' : display}"
+		data-ng-cloak>
+<%-- 				 <div id="loading-bar-container" class="hidden-xs"></div>
+ <div class="row" data-ng-show="bookloader">
+ <span ><b class="LoadingDetailText col-md-12">Please wait while we check for the lowest rates and availability...</b></span>
+ </div>  --%>
+ 
+ <div class="visible-xs gradient" data-ng-show="hotelDetailsTemplate">
+			<div class="spinner">
+				<!-- <p class="white"><i class="tayyarah-plane"></i></p> -->
+				<div class="rect1"></div>
+				<div class="rect2"></div>
+				<div class="rect3"></div>
+				<div class="rect4"></div>
+				<div class="rect5"></div>
+				<p class="white">Loading....</p>
+			</div>
+		</div>
+		<div class="row rowsm">
+			<div class="hotel-detail">
+		<div class="loaderTemplate" data-ng-show="hotelDetailsTemplate">
+			 <div class="h-lists clearfix">
+					<div class="col-sm-5">
+						<h3 class=""><img src="images/loaders/greyImage.png" class="hotelNameTemplate"></h3>
+						<p class=""><img src="images/loaders/greyImage.png" class="hotelNameTemplate2" ></p>
+						<p class="clearfix"
+							data-ng-if="HotelResult.basicPropertyInfo.hotel_Star  > 0 ">
+							<a href="#" class="fa fa-star"
+								data-ng-repeat="i in getNumber(HotelResult.basicPropertyInfo.hotel_Star) track by $index"></a>
+						</p>
+					</div>
+
+					<div class="col-sm-2">
+						<div class="ratings"
+							data-ng-if="HotelResult.basicPropertyInfo.reviewRating > 0">
+							<span class="r-colr hotelpriceTemplate"></span>
+							/ 5
+						</div>
+						<span data-ng-if="HotelResult.basicPropertyInfo.reviewCount > 0"><img src="images/loaders/greyImage.png" class="brownTemplate">
+							Reviews</span>
+					</div>
+
+					<div class="col-sm-2 h-d-cheko">
+						<p>
+							Room x<span><img src="images/loaders/greyImage.png" class="brownTemplate"></span>
+						</p>
+						<p>
+							Check in
+							<time><img src="images/loaders/greyImage.png" class="brownTemplate"></time>
+						</p>
+						<p>
+							Check out
+							<time><img src="images/loaders/greyImage.png" class="brownTemplate"></time>
+						</p>
+					</div>
+
+					<div class="col-sm-3 ">
+						<div class="h-d-rate">
+							<p class="h3">
+								<i class="tayyarah-inr"></i><img src="images/loaders/greyImage.png" class="brownTemplate"><span>Total Room Price</span>
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-8">
+						<div class="hotel-slider">
+							<div class="item">
+								<div class="clearfix">
+									<ul class="defaultLoadimg">
+										<li >
+											<img src="images/loaders/horizontalLoader.gif" class="center-block margin-top20px"/>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-4">
+						<div class="hotel-details-search">
+							<%-- <p class="details-price">
+								<b><i class="tayyarah-inr"></i><img src="images/loaders/greyImage.png" class="brownTemplate"></b> <small>Total Room Price</small>
+							</p> --%>
+
+							<form data-ng-submit="modifysearch()" >
+							 
+								<s:if test="#session['agent'] != null">
+									<input type="hidden" name="ay"
+										value="<s:property value="%{#session.agent.Securityanswer}"/>" id="hky" >
+									<input type="hidden" name="ccy"
+										value="<s:property value="%{#session.agent.currencyCode}"/>" id="hccy">
+								</s:if>
+								<s:else>
+									<input type="hidden" id="hky" name="ay" value="{{appkey}}">
+									<input type="hidden" name="ccy" id="hccy" value="INR">
+									
+								</s:else>
+								<input type="hidden" name="request_locale" id="hotelrequestlocale" value=""> 
+								<input type="hidden" id="hotelcity" name="cityname" value="{{searchcityname}}">
+								<input type="hidden" name="citycode" id="citycode"
+									value="{{searchcitycode}}">
+							<div class="clearfix form-inline">
+									<div class="form-group">
+										<label for="inputEmail">Check In</label>
+										<div class="input-group">
+											<span class="tayya-h-iicons"><i
+												class="tayyarah-calendar"></i></span>
+											<input type="text" class="form-control o-c-s"
+												name="datestart"  placeholder="Check In"
+												value="{{datestart}}" data-ng-model="searchdata.datestart" required onkeydown="return false;">
+										</div>
+									</div>
+								</div>
+
+								<div class="clearfix">
+									<div class="form-group">
+										<label for="inputEmail">Check Out</label>
+										<div class="input-group">
+											<span class="tayya-h-iicons"><i
+												class="tayyarah-calendar"></i></span>
+											<input type="text" class="form-control o-c-s" name="dateend"
+												placeholder="Check Out" value="{{dateend}}"
+												data-ng-model="searchdata.dateend" required onkeydown="return false;">
+										</div>
+									</div>
+								</div>
+
+	
+								<div class="clearfix">
+									<div class="form-group ">
+										<label for="inputAdult">Details</label>
+										<div >
+											   <span><span id="totalpeopletext">{{noofadults}}</span>,
+												Adult(s) <span id="totalchildtext">{{noofChild}}</span>,
+												Child(s) in <span id="totalroomtext">{{noofrooms}}</span>,
+												Room(s) <i class="tayyarah-angle-down pull-right"></i></span> 
+
+										</div>
+									</div>
+
+								</div>
+								
+								<div class="clearfix">
+									<div class="form-group tayy-button">
+										<div class="input-group">
+										<button type="submit" class="btn btn-info btn-corporateHotel"
+												data-ng-click="submitted== true" value="Search">Modify Search</button>
+										</div>
+									</div>
+								</div>
+								
+								 
+							</form>
+
+						</div>
+
+					</div>
+				</div>
+				</div>
+		   
+		    <div data-ng-show="hotelDetailsContent">
+		    <div class="LoadedContent" >
+		    <div class="h-lists clearfix">
+					<div class="col-sm-5">
+						<h3>{{HotelResult.basicPropertyInfo.hotelName}}</h3>
+						<p>{{HotelResult.basicPropertyInfo.address.addressLines[0]}}</p>
+						<p class="clearfix"
+							data-ng-if="HotelResult.basicPropertyInfo.hotel_Star  > 0 ">
+							<a href="#" class="fa fa-star"
+								data-ng-repeat="i in getNumber(HotelResult.basicPropertyInfo.hotel_Star) track by $index"></a>
+						</p>
+					</div>
+
+					<div class="col-sm-2">
+						<div class="ratings"
+							data-ng-if="HotelResult.basicPropertyInfo.reviewRating > 0">
+							<span class="r-colr">{{HotelResult.basicPropertyInfo.reviewRating}}</span>
+							/ 5
+						</div>
+						<span data-ng-if="HotelResult.basicPropertyInfo.reviewCount > 0">{{HotelResult.basicPropertyInfo.reviewCount}}
+							Reviews</span>
+					</div>
+
+					<div class="col-sm-2 h-d-cheko">
+						<p>
+							Room x<span> {{searchdata.noofrooms}}</span>
+						</p>
+						<p>
+							Check in
+							<time> {{searchdata.datestart | date: 'EEE, MMM d'}}</time>
+						</p>
+						<p>
+							Check out
+							<time>{{searchdata.dateend | date: 'EEE, MMM d'}}</time>
+						</p>
+					</div>
+
+					<div class="col-sm-3 ">
+						<div class="h-d-rate">
+							<p class="h3">
+								<i class="tayyarah-inr"></i> {{getTotal()}} <span>Total Room Price</span>
+							</p>
+						</div>
+					</div>
+				</div> 
+
+
+				<div class="row">
+					<div class="col-sm-8">
+						<div class="hotel-slider">
+							<div class="item">
+								<div class="clearfix">
+									<ul id="image-gallery">
+										<li data-thumb="{{photo}}" class="lslide"
+											data-ng-repeat="photo in HotelResult.basicPropertyInfo.hotelimages track by $index">
+											<img src="{{photo}}" height="auto" width="auto"
+											onerror="this.src='./images/image_not_found-hotel-.jpg'" />
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-4">
+						<div class="hotel-details-search">
+							<%-- <p class="details-price">
+								<b><i class="tayyarah-inr"></i> {{getTotal()}} </b> <small>Total Room Price</small>
+							</p> --%>
+
+							<form data-ng-submit="modifysearch()" >
+								<s:if test="#session['agent'] != null">
+									<input type="hidden" name="ay"
+										value="<s:property value="%{#session.agent.Securityanswer}"/>" id="hky" >
+									<input type="hidden" name="ccy"
+										value="<s:property value="%{#session.agent.currencyCode}"/>" id="hccy">
+								</s:if>
+								<s:else>
+									<input type="hidden" id="hky" name="ay" value="{{appkey}}">
+									<input type="hidden" name="ccy" id="hccy" value="INR">
+									
+								</s:else>
+								<input type="hidden" name="request_locale" id="hotelrequestlocale" value=""> 
+								<input type="hidden" id="hotelcity" name="cityname" value="{{searchcityname}}">
+								<input type="hidden" name="citycode" id="citycode"
+									value="{{searchcitycode}}">
+									<div class="col-xs-12 col-hot-mod">
+									<div id="hdepe"></div>
+								<div class="clearfix col-xs-6">
+									<div class="form-group">
+										<label for="inputEmail">Check In: </label>
+										 <div class="input-group">
+											<span class="tayya-h-iicons input-group-addon"><i
+												class="tayyarah-calendar"></i></span>
+											<input type="text" class="form-control o-c-s"
+												name="datestart" id="datein" placeholder="Check In"
+												value="{{datestart}}" data-ng-model="searchdata.datestart" required onkeydown="return false;">
+										 </div>
+									</div>
+								</div>
+
+								<div class="clearfix col-xs-6">
+									<div class="form-group">
+										<label for="inputEmail">Check Out:</label>
+										<div class="input-group">
+											<span class="tayya-h-iicons input-group-addon"><i
+												class="tayyarah-calendar"></i></span>
+											<input type="text" class="form-control o-c-s" name="dateend"
+												id="dateout" placeholder="Check Out" value="{{dateend}}"
+												data-ng-model="searchdata.dateend" required onkeydown="return false;">
+										</div>
+									</div>
+								</div>
+                                 </div>
+								<%-- <div class="col-md-12 col-sm-12 col-xs-12 visible-xs">
+								<div class="clearfix col-md-6 col-sm-6 col-xs-6" style=" padding-left: 0px;">
+									<div class="form-group">
+										<label for="inputEmail">Check In: </label>
+										 <div class="input-group">
+											<span class="tayya-h-iicons input-group-addon"><i
+												class="tayyarah-calendar"></i></span>
+											<input type="text" class="form-control o-c-s"
+												name="datestart" id="datein" placeholder="Check In"
+												value="{{datestart}}" data-ng-model="searchdata.datestart" required onkeydown="return false;">
+										 </div>
+									</div>
+								</div>
+
+								<div class="clearfix col-md-6 col-sm-6 col-xs-6">
+									<div class="form-group">
+										<label for="inputEmail">Check Out:</label>
+										<div class="input-group">
+											<span class="tayya-h-iicons input-group-addon"><i
+												class="tayyarah-calendar"></i></span>
+											<input type="text" class="form-control o-c-s" name="dateend"
+												id="dateout" placeholder="Check Out" value="{{dateend}}"
+												data-ng-model="searchdata.dateend" required onkeydown="return false;">
+										</div>
+									</div>
+								</div>
+								</div> --%>
+								<div class="clearfix col-xs-12">
+									<div class="form-group ">
+										<label for="inputAdult">Details:</label>
+										<div id="dropdown">
+											   <span><span id="totalpeopletext">{{noofadults}}</span>,
+												Adult(s) <span id="totalchildtext">{{noofChild}}</span>,
+												Child(s) in <span id="totalroomtext">{{noofrooms}}</span>,
+												Room(s) <i class="tayyarah-angle-down pull-right"></i></span> 
+
+										</div>
+									</div>
+
+								</div>
+								<%-- <div class="clearfix col-md-12 col-sm-12 col-xs-12 visible-xs">
+								<div class="form-group ">
+										<label for="inputAdult">Details:</label>
+										<div id="dropdown">
+											   <span><span id="totalpeopletext">{{noofadults}}</span>,
+												Adult(s) <span id="totalchildtext">{{noofChild}}</span>,
+												Child(s) in <span id="totalroomtext">{{noofrooms}}</span>,
+												Room(s) <i class="tayyarah-angle-down pull-right"></i></span> 
+
+										</div>
+									</div>
+								</div> --%>
+
+								<div class="dropdownwrap dropDetailPage" style="display: none;">
+									<div class="col-sm-12 clearfix">
+										<div class="form-group">
+											<label for="inputGroupSuccess2">Room(s)</label>
+											<div class="input-group">
+
+												<select class="form-control" name="rooms" id="totalrooms"
+													onchange="AddHRooms()" data-value="{{noofrooms}}" required>
+													<option>1</option>
+													<option>2</option>
+													<option>3</option>
+													<option>4</option>
+
+												</select>
+											</div>
+										</div>
+									</div>
+
+									<div class="hotel-repeat ">
+										<!-- groweble div in hotel -->
+
+										<div class="row" id="rowid1" data-index='1'>
+
+											<div class="col-sm-2 clearfix rooms-multiple">
+												<p class="ro-heading">Room 1:</p>
+											</div>
+
+											<!-- <p>Room1</p> -->
+											<div class="col-sm-5 clearfix">
+												<div class="form-group">
+													<label for="inputGroupSuccess2">Adult(s)</label>
+													<div class="input-group">
+
+														<select class="form-control" name="Adults1"
+															id="Room1Adult" required
+															onchange="FirstRoomChangeAChild()">
+															<option>1</option>
+															<option>2</option>
+															<option>3</option>
+															<option>4</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-sm-5 clearfix">
+												<div class="form-group">
+													<label for="inputGroupSuccess2">Child(s)</label>
+
+
+													<div class="input-group">
+														<!-- <span > Room 1</span> -->
+														<select class="form-control" id="Childs" name="Childs1"
+															required onchange="FirstrowChildchange('1')">
+															<option>0</option>
+															<option>1</option>
+															<option>2</option>
+															<option>3</option>
+															<option>4</option>
+															<option>5</option>
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-sm-12 AgesMainDiv">
+											<!-- 	<div class="col-sm-2"></div> -->
+												<div class="col-sm-2 clearfix Room1Child1" id="c-age"
+													style="display: none;">
+													<div class="form-group">
+														<label for="inputGroupSuccess2">Age 1</label>
+														<div class="input-group StaticAge">
+
+															<select class="form-control" name="Age1" id="room1Age1" required>
+																<option value="less1">< 1</option>
+																<option>1</option>
+																<option>2</option>
+																<option>3</option>
+																<option>4</option>
+																<option>5</option>
+																<option>6</option>
+																<option>7</option>
+																<option>8</option>
+																<option>9</option>
+																<option>10</option>
+																<option>11</option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-sm-2 clearfix Room1Child2" id="c-age"
+													style="display: none;">
+													<div class="form-group">
+														<label for="inputGroupSuccess2">Age 2</label>
+														<div class="input-group StaticAge">
+
+															<select class="form-control" id="room1Age2" name="Age1" required>
+																<option value="less1">< 1</option>
+																<option>1</option>
+																<option>2</option>
+																<option>3</option>
+																<option>4</option>
+																<option>5</option>
+																<option>6</option>
+																<option>7</option>
+																<option>8</option>
+																<option>9</option>
+																<option>10</option>
+																<option>11</option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-sm-2 clearfix Room1Child3" id="c-age"
+													style="display: none;">
+													<div class="form-group">
+														<label for="inputGroupSuccess2">Age 3</label>
+														<div class="input-group StaticAge">
+
+															<select class="form-control" name="Age1" id="room1Age3" required>
+																<option value="less1">< 1</option>
+																<option>1</option>
+																<option>2</option>
+																<option>3</option>
+																<option>4</option>
+																<option>5</option>
+																<option>6</option>
+																<option>7</option>
+																<option>8</option>
+																<option>9</option>
+																<option>10</option>
+																<option>11</option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-sm-2 clearfix Room1Child4" id="c-age"
+													style="display: none;">
+													<div class="form-group">
+														<label for="inputGroupSuccess2">Age 4</label>
+														<div class="input-group StaticAge">
+
+															<select class="form-control" id="room1Age4" name="Age1" required>
+																<option value="less1">< 1</option>
+																<option>1</option>
+																<option>2</option>
+																<option>3</option>
+																<option>4</option>
+																<option>5</option>
+																<option>6</option>
+																<option>7</option>
+																<option>8</option>
+																<option>9</option>
+																<option>10</option>
+																<option>11</option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-sm-2 clearfix Room1Child5" id="c-age"
+													style="display: none;">
+													<div class="form-group">
+														<label for="inputGroupSuccess2">Age 5</label>
+														<div class="input-group StaticAge">
+
+															<select class="form-control" id="room1Age5" name="Age1" required>
+																<option value="less1">< 1</option>
+																<option>1</option>
+																<option>2</option>
+																<option>3</option>
+																<option>4</option>
+																<option>5</option>
+																<option>6</option>
+																<option>7</option>
+																<option>8</option>
+																<option>9</option>
+																<option>10</option>
+																<option>11</option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+
+										</div>
+										<div class="hotel-repeatadd"></div>
+										<div class="clearfix">
+										<button type="button" class="btn btn-info" id="but-up">Done</button>
+											
+										</div>
+									</div>
+								</div>
+								<div class="clearfix hidden-xs">
+									<div class="form-group tayy-button">
+										<div class="input-group">
+										<button type="submit" class="btn btn-info btn-corporateHotel"
+												data-ng-click="submitted== true" value="Search">Modify Search</button>
+										</div>
+									</div>
+								</div>
+								<div class="clearfix col-md-12 col-sm-12 col-xs-12 visible-xs">
+									<div class="form-group tayy-button">
+										<div class="input-group center-block">
+										<button type="submit" class="btn btn-info btn-corporateHotel"
+												data-ng-click="submitted== true" value="Search">Modify Search</button>
+										</div>
+									</div>
+								</div>
+
+							</form>
+
+						</div>
+
+					</div>
+				</div>
+				</div> 
+				</div>
+
+		</div>
+		</div>
+		<!-- hotel-detail page -->
+	</div>
+	</div>
+
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

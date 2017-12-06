@@ -1,0 +1,266 @@
+{
+"origin": "hyderabad",
+"destination": "bangalore",
+"onwardDate": "2017-06-28",
+"returnDate": null,
+"currency": null,
+"status": {
+"code": 1,
+"message": "Success"
+},
+"availableBus": [
+{
+"operatorName": "Travel House Delhi",
+"departureTime": "9:00 PM",
+"arrivalTime": "07:00 AM",
+"mTicketAllowed": false,
+"fare": {
+"apiPrice": 1550,
+"priceWithOutMarkup": 1550,
+"bookingPrice": 1550,
+"discount": 0,
+"payableAmount": 1550,
+"busServiceTax": null
+},
+"serviceId": "18664",
+"idProofRequired": false,
+"commPCT": 7.2,
+"busType": "Hi-Tech Non AC",
+"routeScheduleId": "18664",
+"availableSeats": 41,
+"partialCancellationAllowed": false,
+"cancellationPolicy": "[{\"cutoffTime\":\"1\",\"refundInPercentage\":\"0\"},{\"cutoffTime\":\"2\",\"refundInPercentage\":\"0\"},{\"cutoffTime\":\"4\",\"refundInPercentage\":\"10\"}]",
+"operatorId": 320,
+"boardingPoints": [
+{
+"id": "6",
+"loc": "Ameerpet123,|Jeans Corner",
+"time": "09:00PM"
+},
+{
+"id": "8",
+"loc": "kakki nada,|Jeans Corner",
+"time": "11:00PM"
+}
+],
+"droppingPoints": [],
+"isChildConcession": false,
+"inventoryType": 0,
+"isGetLayoutByBPDP": false,
+"isFareUpdateRequired": false,
+"isRTC": false,
+"isOpTicketTemplateRequired": false,
+"isOpLogoRequired": false
+},
+{
+"operatorName": "Chamunda Travels",
+"departureTime": "10:00 PM",
+"arrivalTime": "08:00 AM",
+"mTicketAllowed": false,
+"fare": {
+"apiPrice": 1000,
+"priceWithOutMarkup": 1000,
+"bookingPrice": 1000,
+"discount": 0,
+"payableAmount": 1000,
+"busServiceTax": null
+},
+"serviceId": "18554",
+"idProofRequired": false,
+"commPCT": 0,
+"busType": "Hi-Tech Non AC",
+"routeScheduleId": "18554",
+"availableSeats": 41,
+"partialCancellationAllowed": false,
+"cancellationPolicy": "[{\"cutoffTime\":\"1\",\"refundInPercentage\":\"10\"},{\"cutoffTime\":\"2\",\"refundInPercentage\":\"50\"},{\"cutoffTime\":\"4\",\"refundInPercentage\":\"90\"}]",
+"operatorId": 290,
+"boardingPoints": [
+{
+"id": "6",
+"loc": "Ameerpet123,|Jeans Corner",
+"time": "10:00PM"
+}
+],
+"droppingPoints": [],
+"isChildConcession": false,
+"inventoryType": 0,
+"isGetLayoutByBPDP": false,
+"isFareUpdateRequired": false,
+"isRTC": false,
+"isOpTicketTemplateRequired": false,
+"isOpLogoRequired": false
+},
+{
+"operatorName": "Chamunda Travels",
+"departureTime": "10:00 PM",
+"arrivalTime": "08:00 AM",
+"mTicketAllowed": false,
+"fare": {
+"apiPrice": 1000,
+"priceWithOutMarkup": 1000,
+"bookingPrice": 1000,
+"discount": 0,
+"payableAmount": 1000,
+"busServiceTax": null
+},
+"serviceId": "18558",
+"idProofRequired": false,
+"commPCT": 0,
+"busType": "SLEEPER CUM SEATER",
+"routeScheduleId": "18558",
+"availableSeats": 31,
+"partialCancellationAllowed": false,
+"cancellationPolicy": "[{\"cutoffTime\":\"1\",\"refundInPercentage\":\"10\"},{\"cutoffTime\":\"2\",\"refundInPercentage\":\"50\"},{\"cutoffTime\":\"4\",\"refundInPercentage\":\"90\"}]",
+"operatorId": 290,
+"boardingPoints": [
+{
+"id": "6",
+"loc": "Ameerpet123,|Jeans Corner",
+"time": "10:00PM"
+}
+],
+"droppingPoints": [],
+"isChildConcession": false,
+"inventoryType": 0,
+"isGetLayoutByBPDP": false,
+"isFareUpdateRequired": false,
+"isRTC": false,
+"isOpTicketTemplateRequired": false,
+"isOpLogoRequired": false
+},
+{
+"operatorName": "Veer Bus",
+"departureTime": "10:00 PM",
+"arrivalTime": "08:00 AM",
+"mTicketAllowed": false,
+"fare": {
+"apiPrice": 1000,
+"priceWithOutMarkup": 1000,
+"bookingPrice": 1000,
+"discount": 0,
+"payableAmount": 1000,
+"busServiceTax": null
+},
+"serviceId": "18573",
+"idProofRequired": false,
+"commPCT": 7.2,
+"busType": "Hi-Tech Non AC",
+"routeScheduleId": "18573",
+"availableSeats": 41,
+"partialCancellationAllowed": false,
+"cancellationPolicy": "[{\"cutoffTime\":\"1\",\"refundInPercentage\":\"10\"},{\"cutoffTime\":\"2\",\"refundInPercentage\":\"50\"},{\"cutoffTime\":\"4\",\"refundInPercentage\":\"90\"}]",
+"operatorId": 301,
+"boardingPoints": [
+{
+"id": "6",
+"loc": "Ameerpet123,|Jeans Corner",
+"time": "10:00PM"
+}
+],
+"droppingPoints": [],
+"isChildConcession": false,
+"inventoryType": 0,
+"isGetLayoutByBPDP": false,
+"isFareUpdateRequired": false,
+"isRTC": false,
+"isOpTicketTemplateRequired": false,
+"isOpLogoRequired": false
+},
+{
+"operatorName": "Veer Bus",
+"departureTime": "10:00 PM",
+"arrivalTime": "08:00 AM",
+"mTicketAllowed": false,
+"fare": {
+"apiPrice": 1000,
+"priceWithOutMarkup": 1000,
+"bookingPrice": 1000,
+"discount": 0,
+"payableAmount": 1000,
+"busServiceTax": null
+},
+"serviceId": "18661",
+"idProofRequired": false,
+"commPCT": 7.2,
+"busType": "2+1 AC Sleeper Cum Seater",
+"routeScheduleId": "18661",
+"availableSeats": 50,
+"partialCancellationAllowed": false,
+"cancellationPolicy": "[{\"cutoffTime\":\"1\",\"refundInPercentage\":\"10\"},{\"cutoffTime\":\"2\",\"refundInPercentage\":\"50\"},{\"cutoffTime\":\"4\",\"refundInPercentage\":\"90\"}]",
+"operatorId": 301,
+"boardingPoints": [
+{
+"id": "6",
+"loc": "Ameerpet123,|Jeans Corner",
+"time": "10:00PM"
+}
+],
+"droppingPoints": [],
+"isChildConcession": false,
+"inventoryType": 0,
+"isGetLayoutByBPDP": false,
+"isFareUpdateRequired": false,
+"isRTC": false,
+"isOpTicketTemplateRequired": false,
+"isOpLogoRequired": false
+},
+{
+"operatorName": "Veer Bus",
+"departureTime": "10:00 PM",
+"arrivalTime": "08:00 AM",
+"mTicketAllowed": false,
+"fare": {
+"apiPrice": 1000,
+"priceWithOutMarkup": 1000,
+"bookingPrice": 1000,
+"discount": 0,
+"payableAmount": 1000,
+"busServiceTax": null
+},
+"serviceId": "18663",
+"idProofRequired": false,
+"commPCT": 7.2,
+"busType": "2+1 AC Sleeper",
+"routeScheduleId": "18663",
+"availableSeats": 15,
+"partialCancellationAllowed": false,
+"cancellationPolicy": "[{\"cutoffTime\":\"1\",\"refundInPercentage\":\"10\"},{\"cutoffTime\":\"2\",\"refundInPercentage\":\"50\"},{\"cutoffTime\":\"4\",\"refundInPercentage\":\"90\"}]",
+"operatorId": 301,
+"boardingPoints": [
+{
+"id": "6",
+"loc": "Ameerpet123,|Jeans Corner",
+"time": "10:00PM"
+}
+],
+"droppingPoints": [],
+"isChildConcession": false,
+"inventoryType": 0,
+"isGetLayoutByBPDP": false,
+"isFareUpdateRequired": false,
+"isRTC": false,
+"isOpTicketTemplateRequired": false,
+"isOpLogoRequired": false
+}
+],
+"busSearchFilters": {
+"boardingPoints": [
+"Ameerpet123,|Jeans Corner"
+],
+"droppingPoints": [],
+"busTypes": [
+"Hi-Tech Non AC",
+"2+1 AC Sleeper",
+"2+1 AC Sleeper Cum Seater",
+"SLEEPER CUM SEATER"
+],
+"busOperators": [
+"Travel House Delhi",
+"Veer Bus",
+"Chamunda Travels"
+],
+"fares": [1000,
+1550
+]
+}
+}

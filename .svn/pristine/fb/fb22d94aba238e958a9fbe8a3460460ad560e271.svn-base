@@ -1,0 +1,13 @@
+.arrow.next,.arrow.prev{opacity:.2;transition:all .2s linear 0s}
+.arrow,.imgnav{display:block;position:absolute;z-index:5}
+#map-canvas{width:872px;height:480px}
+#resultmap-canvas{width:90%;height:315px;margin-bottom:20px; margin-left: 35px;}
+.arrow{cursor:pointer;height:64px;margin-top:-35px;outline:0;top:50%;width:64px}
+.arrow.prev{background-image:url(../images/prev.png);left:20px}
+.arrow.next{background-image:url(../images/next.png);right:20px}
+.arrow.next:hover,.arrow.prev:hover{opacity:1}
+
+.angular-google-map-container {
+        height: 400px;
+}
+map, div[map] {display:block; width:100%; height:100%;}

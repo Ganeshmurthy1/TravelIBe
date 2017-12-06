@@ -1,0 +1,37 @@
+'use strict';
+
+/**
+ * @ngdoc service
+
+ * @description
+ * # commonservice
+
+ */
+
+angular.module('myApp')
+  .factory('commonService', function () {
+    var dataFactory = {};
+
+    /*live Urls*/
+ /*   dataFactory.baseUrl='https://api.tayyarah.com/tayyarahapi/';
+    dataFactory.AdminbaseUrl='https://admin.tayyarah.com/';
+    dataFactory.Ibebaseurl ='https://tayyarah.com/';  */
+    
+    /*dev urls for m-team*/
+      	dataFactory.baseUrl='https://dev.tayyarah.com/devtayyarahapi/';
+    	dataFactory.AdminbaseUrl='https://dev.tayyarah.com/tadmin/';
+    	dataFactory.Ibebaseurl ='https://dev.tayyarah.com/tayyarah/';  
+   
+    /*dev urls for dev-team*/
+     /*	dataFactory.baseUrl='https://dev.tayyarah.com/devtayyarahapidev/';
+    	dataFactory.AdminbaseUrl='https://dev.tayyarah.com/devadmin/';
+    	dataFactory.Ibebaseurl ='https://dev.tayyarah.com/devtayyarah/';*/
+    /*Local host*/
+    /* dataFactory.baseUrl='https://dev.tayyarah.com/devtayyarahapidev/';    
+    dataFactory.AdminbaseUrl='http://localhost:8090/TravelAdmin/';   
+    dataFactory.Ibebaseurl ='http://localhost:8080/tayyarahWhiteLabel/'; */
+   
+    
+
+    return dataFactory;
+  });

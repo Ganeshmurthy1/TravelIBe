@@ -1,0 +1,307 @@
+ <%@taglib prefix="s" uri="/struts-tags"%>
+<%-- <s:if test="#session.isCorporate == true">  
+<div data-ng-include="header" data-ng-controller="CorporateheaderCtrl"></div>
+ </s:if>
+ <s:else>
+ <div data-ng-include="header" data-ng-controller="HeadCtrl"></div> 
+ </s:else> --%>
+ <div class="container">
+ 
+  <s:if test="#session.isLabeling == true">
+		  <s:if test="#session['agent'] != null">			
+			 <s:if test="#session.isCardAcess == true">
+			  <input type="hidden" name="pmode" id="isagent" value="card">
+			 <input type="hidden" name="ay" id="ay"	value="<s:property value="%{#session.agent.Securityanswer}"/>">
+			 </s:if>
+		 </s:if>
+		 <s:elseif test="#session.isCorporate == true">
+		 <input type="hidden" name="pmode" id="isagent" value="cash">
+		 <input type="hidden" name="ay" id="ay"	value="<s:property value="%{#session.agent.Securityanswer}"/>">
+		 </s:elseif>		 
+		 <s:else>
+		 <input type="hidden" name="pmode" id="isagent" value="card">
+		 <input type="hidden" name="ay" id="ay"	value="<s:property value="%{#session.ThemeAppkey}"/>">
+		 </s:else>
+ </s:if>
+ <s:else>
+		 <s:if test="#session['agent'] != null">
+			 
+			 <s:if test="#session.isCardAcess == true">
+			  <input type="hidden" name="pmode" id="isagent" value="card">
+			 <input type="hidden" name="ay" id="ay"	value="<s:property value="%{#session.agent.Securityanswer}"/>">
+			 
+			 </s:if>
+			 <s:else>	 
+			 <input type="hidden" name="pmode" id="isagent" value="cash">
+			 <input type="hidden" name="ay" id="ay"	value="<s:property value="%{#session.agent.Securityanswer}"/>">
+			 </s:else>
+		 </s:if>
+		 <s:elseif test="#session.isCorporate == true">
+		 <input type="hidden" name="pmode" id="isagent" value="cash">
+		 <input type="hidden" name="ay" id="ay"	value="<s:property value="%{#session.agent.Securityanswer}"/>">
+		 </s:elseif>
+		 <s:elseif test="#session['user'] != null">
+		 <input type="hidden" name="pmode" id="isagent" value="card">
+		 <input type="hidden" name="ay" id="ay"	value="zqJ3R9cGpNWgNXG55ub/WQ==">
+		 </s:elseif>
+		 <s:else>
+		 <input type="hidden" name="pmode" id="isagent" value="card">
+		 <input type="hidden" name="ay" id="ay"	value="zqJ3R9cGpNWgNXG55ub/WQ==">
+		 </s:else>
+ </s:else>
+ 
+ <div class=" col-md-12 col-sm-12 col-xs-12 timerzone" >
+ <a>Confirm your seat(s) before time expire!</a>
+ <div id="timerleft"><div id="countdown"></div><a class="blink_me"><i class="tayy tayyarah-timer"></i></a></div>
+ </div>
+ <div class="container borderGrey marginTop15Per busPAdZero themeBackground">
+ 
+<div class="col-md-12 col-sm-12 col-xs-12 padding15px">
+<div class="col-md-4 col-sm-4 col-xs-12 busPAdZero">
+<img src="images/busicons/bus4.png" alt="bus" class="col-md-4 col-sm-4 col-xs-12 pull-left hidden-xs busPAdZero busHeight">
+<span class="col-md-8 col-sm-8 col-xs-12 busPAdZero">
+ <span class="col-md-12 col-sm-12 col-xs-6 font600" data-ng-bind="busOperator"></span>
+  <span class="col-md-12 col-sm-12 col-xs-6" data-ng-bind="busType"></span>
+
+</span>
+
+</div>
+<div class="col-md-2 col-sm-2 col-xs-5 text-center captilazie" data-ng-bind="origin"></div>
+<div class="col-md-1 col-sm-1 col-xs-1 busPAdZero">
+	<div class="text-center"><span><i class="tayyarah-long-arrow-right"></i></span></div>
+	<div class="text-center" data-ng-bind="onwardDate"></div>
+</div>
+<div class="col-md-2 col-sm-2 col-xs-5 text-center captilazie" data-ng-bind="destination"></div>
+
+<!-- <div class="col-md-2 col-sm-2 col-xs-6">Total Travellers</div> -->
+</div>
+<div >
+</div>
+
+</div>
+<div class="container borderGrey padding-0px marginBtm5per">
+<div class="col-md-9 col-sm-9 col-xs-12 bodymin-height themeBackground">
+<div class="col-md-12 col-sm-12 col-xs-12 backgroundCompleteGrey padding-0px borderGrey paddingTopBtm10px">
+<div class="ReservationVocher text-center font600">Boarding/ Dropping Details</div>
+ <div class="col-md-12 col-sm-12 col-xs-12 padding-0px table-responsive mobResponsive">          
+ <div class="col-md-6 col-sm-6 col-xs-12 borderedRight">
+ <div class="col-md-12 col-sm-12 col-xs-12 text-center font600 padding5px">Boarding Point</div>
+  <div class="col-md-9 col-sm-9 col-xs-12 text-center padding5px captilazie" data-ng-bind="boarding"></div>
+  <div class="col-md-3 col-sm-3 col-xs-12 text-center padding5px" data-ng-bind="boardingTime"></div>
+  
+ </div>
+<div class="col-md-6 col-sm-6 col-xs-12 borderedRight">
+ <div class="col-md-12 col-sm-12 col-xs-12 text-center font600 padding5px">Dropping Point</div>
+  <div class="col-md-9 col-sm-9 col-xs-12 text-center padding5px captilazie" data-ng-bind="dropping"></div>
+  <div class="col-md-3 col-sm-3 col-xs-12 text-center padding5px" data-ng-bind="droppingTime"></div>
+  
+ </div>
+</div>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12 backgroundCompleteGrey padding-0px borderGrey paddingTopBtm10px">
+<div class="ReservationVocher text-center font600">Traveller Details</div>
+ <div class="col-md-12 col-sm-12 col-xs-12 padding-0px table-responsive mobResponsive">          
+  <table class="table removeMargin">
+    <thead>
+      <tr>
+        <th>Sl no</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Seat No</th>
+       
+        </tr>
+    </thead>
+    <tbody data-ng-repeat = "passenger in passengerDetails">
+      <tr>
+        <td>{{$index+1}}</td>
+        <td>{{passenger.firstName}}</td>
+         <td>{{passenger.lastName}}</td>        
+        <td>{{passenger.age}}</td>
+        <td>{{passenger.gender}}</td>
+        <td>{{passenger.seatNbr}}</td>
+         
+      </tr>    
+    </tbody>
+  </table>
+</div>
+</div>
+
+</div>
+<div class="col-md-3 col-sm-3 col-xs-12  traveller_info_right bodymin-height ">
+<div class="col-md-12 col-sm-12 col-xs-12 font600 text-center">Fare Details</div>
+<div class="col-md-12 col-sm-12 col-xs-12 passFare">
+<p class="col-md-8 col-sm-8 col-xs-8">Base Price</p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" data-ng-bind="basePrice | number : 2"></p>
+<!--<p class="col-md-8 col-sm-8 col-xs-8">Passengers (1)</p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight">700</p>
+ 
+ -->
+ 
+ <s:if test="#session.isCorporate == true">
+ <div data-ng-show="ServiceTaxes">
+ <p class="col-md-8 col-sm-8 col-xs-8">Base Service Tax </p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" data-ng-bind="baseServicetax"></p>
+ <p class="col-md-8 col-sm-8 col-xs-8">KKC </p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" data-ng-bind="kkc"></p>
+ <p class="col-md-8 col-sm-8 col-xs-8">SBC </p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" data-ng-bind="sbc"></p>
+  <p class="col-md-8 col-sm-8 col-xs-8">Management Fee </p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" data-ng-bind="managementFee"></p>
+ <p class="col-md-8 col-sm-8 col-xs-8">Total Service Tax</p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" data-ng-bind="totalServiceTax"></p>
+  </div>
+  <div data-ng-show="GSTServiceTaxes">
+  <!-- #######GST Price ADDING######### -->
+  <p  class="col-md-8 col-sm-8 col-xs-8">CGST </p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight">{{CGSTTax| number : 2}}</p>
+ <p  class="col-md-8 col-sm-8 col-xs-8">SGST</p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight">{{SGSTTax| number : 2}}</p>
+ <p  class="col-md-8 col-sm-8 col-xs-8">IGST</p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight">{{IGSTTax| number : 2}}</p>
+  <p   class="col-md-8 col-sm-8 col-xs-8">UGST </p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" >{{UGSTTax| number : 2}}</p>
+ <p   class="col-md-8 col-sm-8 col-xs-8">GST</p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" >{{GSTTax| number : 2}}</p>
+ <p  class="col-md-8 col-sm-8 col-xs-8">Management Fee</p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight">{{managementFee| number : 2}}</p>
+  </div>
+  </s:if>
+ <s:else>
+ <p class="col-md-8 col-sm-8 col-xs-8">ServiceTax </p><p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" data-ng-bind="taxes | number : 2"></p>
+ </s:else>
+ <div class="col-md-12 col-sm-12 col-xs-12 padding-0px" id="convienceCharges">
+ <p class="col-md-8 col-sm-8 col-xs-8" >Convenience Fee</p>
+ <p class="col-md-4 col-sm-4 col-xs-4 pull-right textRight" data-ng-bind="convience | number : 2"></p>
+</div>
+<p class="col-md-8 col-sm-8 col-xs-8 f-15B">Total Fare</p><p class="col-md-4 col-sm-4 col-xs-4 pull-right f-15B textRight" data-ng-bind="bookingPrice  | number : 2"></p>
+ <s:if test="#session['agent'] != null">
+ <p class="col-md-8 col-sm-8 col-xs-8 f-15B">Total Payable</p><p class="col-md-4 col-sm-4 col-xs-4 pull-right f-15B textRight"  data-ng-model="TotalPayable" data-ng-bind="TotalPayable  | number : 2"></p>
+ </s:if>
+</div>
+</div>
+</div>
+ <div class="container borderGrey marginTop15Per busPAdZero ">
+<div class="ReservationVocher text-center">CANCELLATION POLICY </div>
+<div class="col-md-12 paddingTopBtm10px padding-0px table-responsive  text-center mobResponsive">
+       
+  <table class="table removeMargin cancelTable">
+    <thead>
+      <tr >
+        <th>Cut Off Time(Hours)</th>
+        <th>Percentage</th>       
+        </tr>
+    </thead>
+    <tbody data-ng-repeat="cancelation in cancel">
+      <tr>
+        <td>{{cancelation.cutoffTime}}</td>
+        <td>{{cancelation.refundInPercentage}} %</td>
+             
+      </tr>
+      
+  
+
+    </tbody>
+  </table>
+
+
+</div>
+</div>
+<%--  <s:if test="#session.isLabeling == true">
+ <s:if test="#session.isCardAcess == true">
+ <div > 
+	 <div class="container borderGrey marginTop15Per busPAdZero ">
+<div class="ReservationVocher text-center">Payment Option</div>
+<div class="col-md-12 col-sm-12 col-xs-12 paddingTopBtm10px">
+<div id="radioDiv" class="col-md-6 col-sm-6 col-xs-6">
+<span> <input type="radio" id="Cardoption" name="paytype"  ng-model="CCharges" value="Card" ng-change="addCharges(CCharges)"> Card
+</span>
+<label id="payoptiontext" class="cardText">(Card charges will be applicable)</label>
+</div>
+<div class="col-md-6 col-sm-6 col-xs-6">	
+		<button id="CardButton" type="submit" data-ng-click="AgentBusCardBook()" style=" font-size: 14px;"
+			class="btn btn-primary but book-btn pull-right" data-ng-disabled="ImageLoader">
+			pay & confirm <i class="fa fa-arrow-circle-right"></i><span data-ng-show="ImageLoader" ><img class="flightimageLoader" src="images/loginLoader.gif"></span>
+		</button>
+</div>
+</div>
+</div>
+</div>
+ </s:if>
+ </s:if>
+  <s:if test="#session.isLabeling != true"> --%>
+<s:if test="#session['agent'] != null">
+ <div class="container borderGrey marginTop15Per busPAdZero ">
+<div class="ReservationVocher text-center">Payment Option</div>
+<div class="col-md-12 col-sm-12 col-xs-12 paddingTopBtm10px">
+
+<div class="col-md-4 col-sm-4 col-xs-4">
+ <span class="radWallet"> <input type="radio" id="Walletoption" name="paytype" checked="checked"
+											value="Wallet" ng-model="CCharges" ng-change="addCharges(CCharges)"> Wallet
+										</span>
+</div>
+<div class="col-md-4 col-sm-4 col-xs-4">
+<span> <input type="radio" id="Cardoption" name="paytype"  ng-model="CCharges" value="Card" ng-change="addCharges(CCharges)"> Card
+</span>
+<label id="payoptiontext" class="cardText">(Card charges will be applicable)</label>
+</div>
+<div class="col-md-4 col-sm-4 col-xs-4">
+		<button id="WalletButton" type="submit" data-ng-click="AgentBusWalletBook()" style=" font-size: 14px;"
+				class="btn btn-primary but book-btn pull-right" data-ng-disabled="ImageLoader">
+					pay & confirm <i class="fa fa-arrow-circle-right"></i><span data-ng-show="ImageLoader" ><img class="flightimageLoader" src="images/loginLoader.gif"></span>
+		</button>
+		<button id="CardButton" type="submit" data-ng-click="AgentBusCardBook()" style=" font-size: 14px;"
+			class="btn btn-primary but book-btn pull-right" data-ng-disabled="ImageLoader">
+			pay & confirm <i class="fa fa-arrow-circle-right"></i><span data-ng-show="ImageLoader" ><img class="flightimageLoader" src="images/loginLoader.gif"></span>
+		</button>
+</div>
+</div>
+</div>
+</s:if>
+<s:elseif test="#session.isCorporate == true">
+    <div class="col-md-4 col-sm-4 col-xs-4 ">				
+							<button id="WalletButton" type="submit" data-ng-click="FlightSummary.$valid && corporateFlightBook()"
+								class="btn btn-primary but book-btn pull-right" data-ng-disabled="ImageLoader" style=" font-size: 14px;"> 
+								pay & confirm <i class="fa fa-arrow-circle-right"></i><span data-ng-show="ImageLoader" ><img class="flightimageLoader" src="images/loginLoader.gif"></span>
+							</button>
+							
+							<button id="CardButton" type="submit" data-ng-click="FlightSummary.$valid && AgentFlightCardBook()"
+								class="btn btn-primary but book-btn pull-right" data-ng-disabled="ImageLoader" style=" font-size: 14px;">
+								pay & confirm <i class="fa fa-arrow-circle-right"></i><span data-ng-show="ImageLoader" ><img class="flightimageLoader" src="images/loginLoader.gif"></span>
+							</button>
+	</div>
+							
+</s:elseif>
+<s:else>
+<div class="col-md-12 col-sm-12 col-xs-12 pull-right margin-btm10px">
+<button class="pull-right btn btn-primary but book-btn pull-right" style=" font-size: 14px;" data-ng-click="busUserCardBook()">pay & confirm</button>
+</div>
+</s:else>
+<%-- </s:if> --%>
+<form method="post" action="https://www.tayyarah.com/pay.jsp"
+		name="frmTransaction" id="frmTransaction">
+		<!-- <form  method="post" action="https://www.tayyarah.com/pay"   name="frmTransaction" id="frmTransaction" > -->
+		<input type="hidden" name="V3URL" value="https://secure.ebs.in/pg/ma/payment/request" />
+		<input	name="channel" type="hidden" value="10" />
+		<input name="account_id" type="hidden" value="19570" />
+		<input name="reference_no" type="hidden" id="reference_no" value="" />
+		<input name="amount" type="hidden" id="totalamt" value="" />
+		<input name="mode" type="hidden" value="LIVE" />
+		<input name="currency" type="hidden" value="INR" />
+		<input name="description" type="hidden" value="Bus Ticket" /> 
+		<input name="return_url" type="hidden" value="https://www.tayyarah.com/response.jsp" />
+		<input name="name" type="hidden" id="customername" value="" />
+		<input name="address" type="hidden" value="bangalore" />
+		<input name="city" type="hidden" value="bangalore" />
+		<input name="state" type="hidden" value="karanataka" />
+		<input name="country" type="hidden"	value="IND" />
+		<input name="postal_code" type="hidden"	value="560046" />
+		<input name="phone" type="hidden" id="customerno" value="08042855555" />
+		<input name="email" type="hidden" id="customeremail" value="care@tayyarah.com" />
+		<input name="ship_name" type="hidden" id="ship_name" value="" />
+		<input name="ship_address" type="hidden" value="bangalore" />
+		<input name="ship_country" type="hidden" value="IND" /> 
+		<input name="ship_state" type="hidden" value="karanataka" />
+		<input name="ship_city" type="hidden" value="bangalore" />
+		<input name="ship_postal_code" type="hidden" value="560046" /> 
+		<input name="ship_phone" type="hidden"  id="ship_phone" value="" />
+		<input name="algo" type="hidden" value="MD5" />
+
+		<!-- <input value="Submit" type="submit" />  -->
+	</form>
+
+ </div>
+<s:if test="#session.isCorporate == true">  
+<div data-ng-include="Corporatefooter" data-ng-controller="CorporateFooterCtrl"></div> 
+</s:if>
+<s:else>
+<div data-ng-include="footer" data-ng-controller="FootCtrl"></div>
+</s:else>

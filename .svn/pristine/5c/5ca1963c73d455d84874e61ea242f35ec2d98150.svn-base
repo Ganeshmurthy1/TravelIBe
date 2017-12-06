@@ -1,0 +1,201 @@
+var app = angular.module('myApp');
+app.controller('BookingHistoryCtrl',function($scope,transporter,$location,$rootScope,$http,$route) {
+	$scope.init = function(){	
+		$scope.flighthistory();
+		$scope.loading=true;
+		$scope.isdefaultHistory=true;		
+	}
+	
+	$scope.flighthistory = function(){
+		transporter.getflighthistory().then(function(response){
+			$scope.loading=false;			
+			$scope.flightbookinglists=response.data.historylist;			
+			    $scope.dateOptions = {		
+			    dateFormat: 'dd-mm-yy',
+			    numberOfMonths: 2,
+			    maxDate: 0
+			    };
+			
+		},function(){
+			$scope.loading=false;
+		});
+	}
+	$scope.defaultpage= function(){
+		$scope.isdefaultHistory=true;
+		//$route.reload();
+	}
+	$scope.returnIndex = function(){
+		window.location.href = window.location.href.replace(/#.*$/, '');
+	}
+
+	$scope.Bookingsearch= function(){
+		
+		var fromDate=$("#booktwodpd1 > div > input:text.hasDatepicker").val();
+		var toDate=$("#booktwodpd2 > div > input:text.hasDatepicker").val();
+		var newfromdate = fromDate.split("-").reverse().join("-");
+		var newtodate = toDate.split("-").reverse().join("-");
+		var fromTime = new Date(newfromdate).getTime();
+		var toTime = new Date(newtodate).getTime();
+		
+		if (fromTime > toTime) {
+			$("#errorione").text("Please Select After From Date");
+			$('#errorione').stop().fadeIn(400).delay(1500).fadeOut(400);		   
+		}else{
+		$scope.isdefaultHistory=false;
+		$scope.flightbookingDatelists = [];
+		var row, date;
+
+		angular.forEach($scope.flightbookinglists, function( value) {  
+		  row = value.bookingDate;
+		  date = new Date(row);
+
+		  if (date.getTime() >= fromTime && date.getTime() <= toTime) {
+			  $scope.flightbookingDatelists.push(value);
+		  }
+		})
+		}       
+	}
+ 	$scope.init();
+});
+
+app.directive('customDatepicker',function($compile){
+    return {
+        replace:true,
+        templateUrl:'custom-datepicker.html',
+        scope: {
+            ngModel: '=',
+            dateOptions: '='
+        },
+        link: function($scope, $element, $attrs, $controller){
+            var $button = $element.find('button');
+            var $input = $element.find('input');
+            $button.on('click',function(){
+                if($input.is(':focus')){
+                    $input.trigger('blur');
+                } else {
+                    $input.trigger('focus');
+                }
+            });
+        }    
+    };
+})
+
+
+
+/*
+IE8 make sure you have a polyfill for Date.toISOString()
+Options to pass to $.fn.datepicker() merged onto uiDateConfig
+*/
+
+angular.module('ui.date', [])
+
+.constant('uiDateConfig', {})
+
+.directive('uiDate', ['uiDateConfig', '$timeout', function (uiDateConfig, $timeout) {
+'use strict';
+var options;
+options = {};
+angular.extend(options, uiDateConfig);
+return {
+require:'?ngModel',
+link:function (scope, element, attrs, controller) {
+  var getOptions = function () {
+    return angular.extend({}, uiDateConfig, scope.$eval(attrs.uiDate));
+  };
+  var initDateWidget = function () {
+    var showing = false;
+    var opts = getOptions();
+
+    if (controller) {
+
+      // Set the view value in a $apply block when users selects
+      // (calling directive user's function too if provided)
+      var _onSelect = opts.onSelect || angular.noop;
+      opts.onSelect = function (value, picker) {
+        scope.$apply(function() {
+          showing = true;
+          controller.$setViewValue(element.datepicker("getDate"));
+          _onSelect(value, picker);
+          element.blur();
+        });
+      };
+      opts.beforeShow = function() {
+        showing = true;
+      };
+      opts.onClose = function(value, picker) {
+        showing = false;
+      };
+      element.on('blur', function() {
+        if ( !showing ) {
+          scope.$apply(function() {
+            element.datepicker("setDate", element.datepicker("getDate"));
+            controller.$setViewValue(element.datepicker("getDate"));
+          });
+        }
+      });
+
+      // Update the date picker when the model changes
+      controller.$render = function () {
+        var date = controller.$viewValue;
+        if ( angular.isDefined(date) && date !== null && !angular.isDate(date) ) {
+          throw new Error('ng-Model value must be a Date object - currently it is a ' + typeof date + ' - use ui-date-format to convert it from a string');
+        }
+        element.datepicker("setDate", date);
+      };
+    }
+    // If we don't destroy the old one it doesn't update properly when the config changes
+    element.datepicker('destroy');
+    // Create the new datepicker widget
+    element.datepicker(opts);
+    if ( controller ) {
+      // Force a render to override whatever is in the input text box
+      controller.$render();
+    }
+  };
+  // Watch for changes to the directives options
+  scope.$watch(getOptions, initDateWidget, true);
+}
+};
+}
+])
+
+.constant('uiDateFormatConfig', '')
+
+.directive('uiDateFormat', ['uiDateFormatConfig', function(uiDateFormatConfig) {
+var directive = {
+require:'ngModel',
+link: function(scope, element, attrs, modelCtrl) {
+  var dateFormat = attrs.uiDateFormat || uiDateFormatConfig;
+  if ( dateFormat ) {
+    // Use the datepicker with the attribute value as the dateFormat string to convert to and from a string
+    modelCtrl.$formatters.push(function(value) {
+      if (angular.isString(value) ) {
+        return jQuery.datepicker.parseDate(dateFormat, value);
+      }
+      return null;
+    });
+    modelCtrl.$parsers.push(function(value){
+      if (value) {
+        return jQuery.datepicker.formatDate(dateFormat, value);
+      }
+      return null;
+    });
+  } else {
+    // Default to ISO formatting
+    modelCtrl.$formatters.push(function(value) {
+      if (angular.isString(value) ) {
+        return new Date(value);
+      }
+      return null;
+    });
+    modelCtrl.$parsers.push(function(value){
+      if (value) {
+        return value.toISOString();
+      }
+      return null;
+    });
+  }
+}
+};
+return directive;
+}]);

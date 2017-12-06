@@ -1,0 +1,324 @@
+<%@taglib prefix="s" uri="/struts-tags"%>
+<s:if test="hasActionErrors()">
+
+	<div class="login-pop-up clearfix" id="error-alert"
+		style="display: block;">
+		<div class="login-pop-continer">
+			<div class="login-pop-header col-sm-12 clearfix">
+
+				<div class="col-xs-6">
+					<p class="h4">Error</p>
+				</div>
+				<div class="col-xs-6">
+					<p class="pull-right">
+						<a href="#" class="b-cl"><i class="fa fa-times"></i></a>
+					</p>
+				</div>
+
+			</div>
+			<div class="login-pop-content">
+				<p class="clearfix">
+					<s:actionerror />
+				</p>
+				<div class=" clearfix">
+					<button type="button" class="btn btn-primary b-ok pull-right">ok
+					</button>
+				</div>
+			</div>
+			<div class="login-pop-footer cleqarfix"></div>
+		</div>
+	</div>
+
+</s:if>
+<s:if test="hasActionMessages()">
+
+	<div class="login-pop-up clearfix" id="success-alert">
+		<div class="login-pop-continer">
+			<div class="login-pop-header col-sm-12 clearfix">
+
+				<div class="col-xs-6">
+					<p class="h4">Success</p>
+				</div>
+				<div class="col-xs-6">
+					<p class="pull-right">
+						<a href="#" class="b-cl"><i class="fa fa-times"></i></a>
+					</p>
+				</div>
+
+			</div>
+			<div class="login-pop-content">
+				<p>
+					<s:actionmessage />
+				</p>
+				<div class=" clearfix">
+					<button type="button" class="btn btn-primary b-ok pull-right">ok
+					</button>
+				</div>
+			</div>
+			<div class="login-pop-footer cleqarfix"></div>
+		</div>
+	</div>
+</s:if>
+
+<article class="container">
+
+
+	<div class="user-signup">
+		<h3>
+			<span>My Account</span>
+		</h3>
+
+		<s:if test="#session.isCorporate == true">
+
+			<form class="form-horizontal" id="Userupdate">
+
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">First
+						Name</label>
+					<div class="col-sm-10">
+						<input type="Text" class="form-control" id="fname"
+							name="FirstName"
+							value="<s:property value="%{#session.agent.Firstname}"/>"
+							placeholder="First Name">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Last
+						Name</label>
+					<div class="col-sm-10">
+						<input type="Text" class="form-control" id="lname" name="LastName"
+							value="<s:property value="%{#session.agent.Lastname}"/>"
+							placeholder="Last Name">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="pass"
+							name="Password" maxlength="6"
+							value="<s:property value="%{#session.agent.Password}"/>"
+							placeholder="Password">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+					<div class="col-sm-10">
+						<input type="email" class="form-control"
+							value="<s:property value="%{#session.agent.Email}"/>"
+							placeholder="Email" disabled>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Mobile</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="mob" name="Mobile"
+							maxlength="10" onkeypress="return isNumberKey(event,this)"
+							value="<s:property value="%{#session.agent.Mobile}"/>"
+							placeholder="Mobile">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Phone</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="ph" name="phone"
+							placeholder="Phone" required maxlength="15"
+							onkeypress="return isNumberKey(event,this)"
+							value="<s:property value="%{#session.agent.Phone}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Address</label>
+					<div class="col-sm-10">
+						<textarea class="form-control" id="address" name="streetAddress"
+							placeholder="Address" required
+							value="<s:property value="%{#session.agent.Address}"/>"
+							autocomplete="off"><s:property
+								value="%{#session.agent.Address}" /></textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">City</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="city" name="city"
+							placeholder="City" required
+							value="<s:property value="%{#session.agent.city}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Country</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="country" name="country"
+							placeholder="Country" required
+							value="<s:property value="%{#session.agent.Countryname}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Description</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="Description"
+							name="Description" placeholder="Description" required
+							value="<s:property value="%{#session.agent.Description}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button id="corporateprofileupdate" type="submit"
+							class="btn btn-primary sign">Update</button>
+					</div>
+				</div>
+				<input type="hidden" name="Email" id="mail"
+					value="<s:property value="%{#session.agent.Email}"/>"> <input
+					type="hidden" name="createdDate"
+					value="<s:property value="%{#session.agent.createdDate}"/>">
+				<input type="hidden" name="Userid"
+					value="<s:property value="%{#session.agent.Userid}"/>">
+
+			</form>
+		</s:if>
+		<s:else>
+			<form class="form-horizontal" id="Userupdate">
+
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">First
+						Name</label>
+					<div class="col-sm-10">
+						<input type="Text" class="form-control" id="fname"
+							name="FirstName"
+							value="<s:property value="%{#session.user.FirstName}"/>"
+							placeholder="First Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Last
+						Name</label>
+					<div class="col-sm-10">
+						<input type="Text" class="form-control" id="lname" name="LastName"
+							value="<s:property value="%{#session.user.LastName}"/>"
+							placeholder="Last Name" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="pass"
+							name="Password" maxlength="6"
+							value="<s:property value="%{#session.user.Password}"/>"
+							placeholder="Password" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+					<div class="col-sm-10">
+						<input type="email" class="form-control"
+							value="<s:property value="%{#session.user.Email}"/>"
+							placeholder="Email" disabled>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Mobile</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="mob" name="Mobile"
+							pattern="[0-9]{10}" maxlength="10"
+							onkeypress="return isNumberKey(event,this)"
+							value="<s:property value="%{#session.user.Mobile}"/>"
+							placeholder="Mobile" required>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Phone</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="ph" name="phone"
+							placeholder="Phone" required pattern="[0-9]{15}" maxlength="15"
+							onkeypress="return isNumberKey(event,this)"
+							value="<s:property value="%{#session.user.phone}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Address</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="address"
+							name="streetAddress" placeholder="Address" required
+							value="<s:property value="%{#session.user.streetAddress}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">City</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="city" name="city"
+							placeholder="City" required
+							value="<s:property value="%{#session.user.city}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">State</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="state" name="state"
+							placeholder="State" required
+							value="<s:property value="%{#session.user.state}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">Country</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="country" name="country"
+							placeholder="Country" required
+							value="<s:property value="%{#session.user.country}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputEmail3" class="col-sm-2 control-label">ZipCode</label>
+					<div class="col-sm-10">
+						<input type="tel" class="form-control" id="zipcode" name="zipCode"
+							placeholder="ZipCode" required
+							value="<s:property value="%{#session.user.zipCode}"/>"
+							autocomplete="off">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button id="profileupdate" type="submit"
+							class="btn btn-primary sign">Update</button>
+					</div>
+				</div>
+				<input type="hidden" name="Email" id="mail"
+					value="<s:property value="%{#session.user.Email}"/>"> <input
+					type="hidden" name="createdDate"
+					value="<s:property value="%{#session.user.createdDate}"/>">
+				<input type="hidden" name="Userid"
+					value="<s:property value="%{#session.user.Userid}"/>">
+
+			</form>
+		</s:else>
+
+	</div>
+
+
+</article>
+<div class="modal fade " id="updatestatus" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body form-module " style="margin-top: 15px;">
+				<div class="text-center lioghead" id="updatemessage"></div>
+
+
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<script src="js/tayyarahcommon.js"></script>

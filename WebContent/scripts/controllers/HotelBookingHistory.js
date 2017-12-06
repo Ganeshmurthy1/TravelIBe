@@ -1,0 +1,59 @@
+var app = angular.module('myApp');
+app.controller('HotelBookingHistoryCtrl',function($scope,transporter,$interval,$location,flightServices,$filter,$modal,$log,commonService,$rootScope,$http,$route) {
+
+	$scope.init = function(){
+		$scope.loading=true;
+		$scope.hotelhistory();
+		$scope.isdefaultHistory=true;
+	}
+
+	$scope.hotelhistory = function(){
+		transporter.gethotelhistory().then(function(response){
+			$scope.loading=false;
+			$scope.dateOptions = {		
+					dateFormat: 'dd-mm-yy',
+					numberOfMonths: 2,
+					maxDate: 0
+			};
+			$scope.hotelbookinglists=response.data.hotelhistorylist;
+		},function(){
+			$scope.loading=false;
+		});
+	}
+
+	$scope.defaultpage= function(){
+		$scope.isdefaultHistory=true;
+	}
+
+	$scope.returnIndex = function(){
+		window.location.href = window.location.href.replace(/#.*$/, '');
+	}
+
+	$scope.Bookingsearch= function(){
+		var fromDate=$("#booktwodpd1 > div > input:text.hasDatepicker").val();
+		var toDate=$("#booktwodpd2 > div > input:text.hasDatepicker").val();
+		var date = "03-11-2014";
+		var newfromdate = fromDate.split("-").reverse().join("-");
+		var newtodate = toDate.split("-").reverse().join("-");
+		var fromTime = new Date(newfromdate).getTime();
+		var toTime = new Date(newtodate).getTime();
+		if (fromTime > toTime) {
+			$("#errorione").text("Please Select After From Date");
+			$('#errorione').stop().fadeIn(400).delay(1500).fadeOut(400);		   
+		}else{
+			$scope.isdefaultHistory=false;
+			$scope.hotelbookingDatelists = [];
+			var row, date;
+			angular.forEach($scope.hotelbookinglists, function( value) {  
+				row = value.createdDate;
+				date = new Date(row);
+
+				if (date.getTime() >= fromTime && date.getTime() <= toTime) {
+					$scope.hotelbookingDatelists.push(value);
+				}
+			})
+		}	
+	}
+
+	$scope.init();
+});

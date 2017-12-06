@@ -1,0 +1,39 @@
+{
+    "rmDataListDetails": {
+        "id": "10",
+        "empCode": null,
+        "department": null,
+        "costCenter": null,
+        "approverName": null,
+        "location": null,
+        "trNumber": null,
+        "bussinessUnit": "sdfsdf",
+        "projectCode": null,
+        "reasonForTravel": null,
+        "billNonBill": null,
+        "manualFields": [
+            {
+                "manualField": "Country",
+                "type": "text"
+            },
+            {
+                "manualField": "Visa Type",
+                "type": "text"
+            },
+            {
+                "manualField": "Sub Task",
+                "type": "text"
+            },
+            {
+                "manualField": "Dynamic",
+                "type": "text"
+            },
+            {
+                "manualField": "master",
+                "type": "text"
+            }
+        ]
+    },
+    "message": "Success",
+    "rmDetailsSet": true
+}

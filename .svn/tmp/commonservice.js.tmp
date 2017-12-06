@@ -1,0 +1,56 @@
+'use strict';
+
+/**
+ * @ngdoc service
+
+ * @description
+ * # commonservice
+
+ */
+
+angular.module('myApp')
+  .factory('commonService', function () {
+    var dataFactory = {};
+
+    /*live Urls*/
+ /*   dataFactory.baseUrl='https://api.tayyarah.com/tayyarahapi/';
+    dataFactory.AdminbaseUrl='https://admin.tayyarah.com/';
+    dataFactory.Ibebaseurl ='https://tayyarah.com/';  */
+    
+    /*dev urls for m-team*/
+<<<<<<< .mine
+      /*	dataFactory.baseUrl='https://dev.tayyarah.com/devtayyarahapi/';
+||||||| .r11509
+=======
+     	/*dataFactory.baseUrl='https://dev.tayyarah.com/devtayyarahapi/';
+>>>>>>> .r11565
+    	dataFactory.AdminbaseUrl='https://dev.tayyarah.com/tadmin/';
+<<<<<<< .mine
+    	dataFactory.Ibebaseurl ='https://dev.tayyarah.com/tayyarah/';  */
+||||||| .r11509
+=======
+    	dataFactory.Ibebaseurl ='https://dev.tayyarah.com/tayyarah/'; */ 
+>>>>>>> .r11565
+   
+    /*dev urls for dev-team*/
+<<<<<<< .mine
+     	dataFactory.baseUrl='https://dev.tayyarah.com/devtayyarahapidev/';
+||||||| .r11509
+=======
+     	/*dataFactory.baseUrl='https://dev.tayyarah.com/devtayyarahapidev/';
+>>>>>>> .r11565
+    	dataFactory.AdminbaseUrl='https://dev.tayyarah.com/devadmin/';
+    	dataFactory.Ibebaseurl ='https://dev.tayyarah.com/devtayyarah/';
+    /*Local host*/
+    /* dataFactory.baseUrl='https://dev.tayyarah.com/devtayyarahapidev/';    
+    dataFactory.AdminbaseUrl='http://localhost:8090/TravelAdmin/';   
+    dataFactory.Ibebaseurl ='http://localhost:8080/tayyarahWhiteLabel/'; */
+    	dataFactory.baseUrl='http://localhost:8060/TayyarahAPI/';    
+        dataFactory.AdminbaseUrl='http://localhost:8080/TravelAdmin/';   
+        dataFactory.Ibebaseurl ='http://localhost:8070/tayyarahWhiteLabel/';
+       
+   
+    
+
+    return dataFactory;
+  });

@@ -1,0 +1,83 @@
+package com.intelli.util;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.Locale;
+
+import org.slf4j.Logger;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intelli.listener.IBEStartListener;
+import com.lintas.admin.SearchAction;
+
+public class FileUtil  {
+
+	public static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(FileUtil.class);
+	
+	public static String getWebDir() {
+
+		// String dirName = CommonConfig.GetCommonConfig().getLog_location_windows();
+		/*  String OS = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+	  if ((OS.indexOf("mac") >= 0) || (OS.indexOf("darwin") >= 0)) {
+	   dirName = CommonConfig.GetCommonConfig().getLog_location_linux();
+	  } else if (OS.indexOf("win") >= 0) {
+	   dirName = CommonConfig.GetCommonConfig().getLog_location_windows();
+	  } else if (OS.indexOf("nux") >= 0) {
+	   dirName = CommonConfig.GetCommonConfig().getLog_location_linux();
+	  } else {
+	   dirName = CommonConfig.GetCommonConfig().getLog_location_windows();
+	  }
+
+	  if(CommonConfig.GetCommonConfig().isIs_tayyarah_enabled())
+	   dirName = dirName+ File.separator + "tayyarah";
+	  else if(CommonConfig.GetCommonConfig().isIs_lintas_enabled())
+	   dirName = dirName+ File.separator + "lintas";*/
+		String dirLoc = ""+File.separator+"prabha-work"+File.separator+".metadata"+File.separator+".plugins"+File.separator+"org.eclipse.wst.server.core"+File.separator+"tmp0"+File.separator+"wtpwebapps"+File.separator+"tayyarah";
+		//String dirLoc = ""+File.separator+"prabha-work"+File.separator+"tayyarah"+File.separator+"WebContent";
+		
+		//"D:\prabha-work\tayyarah\WebContent"
+		return dirLoc;
+
+	}	 
+	public static boolean writeJson(Object message, String filenameWithExt)
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		FileOutputStream fOut; 
+		//String filename = CommonConfig.GetCommonConfig().getLog_location()+apiType+"-"+apiname+"-"+transId+"-"+actionname+(isresponse?"-response":"-request")+".json";
+		/*File optDir = new File(getWebDir());
+		if (!optDir.exists()) {
+			optDir.mkdirs();
+		}*/
+		//String filename = optDir.getAbsolutePath() + File.separator+filenameWithExt;
+
+		String filename = IBEStartListener.pathWebContent +File.separator+filenameWithExt;
+		
+		try { 
+			mapper.writerWithDefaultPrettyPrinter().writeValue(new File(filename), message);
+			logger.info("city json is created at..."+filename);
+			return true;
+		}
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			logger.info("Log creation at---"+filename+"....FileNotFoundException."+e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+		catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			logger.info("Log creation at---"+filename+"....NullPointerException."+e.getMessage());
+
+			e.printStackTrace();
+			return false;
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.info("Log creation at---"+filename+"....Exception."+e.getMessage());
+
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+}

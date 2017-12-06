@@ -1,0 +1,130 @@
+var app = angular.module('myApp');
+app.controller('busCtrl',['$scope','$http','limitToFilter','commonService','$location','localStorageService','hotelServices', function($scope,$http,limitToFilter,commonService,$location,localStorageService,hotelServices) {
+	$scope.init = function(){
+		localStorageService.remove('seatblockData');
+		localStorageService.remove('BusSearchData');
+	}
+	$scope.FlightMenu = function(){ 	$location.path('/');        }
+	$scope.HotelMenu = function(){		$location.path('/hotel');	}
+	$scope.BusMenu = function(){		$location.path('/bus');  	}
+	$scope.CarMenu = function(){		$location.path('/cars');	}
+	var apiUrl = commonService.baseUrl;
+		
+	$http.get('getStations.json').then(function(response){
+		stationdata=response.data.stationList;
+		stationlist = [];
+		stationmap = [];
+		angular.forEach(stationdata, function( value, i) {  
+			stationlist.push(value.stationName); 
+			stationmap[value.stationName] = value.stationId;
+		});
+		$("#fromstation").autocomplete({
+			source: function( request, response ) {
+				var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "gi" );
+				response( $.grep( stationlist, function( item ){				
+					var itemavailavle = item;					
+					return matcher.test( item );
+				}).slice(0, 15) );
+			},
+			select: function (event, ui) {				
+				var label = ui.item.label;
+				var value = ui.item.value;					
+				var stationcode = stationmap[ui.item.value];
+				$('#fromstationcode').val(stationcode);
+				$('#tostation').focus();
+			}
+		}); 
+		
+		$("#tostation").autocomplete({
+		
+			source: function( request, response ) {
+				var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "gi" );
+				response( $.grep( stationlist, function( item ){				
+					var itemavailavle = item;					
+					return matcher.test( item );
+				}).slice(0, 15) );
+			},
+			select: function (event, ui) {				
+				var label = ui.item.label;
+				var value = ui.item.value;					
+				var stationcode = stationmap[ui.item.value];
+				$('#depDate').focus();
+				$('#tostationcode').val(stationcode);
+			}
+		}); 
+	},function(errorStatus){
+		hotelServices.searchCity("").then(function(res){
+			citylist = [];
+			citymap = [];
+			angular.forEach(res.data.areas, function( val, i) {  
+				citylist.push(val.name); 
+				citymap[val.name] = val.id;
+			});
+			$("#hotelcity").autocomplete({
+				source: function( request, response ) {
+					var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "gi" );
+					response( $.grep( citylist, function( item ){				
+						var itemavailavle = item;					
+						return matcher.test( item );
+					}).slice(0, 15) );
+				},
+				select: function (event, ui) {				
+					var label = ui.item.label;
+					var value = ui.item.value;					
+					var citycode = citymap[ui.item.value];
+					$('#datain').focus();
+					$('#citycode').val(citycode);
+				}
+			});  		
+		
+		})
+	});
+	
+
+$scope.bussearch = function(){	
+	    var fromstation = angular.element('#fromstation').val();
+		var fromstationcode = angular.element('#fromstationcode').val();
+		var tostation = angular.element('#tostation').val();
+		var tostationcode = angular.element('#tostationcode').val();
+		var startDate = angular.element('#depDate').val();		
+		var EndDate = angular.element('#arDate').val();
+		var agentapp_key = angular.element('#ay').val();
+		if(agentapp_key ==undefined ||agentapp_key== null)
+			var app_key = angular.element('#oky').val();
+		else
+			var app_key=agentapp_key;
+		if (fromstationcode == "") {
+			$("#errori").text("Please Enter the Depature station Name");
+			$('#errori').stop().fadeIn(400).delay(1500).fadeOut(400);	   
+		}
+		else if (tostationcode == "") {
+			$("#errori").text("Please Enter the Arrival station Name");
+			$('#errori').stop().fadeIn(400).delay(1500).fadeOut(400);	   
+		}
+		else if (fromstation == "") {			
+			$("#errori").text("Please Enter the Depature station Name");
+			$('#errori').stop().fadeIn(400).delay(1500).fadeOut(400);
+		}
+		else if (tostation == "") {			
+			$("#errori").text("Please Enter the Arrival station Name");
+			$('#errori').stop().fadeIn(400).delay(1500).fadeOut(400);
+		}
+		else if (startDate == "") {			
+			$("#errdep").text("Select the Depature date");
+			$('#errdep').stop().fadeIn(400).delay(1500).fadeOut(400);
+		} 
+		else if (agentapp_key=="") {			
+			$("#errconfig").text("User not Configured");
+			$('#errconfig').stop().fadeIn(400).delay(1500).fadeOut(400);
+		}
+		else{
+			$scope.ThemeType = angular.element('#themeType').val();
+			var currency = angular.element('#onecurrencyname').val();	
+			var BusSearchData = 'fromcity='+encodeURIComponent(fromstation)+'&fromcitycode='+encodeURIComponent(fromstationcode)+'&tocity='+encodeURIComponent(tostation)+'&tocitycode='+encodeURIComponent(tostationcode)+'&datain='+encodeURIComponent(startDate)+'&dateout='+encodeURIComponent(EndDate)+'&ay='+encodeURIComponent(app_key)+'&currency='+currency+'&thm='+$scope.ThemeType;
+			$location.path('/busList-'+$scope.ThemeType).search(BusSearchData);
+			localStorageService.set('BusSearchData',BusSearchData);
+		}
+	};
+	 
+	$scope.init();
+}]);

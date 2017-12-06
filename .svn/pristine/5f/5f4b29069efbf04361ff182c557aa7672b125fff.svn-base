@@ -1,0 +1,150 @@
+ <%@taglib prefix="s" uri="/struts-tags"%>
+<%-- <s:if test="#session.isCorporate == true">  
+<div data-ng-include="header" data-ng-controller="CorporateheaderCtrl"></div>
+ </s:if>
+ <s:else>
+ <div data-ng-include="header" data-ng-controller="HeadCtrl"></div> 
+ </s:else> --%>
+<div class="container">
+<div class="col-md-12 col-sm-12 col-xs-12 borderGrey busVchMarginTop">
+	<div class="col-md-12 col-sm-12 col-xs-12 borderGrey vocherPadding">
+	<div class="col-md-12 col-sm-12 col-xs-12 padLRZero">
+		<div class="col-md-6 col-sm-6 col-xs-5">
+		<img src="images/t-n.png" class="img-responsive" alt="tayyarah">
+		</div>
+		<div class="col-md-6 col-sm-6 col-xs-7 padLRZero">
+			<span class="col-md-offset-5 col-md-7 col-sm-3 col-xs-12 padLRZero padTop20px">
+				<div class="col-md-12 col-sm-12 col-xs-12 font10px"><i class="tayyarah-phone"></i><span>+91-080-42855555</span></div>
+				<a class="col-md-12 col-sm-12 col-xs-12 font10px" id="emailLnkfooter" href="#"><i class="tayyarah-envelope"></i>
+								<span>care@tayyarah.com</span></a>
+			</span>
+		</div>
+	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12 borderTopBtm busMobDetails">
+	<div class="col-md-4 col-sm-4 col-xs-12 font600">Bangalore<span class="padLeftRtArrow"><i class="tayyarah-long-arrow-right"></i></span>Chennai</div>
+	<div class="col-md-4 col-sm-4 col-xs-12">Monday, September 17, 2017</div>
+	<div class="col-md-4 col-sm-4 col-xs-12 textRight font600" >Orange Tours and Travels</div>
+	</div>
+	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12 borderGrey pasDetailsPadding">
+	 <div class="col-md-12 col-sm-12 col-xs-4 padding-0px text-center font600 mobDivFont"> 
+	 <div class="col-md-3 col-sm-3 col-xs-12 ">Bus Type</div>
+	 <div class="col-md-3 col-sm-3 col-xs-12">Reporting Time</div> 
+	 <div class="col-md-3 col-sm-3 col-xs-12">Departure Time</div> 
+	 <div class="col-md-3 col-sm-3 col-xs-12">Total Fare</div>  
+	</div>
+	 <div class="col-md-12 col-sm-12 col-xs-8 paddingLR10px text-center mobDivFont"> 
+	 <div class="col-md-3 col-sm-3 col-xs-12">A/C Seater/Sleeper (2+2)</div>
+	 <div class="col-md-3 col-sm-3 col-xs-12">09:45 PM</div> 
+	 <div class="col-md-3 col-sm-3 col-xs-12">10:15 PM</div> 
+	 <div class="col-md-3 col-sm-3 col-xs-12">Rs.1750</div>  
+	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12 padding-0px text-center boarding"> 
+	 <div class="col-md-12 col-sm-12 col-xs-12 padLRZero"><span class="font600 col-md-3 col-sm-3 col-xs-12">Boarding address : </span>
+	  <span class="col-md-9 col-sm-9 col-xs-12 padLRZero textLeft">Star Travels,Railway Station,Amritsar,Amritsar Railway Station</span></div> 
+	</div>
+	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12 borderGrey pasDetailsPadding">
+	<div class="col-md-12 col-sm-12 col-xs-12 backgroundCompleteGrey padding-0px borderGrey paddingTopBtm10px">
+<div class="ReservationVocher text-center font600">Traveller Details</div>
+ <div class="col-md-12 col-sm-12 col-xs-12 padding-0px table-responsive mobResponsive">          
+  <table class="table removeMargin">
+    <thead>
+      <tr>
+        <th>Sl no</th>
+        <th>Name</th>
+        <th>Seat number</th>
+        <th>Ticket Number</th>
+        <th>PNR Number</th>
+       </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Ganesh murthy</td>
+        <td>T12</td>
+        <td>123456</td>
+        <td>TYR12345</td>       
+      </tr>
+       <tr>
+        <td>2</td>
+        <td>Rajesh</td>
+        <td>T12</td>
+        <td>123456</td>
+        <td>TYR12345</td>       
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12 borderGrey pasDetailsPadding">
+	<div class="col-md-12 col-sm-12 col-xs-12 backgroundCompleteGrey padding-0px borderGrey paddingTopBtm10px">
+		<div class="ReservationVocher text-center font600">Terms and conditions</div>
+		<div class="col-md-12 col-sm-12 col-xs-12 paddingTopBtm10px">
+		<ol class="busPadLeft busrules ">
+		<li >Tayyarah is only a bus ticket agent. It does not operate bus services of its own. 
+		In order to provide a comprehensive choice of bus operators, departure times and prices
+		 to customers, it has tied up with many bus operators.
+		 tayyarah advice to customers is to choose bus operators 
+		 they are aware of and whose service they are comfortable with
+		<p class="busResp  font600">Tayyarah responsibilities include:</p>
+		<p>
+		<ul class="busPadLeft busPadleft20px ">
+		<li>Issuing a valid ticket (a ticket that will be accepted by the bus operator) for its network of bus operators 
+		</li>
+		<li>Providing refund and support in the event of cancellation</li>
+		<li>Providing customer support and information in case of any delays / inconvenience </li>
+		</ul>
+		</p>
+		<p class="busResp font600">Tayyarah responsibilities do NOT include:</p>
+		<p>
+		<ol class="busPadLeft busPadleft20px ">
+			<li>The bus operator's bus not departing / reaching on time </li>
+			<li>The bus operator's employees being rude </li>
+			<li>The bus operator's bus seats etc not being up to the customer's expectation </li>
+			<li>The bus operator canceling the trip due to unavoidable reasons</li>
+			<li>The bus operator changing a customer's seat at the last minute to accommodate a lady / child </li>
+			<li>The customer waiting at the wrong boarding point (please call the bus operator to find out
+			 the exact boarding point if you are not a regular traveler on that particular bus)</li>
+			 <li>The bus operator changing the boarding point and/or using a pick-up vehicle at the boarding 
+			 point to take customers to the bus departure point</li>
+		</ol>
+		</p>
+		</li>
+		
+	<li >The departure time mentioned on the ticket are only tentative timings . However the bus will not leave the source
+		 before the time that is mentioned on the ticket</li>
+	
+	 <li>Passengers are required to furnish the following at the time of boarding the bus: 
+		 <ol class="busPadLeft">
+			 <li>A copy of the ticket (A print out of the ticket or the print out of the ticket e-mail).</li>
+			 <li>A valid identity proof</li>
+		 </ol>
+		 Failing to do so, they may not be allowed to board the bus.
+	</li>
+	<li>Change of bus: In case the bus operator changes the type of bus due to some reason, tayyarah will refund the differential amount to the
+	 customer upon being intimated by the customers in 24 hours of the journey.</li>
+	 <li>Cancellation Policy: For K.S.Travels:Between 0 hours to 12 hours before journey, the cancellation charge is 100.0%.Between 12 hours to 24 hours
+	  before journey, the cancellation charge is 50.0%.And, above cancellation charge is 10.0%</li>
+	  <li>In case one needs the refund to be credited back to his/her bank account, please write your cash coupon details to care@tayyarah.com * The home
+	   delivery charges (if any), will not be refunded in the event of ticket cancellation </li>
+	   <li>In case a booking confirmation e-mail and sms gets delayed or fails because of technical reasons or as a result of incorrect e-mail ID / phone number 
+	   provided by the user etc, a ticket will be considered 'booked' as long as the ticket shows up on the confirmation page of www.tayyarah.com.</li>
+	   <li>Amenities for this bus as shown on tayyarah have been configured and provided by the bus provider (bus operator). These amenities will be provided unless there are
+	    some exceptions on certain days. Please note that tayyarah provides this information in good faith to help passengers to make an informed decision. 
+	   The liability of the amenity not being made available lies with the operator and not with tayyarah</li>
+	   <li>Grievances and claims related to the bus journey should be reported to tayyarah support team within 10 days of your travel date.</li>
+	</ol>
+		</div>
+	</div>
+	
+	</div>
+</div>
+</div>
+<s:if test="#session.isCorporate == true">  
+<div data-ng-include="Corporatefooter" data-ng-controller="CorporateFooterCtrl"></div> 
+</s:if>
+<s:else>
+<div data-ng-include="footer" data-ng-controller="FootCtrl"></div>
+</s:else>

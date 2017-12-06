@@ -1,0 +1,384 @@
+var app = angular.module('myApp');
+app.controller('AgentConformationCtrl',['$scope','$location','localStorageService','hotelServices','$http','commonService','$modal','$log','transporter','$route', function($scope,$location,localStorageService,hotelServices,$http,commonService,$modal,$log,transporter,$route) {
+	$scope.init = function(){
+		  $scope.bookAgain = {};
+		  $scope.faredivdisplay = false;
+		  $scope.PdfShowDiv = false;
+		  $scope.isCor=angular.element('#isCor').val();
+		  $scope.hoteluserConformation = localStorageService.get('prebook');
+			if($scope.hoteluserConformation == null || $scope.hoteluserConformation == ''||$scope.hoteluserConformation == "null"){
+				$scope.faredivdisplay = false;    	
+		    	 $location.path('/SessionOut');	  
+			}
+		
+		 $scope.bookAgainAppkey = $scope.hoteluserConformation.appkey;
+		
+			if($scope.hoteluserConformation != null){
+				$scope.agentBooking();
+			    }
+		var data = '';
+		$scope.bookconfirmloader = true;  
+		$scope.errordiv = false;
+		$scope.display = "none";
+		$scope.pdfloader = false;
+		$scope.apiUrl = commonService.baseUrl;
+		
+		
+	};
+	$scope.ErrorModalData = {};
+	$scope.ErrorModalData.city = "";
+	$scope.ErrorModalData.checkin = "";
+	$scope.ErrorModalData.checkout = "";
+	$scope.ErrorModalData.noofrooms = "";
+	$scope.ErrorModalData.rooms = "";
+	$scope.ErrorModalData.showData = false;
+	var data = '';
+	
+	$scope.agentBooking = function(){
+		
+		var totalPrice = $scope.hoteluserConformation.totalPayable;
+		var agentbal = 0;
+		var agentDepositBalance = 0;
+		var totUrl = $(location).attr('href');
+		var newUrl = totUrl.substr(0, totUrl.lastIndexOf('/#/') + 1);
+		var finalUrl = newUrl+"GetwalletBalance";
+		  transporter.getwallet().then(function(response){			
+					$scope.agentbalance = Math.round(response.data.jsonResult.walletbal).toFixed(2);
+					$scope.agentDepositBalance = Math.round(response.data.jsonResult.walletdepbal).toFixed(2);
+					
+					if(parseFloat($scope.agentDepositBalance) >= parseFloat(totalPrice)){
+						$scope.bookingConformation();
+					}else if(parseFloat($scope.agentbalance) >= parseFloat(totalPrice)){
+						$scope.bookingConformation();
+					}else if(parseFloat($scope.agentbalance) == 0){
+		        	   $scope.bookconfirmloader = false;
+						$scope.insufficientFundopen(); 
+		           }else{
+		        	   $scope.bookconfirmloader = false;
+						$scope.insufficientFundopen(); 
+		           }
+		 },function(){
+   			$scope.errormeg = "Unable to process your Request";			
+   			$scope.errordiv = true;
+   			$scope.errorDisplay($scope.errormeg,$scope.ErrorModalData);	
+   		});
+	};
+		
+	$scope.bookingConformation = function(){
+		 $scope.PdfShowDiv = false;
+		 $scope.pdfloader = false;
+		 $scope.bookconfirmloader = true; 
+		hotelServices.PreBook($scope.hoteluserConformation).then(function(response){
+		//$http.get('hotelsearch.json').then(function(response){
+				 data = response.data;	
+				if(data.status.code == '1'){
+					if($scope.isCor =='true'){
+						$scope.roomAdultsRmData = localStorageService.get('roomAdultsRmData');
+						console.log("roomAdultsRmData",$scope.roomAdultsRmData);
+						hotelServices.hotelRmbook($scope.roomAdultsRmData).then(function(response){
+							
+						});
+					}
+					
+					 $scope.orderid = data.book.orderid;
+					 angular.element('#hotelorder').val($scope.orderid);
+					 var formURL = $scope.apiUrl+"Email/getHtmlTemplateById?orderid="+$scope.orderid+"&emailType=1";
+					 $.ajax({
+							url : formURL,
+							type : "GET",
+							dataType : "html",
+							success : function(data,textStatus,jqXHR) {
+								if (jqXHR.status == 200) {
+									$scope.bookconfirmloader = false;
+									 $scope.PdfShowDiv = true;
+									$("#display-api-content").html(data);
+									setInterval(function() {
+										$("#display-api-content").show();
+									}, 1000); 
+									$scope.formsumbit();
+								} 
+							},
+							error : function(jqXHR,textStatus,errorThrown) {
+								 
+								$scope.bookconfirmloader =false;
+								$scope.PdfShowDiv = true;
+								$(".display-api-content").html("We could not get the content, please contact administrator.");
+								
+							}
+						});
+				}
+				else
+				{
+					$scope.bookconfirmloader = false;
+					$scope.errormeg = "Something wrong with your booking , Please contact customer care!"
+					$scope.errorDisplay($scope.errormeg,$scope.ErrorModalData);	
+					if($scope.isCor =='true'){
+						$scope.rmErrorData = localStorageService.get('roomAdultsRmData');					 
+						hotelServices.hotelRmbook($scope.rmErrorData).then(function(response){
+							
+						});
+					}
+				}
+			},function(response){
+				$scope.errormeg = "Booking Failed. Please Try Again";
+				$scope.errordiv = true;
+				$scope.errorDisplay($scope.errormeg,$scope.ErrorModalData);	
+				if($scope.isCor =='true'){
+					$scope.rmErrorData = localStorageService.get('roomAdultsRmData');					 
+					hotelServices.hotelRmbook($scope.rmErrorData).then(function(response){
+						
+					});
+				}
+			});
+	}
+	
+	 $scope.insufficientFundopen = function(){
+	      $(document).ready(function() {var modalInstance = $modal.open({
+	            animation: $scope.animationsEnabled,
+	            templateUrl: 'views/InsufficientFund.jsp',
+	            controller: 'InsufficientFundCtrl',
+	            backdrop: 'static',
+	            keyboard: false,
+	            resolve: {
+	              items: function () {
+	                return $scope.items;
+	              }
+	            }
+	          });
+
+	          modalInstance.result.then(function (selectedItem) {
+	          }, function () {
+	            $log.info('Modal dismissed at: ' + new Date());
+	          });
+	          });
+	    }
+	$scope.bookagain = function(){
+			$scope.faredivdisplay = false;
+		    $scope.bookconfirmloader = true;
+		  	 $scope.bookAgain.appkey = $scope.bookAgainAppkey;
+		     $scope.bookAgain.searchkey =  $scope.searchkey;
+		     $scope.bookAgain.hotelcode = $scope.hotelcode;
+		     $scope.bookAgain.orderid =  $scope.orderid;		     
+		  hotelServices.bookAgain($scope.bookAgain).then(function(response){
+			 	$scope.bookconfirmloader = false; 
+			 	  data = response.data;								
+				if(data.status.code == '1'){
+					$scope.bookstatus = data.bookRes.status.message;
+					$scope.confirmationNo = data.bookRes.confirmationNo;
+					$scope.orderid = data.book.orderid;
+					$scope.hotelbookresult = data.book;
+					$scope.hotelinfo = data.roomsummary;
+					$scope.hotelrate = parseFloat(data.bookRes.bookingFinalPrice).toFixed(2);				
+					$scope.hotelnewRate = $scope.hotelrate + 10;
+					$scope.searchdata = data.search;
+					$scope.bookratebeforetax = parseFloat(data.bookingRate.amountbeforeTax).toFixed(2);
+					$scope.bookhoteltax = parseFloat(data.bookingRate.roomrateTax).toFixed(2);
+					$scope.roomtypes = "";
+					$scope.inclusion = "";
+					$scope.combinationtype = data.roomsummary.RoomGroups[data.roomsummary.RoomGroups.length - 1].InfoSource;
+					if(data.roomsummary.RoomGroups[data.roomsummary.RoomGroups.length - 1].InfoSource == 'OpenCombination'){
+
+						for(var i=0;i<data.roomsummary.roomTypes.roomTypes.length;i++)
+						{
+							if(i == data.roomsummary.roomTypes.roomTypes.length - 1)
+							{	
+								$scope.roomtypes += data.roomsummary.roomTypes.roomTypes[i].roomType;									
+							}
+							else
+							{
+								$scope.roomtypes += data.roomsummary.roomTypes.roomTypes[i].roomType+",";								
+							}
+						}
+						if(data.roomsummary.roomTypes.roomTypes[0].amenities!=undefined){
+							for(var i=0;i<data.roomsummary.roomTypes.roomTypes[0].amenities.length;i++)
+							{							
+								if(i == data.roomsummary.roomTypes.roomTypes[0].amenities.length - 1)
+								{	
+									$scope.inclusion += data.roomsummary.roomTypes.roomTypes[0].amenities[i].description;						
+								}
+								else
+								{
+									$scope.inclusion += data.roomsummary.roomTypes.roomTypes[0].amenities[i].description+",";						
+								}
+							}
+						}
+					}else{
+						$scope.roomtypes = data.roomsummary.roomTypes.roomTypes[0].roomType;
+						if(data.roomsummary.roomTypes.roomTypes[0].amenities.length > 0 )
+							$scope.inclusion += data.roomsummary.roomTypes.roomTypes[0].amenities[0].description;	
+					}
+					
+					$scope.noofadult = 0;
+					$scope.noofchild = 0;
+					angular.forEach($scope.searchdata.roomrequests, function(obj,index) {
+						$scope.noofadult += obj.noofAdult;
+						$scope.noofchild += obj.noofChild
+					});
+
+					var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+					var firstDate = new Date($scope.searchdata.datestart);
+					var secondDate = new Date($scope.searchdata.dateend);
+					var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));					
+					$scope.noofnights = diffDays;
+					$scope.cancellationpolicyroom1 = [];
+					$scope.cancellationpolicyroom2 = [];
+					$scope.cancellationpolicyroom3 = [];
+					$scope.cancellationpolicyroom4 = [];
+
+					angular.forEach(data.roomsummary.ratePlans.ratePlan, function(obj,index) {					   
+						angular.forEach(obj.cancelPenalties.cancelPenalties, function(cancelvalue,canindex) {
+							var cancellationtext = "";
+							if(cancelvalue.nonRefundable != undefined){
+								if(cancelvalue.nonRefundable == true) 
+									cancellationtext = parseFloat(cancelvalue.amountPercent.amount).toFixed(2)+" % of total amount will be charged";
+								else
+									cancellationtext = parseFloat(cancelvalue.amountPercent.amount).toFixed(2)+" % of total amount will be charged, if you cancel between  "+cancelvalue.deadline.FromDate+" and "+cancelvalue.deadline.ToDate;
+							}
+							else{
+
+								if(cancelvalue.amountPercent.basisType == "Amount")
+									cancellationtext = parseFloat(cancelvalue.amountPercent.amount).toFixed(2)+" "+cancelvalue.amountPercent.currencyCode+" will be charged, if you cancel between  "+cancelvalue.deadline.FromDate+" to "+cancelvalue.deadline.ToDate;
+								else if(cancelvalue.amountPercent.basisType == "Nights")
+									cancellationtext = parseInt(cancelvalue.amountPercent.amount)+" Night of total amount will be charged, if you cancel between  "+cancelvalue.deadline.FromDate+" and "+cancelvalue.deadline.ToDate;
+								else
+									cancellationtext = parseFloat(cancelvalue.amountPercent.amount).toFixed(2)+" % of total amount will be charged, if you cancel between  "+cancelvalue.deadline.FromDate+" and "+cancelvalue.deadline.ToDate;
+							}
+
+							if(index == 0)
+								$scope.cancellationpolicyroom1.push(cancellationtext);
+							if(index == 1)
+								$scope.cancellationpolicyroom2.push(cancellationtext);
+							if(index == 2)
+								$scope.cancellationpolicyroom3.push(cancellationtext);
+							if(index == 3)
+								$scope.cancellationpolicyroom4.push(cancellationtext);
+						});
+
+					});
+					localStorageService.remove('prebook');
+					$scope.resultset = true;
+					$scope.display = "block";
+					$scope.formsumbit();
+					
+					
+				}
+				 else if(data.status.code == '0'){
+					    if(data.preBookRes.priceChanged == true){
+					      $scope.searchkey = data.searchKey;
+					     $scope.hotelcode = data.book.hotelCode;
+					     $scope.orderid = data.book.orderid;
+					     $scope.oldhotelprice = data.preBookRes.oldBookingFinalPrice;
+					     $scope.newhotelprice = data.preBookRes.bookingFinalPrice;
+					     $scope.fareChangeModalAlert($scope.oldhotelprice,$scope.newhotelprice);
+					     if($scope.oldhotelprice > $scope.newhotelprice)
+					      $scope.pricechagetext = "Hurrey.. The fare for selected room has decreased to";
+					     if($scope.oldhotelprice < $scope.newhotelprice)
+					      $scope.pricechagetext = "oops The fare for selected room has increased to";
+					    }
+					  }
+						
+				else
+				{
+
+					$scope.errormeg = "Booking Failed. Please Try Again";
+					$scope.errordiv = true;
+					$scope.errorDisplay($scope.errormeg,$scope.ErrorModalData);	
+				}
+			
+			  
+		  },function(response){
+				
+				$scope.errormeg = "Booking Failed. Please Try Again";
+				$scope.errordiv = true;
+				$scope.errorDisplay($scope.errormeg,$scope.ErrorModalData);	
+			});
+	}
+	$scope.searcAgain = function(){
+		
+		window.location.href = window.location.href.replace(/#.*$/, '');
+	}
+	$scope.returnIndex = function(){
+		window.location.href = window.location.href.replace(/#.*$/, '');
+	}
+	$scope.downloadFile = function () {
+		
+		$scope.pdfloader = true;
+		 var data = "orderids="+$scope.orderid;
+		 hotelServices.downloadPdfFile(data).then(function(response){
+			 var url = response.config.url;
+			 window.location.href = url;
+			 $scope.pdfloader = false;
+		      
+			 
+		 },function(error){
+			 $scope.bookingComments = error.data.debugMessage;			
+			 $scope.errordiv = true;
+			 $scope.errorDisplay($scope.errormeg,$scope.ErrorModalData);	
+		 });
+	};
+	
+	$scope.getconvertedcurrency = function(currentamt)
+	{	
+		return parseInt(currentamt);
+	}
+
+	$scope.formsumbit = function()
+	{
+		
+		var totUrl = $(location).attr('href');
+		var newUrl = totUrl.substr(0, totUrl.lastIndexOf('/#/') + 1);
+		var finalUrl = newUrl+"GetwalletBalance";
+
+		$http({method:'get',url:finalUrl,headers:{'Content-Type': 'application/json'}}).success(function(data){
+			var myEl = angular.element( document.querySelector( '#agentbal' ) );
+			myEl.text($scope.addCommas(data.jsonResult.walletbal)) ;
+			var myDeposit = angular.element( document.querySelector( '#agentDepbal' ));
+			myDeposit.text(parseFloat($scope.addCommas(data.jsonResult.walletdepbal)).toFixed(2)) ;
+			
+		}).error(function(data, status, headers, config){ 
+		});
+	}
+
+	$scope.addCommas = function(num) {
+		num=num.toString();
+		var afterPoint = '';
+		if(num.indexOf('.') > 0)
+		   afterPoint = num.substring(num.indexOf('.'),num.length);
+		num = Math.floor(num);
+		num=num.toString();
+		var lastThree = num.substring(num.length-3);
+		var otherNumbers = num.substring(0,num.length-3);
+		if(otherNumbers != '')
+		    lastThree = ',' + lastThree;
+		var bal = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+	   
+	    return bal;
+	}
+	/*Show Error Message and Research on Error modal*/
+	$scope.errorDisplay = function(errorMsg,Parameters){
+		$(document).ready(function(){
+			var modalInstance = $modal.open({
+			animation: $scope.animationsEnabled,
+			templateUrl: 'views/hotelErrorSearch.jsp',
+			controller:'HotelErrorSearchCtrl',
+			backdrop:'static',
+			keyboard:false,
+			resolve:{
+				items:function(){
+					return errorMsg;
+				},
+				items2:function(){
+					return Parameters;
+				}
+			}
+			});
+		modalInstance.result.then(function(selectedItem){
+			$route.reload();			
+		},function(){
+			$log.info('modal Dismissed at :'+new Date());
+		});
+			
+		});
+	}
+	$scope.init();
+}])

@@ -1,0 +1,268 @@
+var app = angular.module('myApp');
+app.controller('HotelErrorSearchCtrl',['$scope','$http','commonService','hotelServices','$modalInstance','$log','$location','items','items2','localStorageService','$route', function ($scope,$http,commonService,hotelServices,$modalInstance,$log,$location,items,items2,localStorageService,$route) {
+$scope.init = function(){
+	
+	 if(items !=undefined || item == null){
+	    	$scope.Message = items;	
+	    }else{
+	    	$scope.Message = "Details missed,please try agian Modified Search";
+	    }
+	
+	
+	$scope.getAllParams = $scope.getUrlParams();
+	$scope.city =$scope.getAllParams.city;	
+	$scope.checkin = $scope.getAllParams.datain;
+	$scope.checkout = $scope.getAllParams.dateout;
+	$scope.noofrooms = $scope.getAllParams.noofrooms;
+	$scope.hotelCitymodel = $scope.getAllParams.city;	
+	$scope.ModcityCode = $scope.getAllParams.cityCode;
+	$scope.datein = $scope.getAllParams.datain;
+	$scope.dateOut = $scope.getAllParams.dateout;
+	$scope.rooms = 	$scope.getAllParams.noofrooms;
+	$scope.noofadults = $scope.getAllParams.adt;
+	$scope.noofchilds  =  $scope.getAllParams.chd;
+	$(function() {
+		
+		var citylist = [];
+		$scope.loadstations();
+	});
+	$scope.Theme = $location.search().thm;
+}
+
+
+$scope.getUrlParams = function(){
+
+	var UrlParam = {};
+	UrlParam.datain = $location.search().datain;
+	UrlParam.dateout = $location.search().dateout;
+	UrlParam.city = $location.search().city;
+	UrlParam.citycode = $location.search().citycode;
+	UrlParam.noofrooms = $location.search().noofrooms;	
+	UrlParam.adt = $location.search().adt;
+	UrlParam.chd = $location.search().chd;	
+	UrlParam.rooms = $location.search().inf;
+	UrlParam.thm= $location.search().thm;
+	return UrlParam;
+}
+
+
+$scope.loadstations = function()
+{ 
+	var localcitydata=[];
+	$http.get('hotel-city.json').then(function(response){
+		citydata=response.data;
+		citylist = [];
+		citymap = [];
+		angular.forEach(citydata.areas, function( value, i) {  
+			citylist.push(value.name); 
+			citymap[value.name] = value.id;
+		});
+		//console.log("citylistre",citylist);
+		$("#hotelEcity").autocomplete({
+			source: function( request, response ) {
+				//console.log("asdas",response);
+				var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "gi" );
+				response( $.grep( citylist, function( item ){				
+					var itemavailavle = item;					
+					return matcher.test( item );
+				}).slice(0, 15) );
+			},
+			select: function (event, ui) {				
+				var label = ui.item.label;
+				var value = ui.item.value;					
+				var eCitycode = citymap[ui.item.value];
+				$('#errorCheckin').focus();
+				$('#eCitycode').val(eCitycode);
+				
+				
+			}
+		});  		
+	},function(errorStatus){
+		hotelServices.searchCity("").then(function(res){
+			citylist = [];
+			citymap = [];
+			angular.forEach(res.data.areas, function( val, i) {  
+				citylist.push(val.name); 
+				citymap[val.name] = val.id;
+			});
+			//console.log("citylist",citylist);
+			$("#hotelEcity").autocomplete({
+				source: function( request, response ) {
+					var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "gi" );
+					response( $.grep( citylist, function( item ){				
+						var itemavailavle = item;					
+						return matcher.test( item );
+					}).slice(0, 15) );
+				},
+				select: function (event, ui) {				
+					var label = ui.item.label;
+					var value = ui.item.value;					
+					var eCitycode = citymap[ui.item.value];
+					$('#errorCheckin').focus();
+					$('#eCitycode').val(eCitycode);
+					
+				}
+			});  		
+		
+		})
+	});
+}
+
+
+$scope.SearchHotelsOnErr = function(){
+	var citycode;
+	if(angular.element('#eCitycode').val()){
+		citycode = angular.element('#eCitycode').val();
+	
+	}else{
+		citycode = $location.search().citycode;
+		
+	}
+	
+	
+
+	var startDate = angular.element('#errorCheckin').val();		
+	var EndDate = angular.element('#errordateout').val();
+	var cityname = angular.element('#hotelEcity').val();
+	var agentapp_key = angular.element('#eray').val();
+	if(agentapp_key == undefined ||agentapp_key== null)
+		var app_key = angular.element('#erhky').val();
+	else
+		var app_key=agentapp_key;	
+	if (citycode == "") {
+		$("#errorCity").text("Please Enter the City Name1");
+		$('#errorCity').stop().fadeIn(400).delay(1500).fadeOut(400);	   
+	}
+	else if (cityname == "") {			
+		$("#errorCity").text("Please Enter the City Name");
+		$('#errorCity').stop().fadeIn(400).delay(1500).fadeOut(400);
+	} 
+	else if (startDate == "") {			
+		$("#errdep").text("Select the Check-in date");
+		$('#errdep').stop().fadeIn(400).delay(1500).fadeOut(400);
+	} 
+	else if (EndDate == "") {
+		$("#errarr").text("Select the Check-out date");
+		$('#errarr').stop().fadeIn(400).delay(1500).fadeOut(400);
+		}
+	else if (agentapp_key=="") {			
+		$("#errconfig").text("User not Configured");
+		$('#errconfig').stop().fadeIn(400).delay(1500).fadeOut(400);
+	}
+	else{
+
+		var currency = angular.element('#currency').val();			
+
+		var totalrooms = angular.element('#totalErooms').val(); var room1adult = angular.element('#RoomEAdult1').val();
+		var room2adult = angular.element('#RoomEAdult2').val(); var room3adult = angular.element('#RoomEAdult3').val();
+		var room4adult = angular.element('#RoomEAdult4').val(); var room1child = angular.element('#eChilds').val();
+		var room2child = angular.element('#eChilds2').val();    var room3child = angular.element('#eChilds3').val();
+		var room4child = angular.element('#eChilds4').val();
+		
+		var roomindex1 = "$0,";	var roomindex2 = "$1,";	var roomindex3 = "$2,";	var roomindex4 = "$3,"; 
+
+		var firstRoomAge = '';	var secondRoomAge = '';	var thirdRoomAge = ''; var fourthRoomAge = '';
+		var room1childage = "";	var room1childage2 = ""; var room1childage3 = ""; var room1childage4 = ""; var room1childage5 = "";
+		var child1WithAge = '';	var child2WithAge = '';	var child3WithAge = '';	var child4WithAge = '';
+
+		for(var i=0;i<room1child;i++){
+			room1childage += angular.element('#Eroom1EAge'+(i+1)).val(); 
+			if(i != room1child -1){ 
+				room1childage += ",";
+			}            
+		}
+		
+		for(var i=0;i<room2child;i++){
+			room1childage2 += angular.element('#Eroom2EAge'+(i+1)).val();
+			if(i != room2child -1){ 
+				room1childage2 += ",";
+			}            
+		}
+		for(var i=0;i<room3child;i++){
+			room1childage3 += angular.element('#Eroom3EAge'+(i+1)).val();    
+			if(i != room3child -1){ 
+				room1childage3 += ",";
+			}            
+		}
+		for(var i=0;i<room4child;i++){
+			room1childage4 += angular.element('#Eroom4EAge'+(i+1)).val();    
+			if(i != room4child -1){ 
+				room1childage4 += ",";
+			}            
+		}
+
+		if(room1child == 0)
+			child1WithAge = 0;
+		else
+			child1WithAge = room1child+','+room1childage;
+
+		if(room2child == 0)
+			child2WithAge = 0;
+		else
+			child2WithAge = room2child+','+room1childage2;
+
+		if(room3child == 0)
+			child3WithAge = 0;
+		else
+			child3WithAge = room3child+','+room1childage3;
+
+		if(room4child == 0)
+			child4WithAge = 0;
+		else
+			child4WithAge = room4child+','+room1childage4;
+
+
+		var room1complete = roomindex1+room1adult+','+child1WithAge;
+		var room2complete = roomindex2+room2adult+','+child2WithAge;
+		var room3complete = roomindex3+room3adult+','+child3WithAge;
+		var room4complete = roomindex4+room4adult+','+child4WithAge;
+		var rooms = 0;
+		var totalAdultCount = 0;
+		var totalChildCount = 0;
+		if(totalrooms == 1){
+			rooms = room1complete;
+			totalAdultCount = parseInt(room1adult);
+			totalChildCount = parseInt(room1child);
+		}else if(totalrooms == 2){
+			rooms = room1complete+','+room2complete;
+			totalAdultCount = parseInt(room1adult) + parseInt(room2adult);
+			totalChildCount = parseInt(room1child)+  parseInt(room2child);
+
+		}else if(totalrooms == 3){
+			rooms = room1complete+','+room2complete+','+room3complete;
+			totalAdultCount = parseInt(room1adult) + parseInt(room2adult) + parseInt(room3adult);
+			totalChildCount = parseInt(room1child) + parseInt(room2child) + parseInt(room3child);
+		}else if(totalrooms == 4){
+			rooms = room1complete+','+room2complete+','+room3complete+','+room4complete;
+			totalAdultCount = parseInt(room1adult) + parseInt(room2adult) + parseInt(room3adult)+ parseInt(room4adult);
+			totalChildCount = parseInt(room1child) + parseInt(room2child) + parseInt(room3child)+ parseInt(room4child);
+		}		
+		var noofrooms = totalrooms;		
+		var modurl='/Hotel-List-'+$scope.Theme+'?city='+encodeURIComponent(cityname)+'&citycode='+encodeURIComponent(citycode)+'&datain='+encodeURIComponent(startDate)+'&dateout='+encodeURIComponent(EndDate)+'&ay='+encodeURIComponent(app_key)+'&noofrooms='+noofrooms+'&currency='+currency+'&rooms='+encodeURIComponent(rooms)+'&adt='+totalAdultCount+'&chd='+totalChildCount+'&thm='+$scope.Theme;
+		$location.url(modurl);
+		$modalInstance.dismiss('');
+	}
+};
+
+$scope.research = function(){
+	citycode = $location.search().citycode;
+	var startDate = angular.element('#errorCheckin').val();		
+	var EndDate = angular.element('#errordateout').val();
+	var cityname = angular.element('#hotelEcity').val();
+	var agentapp_key = angular.element('#modray').val();
+	if(agentapp_key == undefined ||agentapp_key== null)
+		var app_key = angular.element('#modhky').val();
+	else
+		var app_key=agentapp_key;
+	
+	var researchData = ('city='+encodeURIComponent($location.search().city)+'&citycode='+encodeURIComponent($location.search().citycode)+'&datain='+encodeURIComponent($location.search().datain)+'&dateout='+encodeURIComponent($location.search().dateout)+'&ay='+encodeURIComponent(app_key)+'&noofrooms='+$location.search().noofrooms+'&currency='+'INR'+'&rooms='+encodeURIComponent($location.search().rooms)+'&adt='+$location.search().adt+'&chd='+$location.search().chd+'&thm='+$scope.Theme);
+	$location.path('/Hotel-List-'+$scope.Theme).search(researchData);
+	$modalInstance.dismiss('');
+}
+$scope.close = function () {
+	    $modalInstance.dismiss('');
+	    window.location.href = window.location.href.replace(/#.*$/, '');
+		
+	};
+$scope.init();
+}]);

@@ -1,0 +1,163 @@
+var app = angular.module('myApp');
+app.controller('UserConformationCtrl', ['$scope','localStorageService','hotelServices','$location','$window','$http','$modal','$log','$route',function($scope,localStorageService,hotelServices,$location,$window,$http,$modal,$log,$route) {
+	$scope.init = function(){
+		$scope.hoteluserConformation = {};
+		$scope.hoteluserConformation = localStorageService.get('prebook');
+		//console.log("$scope.user",$scope.hoteluserConformation);
+		$scope.bookconfirmloader = true;
+		$scope.errordiv = false;
+		$scope.faredivdisplay = "none";
+		$scope.getUserConformation();
+		var data = '';
+		if($scope.hoteluserConformation == null || $scope.hoteluserConformation == undefined){
+
+			$location.path('/SessionOut');
+
+		}
+	}
+
+	$scope.ErrorModalData = {};
+	$scope.ErrorModalData.city = "";
+	$scope.ErrorModalData.checkin = "";
+	$scope.ErrorModalData.checkout = "";
+	$scope.ErrorModalData.noofrooms = "";
+	$scope.ErrorModalData.rooms = "";
+	$scope.ErrorModalData.showData = false;
+
+	$scope.getUserConformation = function(){
+		hotelServices.PreBook($scope.hoteluserConformation).then(function(response){
+			data = response.data;
+			$scope.bookconfirmloader = false;  
+			if(data.status.code == '1'){				
+				var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+				var firstDate = new Date(data.search.datestart);
+				var secondDate = new Date(data.search.dateend);
+				var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+				$scope.noofnights = diffDays;
+				$scope.totalprice = parseFloat(data.bookingRate.payableAmt).toFixed(2);	
+				$scope.otherchargesB2C = (parseFloat($scope.totalprice) * parseFloat(2) / parseFloat(100));
+				$scope.totalprice = $scope.getTotalAmountAfterCharges($scope.totalprice, true);
+				$scope.oldprice = $scope.getTotalAmountDisplayed(data);	
+				$scope.oldprice = $scope.getTotalAmountAfterCharges($scope.oldprice, true);	
+				$window.document.getElementById("pgid").value = data.book.paymentid;
+				$scope.confirmationNumber = data.book.paymentid;
+				$window.document.getElementById("totalamt").value = $scope.totalprice;				
+				if(parseInt($scope.oldprice) != parseInt($scope.totalprice))
+				{					
+					$scope.faredivdisplay = "block";				
+					//$scope.oldprice = data.roomsummary.roomRates.roomRates[0].rates.rates[0].bookingPrice.totalAmountPayable;
+					$scope.updatedprice = $scope.totalprice;
+					$scope.searchdata = data.search;
+					if(parseInt($scope.oldprice) > parseInt($scope.totalprice))
+						$scope.pricechagetext = "Hurrey.. The fare for selected hotel has decreased to ";
+					if(parseInt($scope.oldprice) < parseInt($scope.totalprice))
+						$scope.pricechagetext = "oops The fare for selected hotel has increased to";
+					$http({
+						method: 'Get',
+						url: 'SetPricevalue',
+						params: {Totalprice : $scope.totalprice},
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						}
+					}).then(function(result) {
+					}, function(error) {
+						//console.log(error);
+					});
+				}
+				else
+				{
+					$scope.formsumbit();
+				}
+			}
+			else
+			{
+				$scope.errormeg = "PreBooking Failed.Try Again";
+				$scope.errordiv = true;
+				$scope.errorDisplay($scope.errormeg,$scope.ErrorModalData);	
+			}	
+
+		},function(error){
+			$scope.errormeg = "PreBooking Failed.Try Again";
+			$scope.errordiv = true;
+			$scope.errorDisplay($scope.errormeg,$scope.ErrorModalData);	
+		});
+	}
+
+	$scope.getTotalAmountDisplayed = function(data)
+	{
+		var totalAmount = 0;
+		data.roomsummary.roomRates.roomRates
+
+		angular.forEach(data.roomsummary.roomRates.roomRates, function(value,index) { 
+			var basic = 0.0;
+			var tax = 0.0;
+			var discount = 0.0;
+			if(value != undefined && value.rates != undefined && value.rates.rates != undefined && value.rates.rates[0] != undefined && value.rates.rates[0].bookingPrice != undefined)
+			{
+				basic = value.rates.rates[0].bookingPrice.amountBeforeTax;
+				if(value.rates.rates[0].bookingPrice.taxes != undefined && value.rates.rates[0].bookingPrice.taxes.taxes != undefined &&
+						value.rates.rates[0].bookingPrice.taxes.taxes.length >0 &&
+						value.rates.rates[0].bookingPrice.taxes.taxes[0] != undefined && value.rates.rates[0].bookingPrice.taxes.taxes[0].amount != undefined)
+					tax = value.rates.rates[0].bookingPrice.taxes.taxes[0].amount;
+				if(value.rates.rates[0].bookingPrice.discounts != undefined && value.rates.rates[0].bookingPrice.discounts.length>0 &&
+						value.rates.rates[0].bookingPrice.discounts[0] != undefined && value.rates.rates[0].bookingPrice.discounts[0].amountBeforeTax != undefined)
+					discount = value.rates.rates[0].bookingPrice.discounts[0].amountBeforeTax;
+
+			}
+			totalAmount = parseFloat(totalAmount) + parseFloat(basic) + parseFloat(tax) - parseFloat(discount);	
+		});
+		totalAmount =  parseFloat(totalAmount) * parseFloat($scope.noofnights);
+		return parseFloat(totalAmount).toFixed(2);
+	}
+
+
+	$scope.getTotalAmountAfterCharges = function(totalAmount, isB2C)
+	{		
+		var chargesPercentage = 2.0;
+		if(isB2C)
+			totalAmount = parseFloat(totalAmount) + (parseFloat(totalAmount) * parseFloat(chargesPercentage ) / parseFloat(100));
+
+		return parseFloat(totalAmount).toFixed(2);
+	}
+	$scope.formsumbit = function()
+	{
+		var frm = $window.document.getElementById("ePayment");
+		frm.submit();
+	}
+	$scope.continuetobook = function()
+	{
+		$scope.faredivdisplay = "none";
+		$scope.formsumbit();
+	}
+	$scope.returnIndex = function(){
+		window.location.href = window.location.href.replace(/#.*$/, '');
+	}
+
+	/*Show Error Message and Research on Error modal*/
+	$scope.errorDisplay = function(errorMsg,Parameters){
+		$(document).ready(function(){
+			var modalInstance = $modal.open({
+				animation: $scope.animationsEnabled,
+				templateUrl: 'views/hotelErrorSearch.jsp',
+				controller:'HotelErrorSearchCtrl',
+				backdrop:'static',
+				keyboard:false,
+				resolve:{
+					items:function(){
+						return errorMsg;
+					},
+					items2:function(){
+						return Parameters;
+					}
+				}});
+			modalInstance.result.then(function(selectedItem){
+				$route.reload();
+
+			},function(){
+				$log.info('modal Dismissed at :'+new Date());
+			});
+
+		});
+	}
+	$scope.init();
+}]);

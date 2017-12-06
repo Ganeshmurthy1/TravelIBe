@@ -1,0 +1,474 @@
+package com.lintas.action;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.antlr.grammar.v3.ANTLRParser.label_return;
+import org.apache.struts2.ServletActionContext;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+
+import com.lintas.model.BusOrderRow;
+import com.lintas.model.Company;
+import com.lintas.model.CompanyConfig;
+import com.lintas.model.CompanyConfigType;
+import com.lintas.model.CompanyEntity;
+import com.lintas.model.CompanyTheme;
+import com.lintas.model.RmConfigModel;
+import com.intelli.util.DateConversion;
+import com.lintas.DAO.Agentdao;
+import com.lintas.DAO.FrontUserThemeDao;
+import com.lintas.DAO.Frontuserdao;
+import com.lintas.DAO.RmConfigDao;
+import com.lintas.config.HibernateUtil;
+import com.lintas.model.FlightOrderCustomer;
+import com.lintas.model.FlightOrderRow;
+import com.lintas.model.FrontUserDetail;
+import com.lintas.model.HotelOrderGuest;
+import com.lintas.model.HotelOrderRow;
+import com.lintas.model.HotelReport;
+import com.lintas.model.User;
+import com.lintas.model.UserWallet;
+import com.lintas.session.PassengerDetails;
+import com.lintas.session.encryptions;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RegexFieldValidator;
+
+
+public class AgentWalletBalance extends ActionSupport{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public static final org.apache.log4j.Logger logger=org.apache.log4j.Logger.getLogger(AgentWalletBalance.class);
+	private static final String Undefined = null;
+	UserWallet wallet  = new UserWallet();
+	User directuser = new User();
+	CompanyConfig companyDetails = new CompanyConfig();
+	private Map jsonobj  =  new HashMap();
+	private String Totalprice;
+	public String hostName;
+	public String Labelkey;
+	Agentdao agentdao = new Agentdao();
+	FrontUserThemeDao themeDao = new FrontUserThemeDao();
+	private String userlistInput=null;
+	RmConfigModel rmConfigModel = new RmConfigModel();
+	List<String> fieldName = new ArrayList<String>();
+	private encryptions enc = new encryptions();
+	FrontUserDetail userdetail = new FrontUserDetail();
+	Frontuserdao userdao = new Frontuserdao();
+	List<FlightOrderRow> historylist =new ArrayList<>();
+	List<HotelReport> hotelhistorylist =new ArrayList<>();
+	private List<HotelReport> hotelhistorylists ;
+	List<BusOrderRow> bushistorylist =new ArrayList<>();
+	
+	
+
+	public synchronized String GetwalletBalance()
+	{
+		if(ActionContext.getContext().getSession()!=null && !ActionContext.getContext().getSession().isEmpty() && ActionContext.getContext().getSession().get("agent")!=null)
+		{
+			BigDecimal walletbal = new BigDecimal("0.00");
+			BigDecimal walletdepbal = new BigDecimal("0.00");
+			User agent = (User) ActionContext.getContext().getSession().get("agent");
+
+			Company myCompany = agentdao.GetParentCompany(agent.getCompanyid());		
+			if(myCompany.getCompanyRole()!=null && myCompany.getCompanyRole().isCorporate())
+			{
+				agent = agentdao.GetParentUser(myCompany);
+			}			
+			walletbal = (BigDecimal) agentdao.GetAgentWalletBalance(agent.getAgentWallet().getWalletId());
+			walletdepbal = (BigDecimal) agentdao.GetAgentDepositBalance(agent.getAgentWallet().getWalletId());			
+
+			jsonobj.put("walletbal", walletbal);
+			jsonobj.put("walletdepbal", walletdepbal);
+			return SUCCESS;
+		}
+		else
+		{
+			jsonobj.put("walletbal", 0);
+			jsonobj.put("walletdepbal", 0);
+			return SUCCESS;
+		}
+	}
+
+	public synchronized String GetCompanyEntity()
+	{
+		User agent = (User) ActionContext.getContext().getSession().get("agent");
+		Company company  = agentdao.getCompanyProfile(agent.getCompanyid());	
+		List<CompanyEntity> companyEntities=company.getCompanyEntities();
+		jsonobj.put("companyEntities", companyEntities);
+		return SUCCESS;
+	}
+
+	
+	public String UserFlightHistory()
+	{
+		userdetail = (FrontUserDetail) ActionContext.getContext().getSession().get("user");
+		List<FlightOrderRow> flightOrderRowist = userdao.GetBookingHistory(userdetail.getUserName());
+		if(flightOrderRowist!=null && flightOrderRowist.size()>0){
+			setHistorylist(flightOrderRowist);
+			jsonobj.put("flightOrderRowist", flightOrderRowist);
+			
+		}else{
+			jsonobj.put("flightOrderRowist", null);
+		}
+
+		return SUCCESS;
+	}
+	
+	public String UserHotelHistory()
+	{
+		userdetail = (FrontUserDetail) ActionContext.getContext().getSession().get("user");
+		//List<HotelOrderRow> hotelOrderRowist = userdao.GetHotelBookingHistoryList(userdetail.getUserName());
+		
+		  hotelhistorylist = userdao.GetHotelBookingHistoryList(userdetail.getUserName());
+		if(hotelhistorylist!=null && hotelhistorylist.size()>0){
+			setHotelhistorylist(hotelhistorylist);
+			jsonobj.put("hotelOrderRowist", hotelhistorylist);
+			
+		}else{
+			jsonobj.put("hotelOrderRowist", null);
+		}
+
+		return SUCCESS;
+	}
+	public String UserBusHistory()
+	{
+		userdetail = (FrontUserDetail) ActionContext.getContext().getSession().get("user");
+		List<BusOrderRow> busOrderRowist = userdao.GetBookingBusHistory(userdetail.getUserName());
+		if(busOrderRowist!=null && busOrderRowist.size()>0){
+			setBushistorylist(busOrderRowist);
+			jsonobj.put("busOrderRowist", busOrderRowist);
+			
+		}else{
+			jsonobj.put("busOrderRowist", null);
+		}
+
+		return SUCCESS;
+	}
+	
+	
+	public synchronized String GetRmDeatils() {
+		if(ActionContext.getContext().getSession()!=null && !ActionContext.getContext().getSession().isEmpty() && ActionContext.getContext().getSession().get("agent")!=null)
+		{
+			User agent = (User) ActionContext.getContext().getSession().get("agent");
+			Company myCompany = agentdao.GetParentCompany(agent.getCompanyid());			
+			RmConfigDao rmConfigDao = new RmConfigDao();
+			try {
+				//System.out.println("company apptype ---- " + rmConfigModel.getApproverNameType());
+				setRmConfigModel(rmConfigDao.getConfigDetailsByCompanyId((myCompany.getCompanyid())));
+				String manualStringFields[] = rmConfigModel.getDynamicFieldsData() != null
+						? rmConfigModel.getDynamicFieldsData().split(",") : null;
+
+						if(manualStringFields!=null && manualStringFields.length>0)
+						{
+							for (String oneField : manualStringFields) {
+								String fieldsName[] = oneField.split(":");
+								fieldName.add(fieldsName[0]);
+							}
+						}
+
+			} catch (Exception e) {
+			}		
+			return SUCCESS;
+		}
+		else{			
+			return SUCCESS;	
+
+		}
+	}
+
+
+	public String GetDirectUserAppKey()
+	{
+		directuser = agentdao.GetDirectUserDetails();
+		if(directuser!=null)
+		{
+			ActionContext.getContext().getSession().put("Directuser", directuser);
+			jsonobj.put("appkey", directuser.getSecurityanswer());
+			return SUCCESS;
+		}
+		else
+		{		
+			return ERROR;
+		}
+	}
+
+
+	public String GetCompanyThemes()
+	{   	
+		CompanyConfig config = null;
+		boolean isB2B = false;
+		boolean isB2E = false;
+		try{
+			HttpServletRequest req =  ServletActionContext.getRequest();
+			String hostname = req.getParameter("hostName");
+			String key = req.getParameter("LabelAppkey");
+			String lkey = enc.decrypt(req.getParameter("LabelAppkey"));			 
+			String[] tkey = lkey.split("-");
+
+			CompanyTheme companyTheme = themeDao.CompanyThemeDetails(hostname,tkey);			
+			if(companyTheme != null ){		
+
+				int companyId = companyTheme.getCompanyId();
+				int configId = companyTheme.getConfigId();				
+				config = themeDao.getCompanyConfig(companyId,configId);					
+				if(config != null){							
+					CompanyConfigType companyConfigType = themeDao.getCompanyConfigType(config.getConfig_id());
+					if(companyConfigType.isWhitelable()){
+						List<CompanyConfigType> companyConfigTypeList = new ArrayList<>();
+						List<CompanyConfig> companyConfigList = themeDao.getcompanyConfigListByCompanyId(companyId);
+						if(companyConfigList.size()>0){			
+							List<CompanyConfig> updateCompanyConfigList = new ArrayList<>();
+							for (CompanyConfig companyConfig: companyConfigList) {	
+								 
+								if(configId != companyConfig.getConfig_id()){								    	
+									updateCompanyConfigList.add(companyConfig);
+								}
+							} 
+							
+							for (CompanyConfig CompanyConfig : updateCompanyConfigList) {
+								CompanyConfigType companytype = themeDao.getCompanyConfigType(CompanyConfig.getConfig_id());
+								companyConfigTypeList.add(companytype);
+							}
+
+						}
+						
+						for (CompanyConfigType companyConfigTypeObj : companyConfigTypeList) {							
+							if(companyConfigTypeObj.isB2B()){
+								isB2B = true;
+								ActionContext.getContext().getSession().put("isB2B", isB2B);
+							}
+							if(companyConfigTypeObj.isB2E()){
+								isB2E = true;
+								ActionContext.getContext().getSession().put("isB2E", isB2E);
+							}
+						}
+					}				
+					Company company =  themeDao.getCompanyByCompanyId(companyId);
+					User user = themeDao.getUserByEmail(company.getEmail());
+					ActionContext.getContext().getSession().put("Directuser", user);					
+					ActionContext.getContext().getSession().put("ThemeAppkey",key);
+					ActionContext.getContext().getSession().put("ThemeName", companyTheme.getThemeName());
+					ActionContext.getContext().getSession().put("cssPath",companyTheme.getCssPath());					 
+					ActionContext.getContext().getSession().put("Logo", companyTheme.getLogoImagePath());
+					ActionContext.getContext().getSession().put("themeKey",companyTheme.getThemeName());	
+                    ActionContext.getContext().getSession().put("themeUserId",user.getId());
+                    ActionContext.getContext().getSession().put("themeUserName",user.getUsername());
+					ActionContext.getContext().getSession().put("isCardAcess", true);
+					ActionContext.getContext().getSession().put("isLabeling", config.isWhitelable());
+					ActionContext.getContext().getSession().put("isFlightsEnabled",companyTheme.getEnableFlight());
+					ActionContext.getContext().getSession().put("isHotelEnabled",companyTheme.getEnableHotel());
+					ActionContext.getContext().getSession().put("isBusEnabled",companyTheme.getEnableBus());
+					ActionContext.getContext().getSession().put("isCarEnabled",companyTheme.getEnableCar());
+					ActionContext.getContext().getSession().put("isHeaderEnabled",companyTheme.getEnableHeader());
+					ActionContext.getContext().getSession().put("isFooterEnabled",companyTheme.getEnableFooter());					 
+					ActionContext.getContext().getSession().put("isAboutUSEnabled",companyTheme.getEnableAboutUS());
+					ActionContext.getContext().getSession().put("isContactUsEnabled",companyTheme.getEnableContactUs());
+					ActionContext.getContext().getSession().put("isFooterEnabled",companyTheme.getEnableFooter());
+					ActionContext.getContext().getSession().put("isTermsEnabled",companyTheme.getEnableTermsCondition());
+					ActionContext.getContext().getSession().put("isPrivacyPolicyEnabled",companyTheme.getEnablePrivacyPolicy());
+					ActionContext.getContext().getSession().put("isSocialMediaEnabled",companyTheme.getEnableSocialMedia());
+					ActionContext.getContext().getSession().put("isDealsEnabled",companyTheme.getEnableDeals());
+					ActionContext.getContext().getSession().put("isSliderEnabled",companyTheme.getEnableSlider());
+					
+					jsonobj.put("reload","true");
+					jsonobj.put("status", "200");
+					jsonobj.put("code", "1");
+					return SUCCESS;
+				}
+
+			}else{				
+				jsonobj.put("code", "0");
+				jsonobj.put("Message", "Not WhiteLabel user");
+				jsonobj.put("status", "500");
+				return SUCCESS;
+			} 
+
+
+		}catch(Exception e){
+
+		}
+		return SUCCESS;
+	}
+
+	public String setsessionvalue()
+	{
+		HttpServletRequest req =  ServletActionContext.getRequest();
+		if(req.getParameter("Totalprice")!=null && !req.getParameter("Totalprice").equalsIgnoreCase(""))
+		{
+			String price = req.getParameter("Totalprice");	
+			logger.info("session Totalprice for Final Booking IBE setsessionvalue()" +price);
+			HttpSession sess = req.getSession();	
+			sess.setAttribute("Totalprice", price);	
+			jsonobj.put("status", "200");	
+		}
+		else
+		{
+			jsonobj.put("status", "500");	
+		}
+		return SUCCESS;
+	}
+
+	public String GetCorporateEmployeeList(){
+		User currentUser = (User) ActionContext.getContext().getSession().get("agent");
+		boolean isCorporate = (boolean) ActionContext.getContext().getSession().get("companyrole");
+		List<PassengerDetails> passengers = new ArrayList<PassengerDetails>();
+		if(isCorporate){
+			List<User> emolyeeslist = agentdao.corporateEmployeeDetails(currentUser);
+			if(emolyeeslist!=null && emolyeeslist.size()>0)
+			{
+				for (User user : emolyeeslist) {
+					PassengerDetails passenger = new PassengerDetails();
+					passenger.setFirstName(user.getFirstname());
+					passenger.setLastName(user.getLastname());
+					passenger.setEmailId(user.getEmail());
+					passenger.setMobile(user.getMobile());
+					passenger.setPassportNo(user.getPassportno());			
+					passenger.setPassportExpiryDate(user.getPassport_expirydate());
+					passengers.add(passenger);
+				}
+			}
+
+		}
+		else{	
+			if("flight".equals(userlistInput))
+			{
+				List<FlightOrderCustomer> emolyeeslist = agentdao.agentsflightCustomerDetails(currentUser);
+				if(emolyeeslist!=null && emolyeeslist.size()>0)
+				{
+					for (FlightOrderCustomer flightOrderCustomers : emolyeeslist) {
+						PassengerDetails passenger = new PassengerDetails();
+						passenger.setTitle(flightOrderCustomers.getTitle());
+						passenger.setFirstName(flightOrderCustomers.getFirstName());
+						passenger.setLastName(flightOrderCustomers.getLastName());
+						passenger.setMobile(flightOrderCustomers.getMobile());
+						passenger.setPassportNo(flightOrderCustomers.getPassportNo());
+						String expirydate = DateConversion.convertDateToStringDate(flightOrderCustomers.getPassportExpiryDate());
+						passenger.setPassportExpiryDate(expirydate);
+						passengers.add(passenger);				
+					}	
+
+				}
+			}
+			else if("hotel".equals(userlistInput)){
+				List<HotelOrderGuest> hotelemolyeeslist = agentdao.agentshotelCustomerDetails(currentUser);
+				if(hotelemolyeeslist!=null && hotelemolyeeslist.size()>0)
+				{
+					for (HotelOrderGuest hotelorderguest : hotelemolyeeslist) {
+						PassengerDetails passenger = new PassengerDetails();
+						passenger.setTitle(hotelorderguest.getTitle());
+						passenger.setFirstName(hotelorderguest.getFirstName());
+						passenger.setLastName(hotelorderguest.getLastName());
+						passenger.setEmailId(hotelorderguest.getEmail());
+						passengers.add(passenger);				
+					}
+				}
+
+			}
+
+		}
+		jsonobj.put("passengers", passengers);	
+
+		return SUCCESS;
+	}
+
+
+	/**
+	 * @return the jsonResult
+	 */
+	public Map getJsonResult() {
+		return jsonobj;
+	}
+
+	/**
+	 * @param jsonResult the jsonResult to set
+	 */
+	public void setJsonResult(Map jsonResult) {
+		this.jsonobj = jsonResult;
+	}
+
+	public String getTotalprice() {
+		return Totalprice;
+	}
+
+	public void setTotalprice(String totalprice) {
+		Totalprice = totalprice;
+	}
+	public String getUserlistInput() {
+		return userlistInput;
+	}
+
+	public void setUserlistInput(String userlistInput) {
+		this.userlistInput = userlistInput;
+	}
+	public RmConfigModel getRmConfigModel() {
+		return rmConfigModel;
+	}
+
+	public void setRmConfigModel(RmConfigModel rmConfigModel) {
+		this.rmConfigModel = rmConfigModel;
+	}
+	public List<String> getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(List<String> fieldName) {
+		this.fieldName = fieldName;
+	}
+
+	public String getHostName() {
+		return hostName;
+	}
+
+	public void setHostName(String hostName) {
+		this.hostName = hostName;
+	}
+	public String getLabelkey() {
+		return Labelkey;
+	}
+
+	public void setLabelkey(String labelkey) {
+		Labelkey = labelkey;
+	}
+
+	public List<FlightOrderRow> getHistorylist() {
+		return historylist;
+	}
+
+	public void setHistorylist(List<FlightOrderRow> historylist) {
+		this.historylist = historylist;
+	}
+
+	
+	public List<HotelReport> getHotelhistorylist() {
+		return hotelhistorylist;
+	}
+
+	public void setHotelhistorylist(List<HotelReport> hotelhistorylist2) {
+		this.hotelhistorylist = hotelhistorylist2;
+	}
+	
+	public List<BusOrderRow> getBushistorylist() {
+		return bushistorylist;
+	}
+
+	public void setBushistorylist(List<BusOrderRow> bushistorylist) {
+		this.bushistorylist = bushistorylist;
+	}
+
+}

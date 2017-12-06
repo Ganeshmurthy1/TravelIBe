@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+
+
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		<property name="connection.pool_size">100</property>
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.cache.use_second_level_cache">false</property>
+		<property name="hibernate.cache.use_query_cache">false</property>
+		<property name="hibernate.connection.isolation">2</property>
+		<property name="hibernate.jdbc.batch_size">100</property>
+		<property name="maxActive">100</property>
+        <property name="maxWait" >5000</property>
+        <property name="maxIdle" >1</property>
+
+	<!-- live  -->
+	 	  <property name="connection.url">jdbc:mysql://139.59.5.54:3306/tayyarah</property> 
+		<property name="connection.username">ak</property> 
+			<property name="connection.password">6011163087</property>  
+		<!-- end of Live --> 
+			<!-- db for m-team -->
+	<!-- 	   <property name="connection.url">jdbc:mysql://128.199.145.152:3306/devtayyarah_m_team</property> 
+			<property name="connection.username">ak</property> 
+			<property name="connection.password">lintas@intellicomm95</property>  --> 
+
+ 
+ 	      <!-- db for dev-team -->
+ 	    <!--   <property name="connection.url">jdbc:mysql://128.199.145.152:3306/devtayyarah1</property> 
+			<property name="connection.username">ak</property> 
+			<property name="connection.password">lintas@intellicomm95</property>   -->  
+
+ 
+  	   <!--  <property name="connection.url">jdbc:mysql://localhost:3306/devtayyarah2</property>
+ 		<property name="connection.username">root</property>
+ 		<property name="connection.password">root</property>   -->
+
+
+
+
+		<mapping class="com.lintas.model.FrontUserDetail" />
+		<mapping class="com.lintas.model.MailStatus" />
+		<mapping class="com.lintas.model.FlightOrderRow" />
+		<mapping class="com.lintas.model.FlightOrderRowServiceTax" />
+		<mapping class="com.lintas.model.OrderCustomer" />
+		<mapping class="com.lintas.model.FlightOrderCustomerPriceBreakup" />
+		<mapping class="com.lintas.model.FlightOrderCustomer" />
+		<mapping class="com.lintas.model.FlightOrderTripDetail" />
+		<mapping class="com.lintas.model.FlightOrderCustomerSSR" />
+		<mapping class="com.lintas.model.User" />
+		<mapping class="com.lintas.model.UserRole" />
+		<mapping class="com.lintas.model.UserWallet" />
+		<mapping class="com.lintas.model.CompanyConfig" />
+		<mapping class="com.lintas.model.CompanyConfigType" />
+		<mapping class="com.lintas.model.LintasQueryForm" />
+		<mapping class="com.lintas.model.CrudOperationDeals" />
+		<mapping class="com.lintas.model.Email" />
+		<mapping class="com.lintas.model.CreditNote" />
+		<mapping class="com.lintas.model.FlightOrderRowCommission" />
+		<mapping class="com.lintas.model.FlightOrderRowMarkup" />
+		<mapping class="com.lintas.model.HotelOrderCancellationPolicy" />
+		<mapping class="com.lintas.model.HotelOrderGuest" />
+		<mapping class="com.lintas.model.HotelOrderHotelData" />
+		<mapping class="com.lintas.model.HotelOrderRoomInfo" />
+		<mapping class="com.lintas.model.HotelOrderRowMarkup" />
+		<mapping class="com.lintas.model.HotelOrderRowCommission" />
+		<mapping class="com.lintas.model.HotelOrderRow" />
+		<mapping class="com.lintas.model.HotelOrderRowServiceTax" />
+		<mapping class="com.lintas.model.Country" />
+		<mapping class="com.lintas.model.Enquery" />
+		<mapping class="com.lintas.model.Company" />
+		<mapping class="com.lintas.model.CompanyBookingSystemType" />
+		<mapping class="com.lintas.model.CompanyRole" />
+		<mapping class="com.lintas.model.SalesLeadGeneration" />
+		<mapping class="com.admin.hotel.fin.sheet.model.HotelTravelRequestQuotation" />
+		<mapping class="com.admin.hotel.fin.sheet.model.HotelTravelRequest" />
+		<mapping class="com.admin.hotel.fin.sheet.model.PaymentOptions" />
+		<mapping class="com.admin.flight.fin.sheet.model.FlightTravelRequest" />
+		<mapping class="com.admin.flight.fin.sheet.model.FlightTravelRequestQuotation" />
+		<mapping class="com.admin.flight.fin.sheet.model.FlightTravelRequestTripDetail" />
+		<mapping class="com.admin.flight.fin.sheet.model.FlightTravelRequestConnectingFlightTripDetail" />
+		<mapping class="com.lintas.model.BusServiceTaxConfig" />
+		<mapping class="com.lintas.model.CarServiceTaxConfig" />
+		<mapping class="com.lintas.model.HolidayServiceTaxConfig" />
+		<mapping class="com.lintas.model.RailServiceTaxConfig" />
+		<mapping class="com.lintas.model.AdvertiseandOtherServiceTaxConfig" />
+		<mapping class="com.lintas.model.VisaServiceTaxConfig" />
+		<mapping class="com.lintas.model.FlightDomesticServiceTaxConfig" />
+		<mapping class="com.lintas.model.FlightInternationalServiceTaxConfig" />
+		<mapping class="com.lintas.model.HotelServiceTaxConfig" />
+		<mapping class="com.lintas.model.RmConfigModel"/>
+		<mapping class="com.lintas.model.CompanyTheme"/>
+		<mapping class="com.lintas.model.CompanyEntity"/>
+		<mapping class="com.lintas.model.ThemeAuthRequestModel"/>
+		<mapping class="com.lintas.model.ThemeInsertionRequestModel"/>		
+		<mapping class="com.lintas.model.BusOrderCustomerDetail" />
+		<mapping class="com.lintas.model.BusOrderRowGstTax" />
+		<mapping class="com.lintas.model.BusOrderRowMarkup" />
+		<mapping class="com.lintas.model.BusOrderRowCommission" />
+		<mapping class="com.lintas.model.BusOrderRow" />
+		<mapping class="com.lintas.model.BusOrderRowServiceTax" />
+	</session-factory>
+</hibernate-configuration>
+
+
+
+
+
+

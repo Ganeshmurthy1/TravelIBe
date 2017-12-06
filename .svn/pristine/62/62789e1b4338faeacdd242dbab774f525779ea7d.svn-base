@@ -1,0 +1,42 @@
+ <style>
+.modal-lg{
+    width: 900px;
+    margin: 10px -20%;
+}
+.bodyHeight{
+height:450px;
+}
+.embeddedPDF{
+width:100%;
+ height:422px;
+}
+ </style>
+
+
+<div class="modal-dialog modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-content timeModal">
+		<div class="modal-header">
+			<h4 class="modal-title text-center">Insurance Plan Benefits</h4>
+		</div>
+		<div class="modal-body bodyHeight">
+
+		<div class="row">
+			<div data-ng-if="plan1" >
+			<embed src="./images/OverseasSmartPlan.pdf" class="embeddedPDF"/>
+			</div>
+			  <div data-ng-if="plan2" >
+			<embed src="./images/DomesticSmartPlan@161.pdf" class="embeddedPDF"/>
+			</div>
+			
+			<div></div>
+		 </div>
+		</div>
+		<div class="modal-footer margin5px">
+			<button class="btn btn-default bordergrey" ng-click="close()">Close</button>
+
+</div>
+</div>
+		</div>
+		
+		
+ 

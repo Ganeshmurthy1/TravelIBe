@@ -1,0 +1,412 @@
+var app = angular.module('myApp');
+app.controller('busSummaryCtrl', function($scope,$location,busServices,$http,$modal,$log,$window,transporter,localStorageService) {
+	$scope.init = function(){
+		if(localStorageService.get('seatblockData') !=null){
+			$scope.bookSummary();	
+		}
+		$scope.CCharges = "Wallet";
+		$scope.TotalCardWithoutPayable = '';
+		$scope.ImageLoader = false;
+		$('#CardButton').hide();
+		$scope.bookParams = {};
+		$scope.PayGatewayPrice = {};
+		$scope.blockingData = {};
+		$scope.ServiceTaxes = false;
+		$scope.GSTServiceTaxes = false;
+		//console.log("localStorageService.get('seatblockData');",localStorageService.get('seatblockData'));
+	
+		
+	}
+	$scope.isprimarysearch=$location.search().isprimarySearch;
+	$scope.isCounttown=true;
+	
+	
+	$scope.errorDisplay = function(msg,paramDetails){
+		$(document).ready(function(){
+			var modalInstance = $modal.open({
+			animation: $scope.animationsEnabled,
+			templateUrl: 'views/busErrorDisplay.jsp',
+			controller:'busErrorDisplayCtrl',
+			backdrop:'static',
+			keyboard:false,
+			resolve:{
+				items:function(){
+					return msg;
+				},
+				items2:function(){
+					return paramDetails;
+				}
+			}});
+		modalInstance.result.then(function(selectedItem){
+			
+			
+		},function(){
+			$log.info('modal Dismissed at :'+new Date());
+		});
+			
+		});
+	}
+	
+	$scope.blockingData = localStorageService.get('seatblockData');
+	
+	
+
+	$scope.ErrorBusTravelDetails={};
+	var count=0;
+	if(localStorageService.get('seatblockData') == null){
+		
+		$scope.errormeg = "Sorry we could not block the Tickets. please try again.";
+		$scope.ErrorBusTravelDetails.isprimarySearch = false;
+		$scope.errorDisplay($scope.errormeg,$scope.ErrorBusTravelDetails);
+		
+	}else{
+	 $scope.ErrorBusTravelDetails.origin = $scope.blockingData.origin;
+	  $scope.ErrorBusTravelDetails.destination = $scope.blockingData.destination;
+	  $scope.ErrorBusTravelDetails.depDate = $scope.blockingData.onwardDate;
+	}
+
+	// timer Count Down
+		function countdown( elementName, minutes, seconds )
+		{
+		    var element, endTime, hours, mins, msLeft, time;
+
+		    function twoDigits( n )
+		    {
+		        return (n <= 9 ? "0" + n : n);
+		    }
+
+		    function updateTimer()
+		    {
+		        msLeft = endTime - (+new Date);
+		        if ( msLeft < 1000 ) {
+		           // element.innerHTML = "countdown's over!";
+		        	 
+		        	$scope.errormeg = "Sorry You Session Expired. please try again.";
+	                 if($scope.isCounttown != true){}
+		        	 else if($scope.isprimarysearch == 'true'){
+						$scope.ErrorBusTravelDetails.isprimarySearch = true;
+						$scope.errorDisplay($scope.errormeg,$scope.ErrorBusTravelDetails);
+					}else {
+						$scope.ErrorBusTravelDetails.isprimarySearch = false;
+						$scope.errorDisplay($scope.errormeg,$scope.ErrorBusTravelDetails);
+					}
+					
+		        } else {
+		            time = new Date( msLeft );
+		            hours = time.getUTCHours();
+		            mins = time.getUTCMinutes();
+		            element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
+		            setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
+		        }
+		    }
+
+		    element = document.getElementById( elementName );
+		    endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
+		    if($scope.isCounttown ==true)
+		    updateTimer();
+		}
+	 
+	//end of timer countDown
+
+	$scope.bookSummary = function(){
+		busServices.busBlocking($scope.blockingData).then(function(response){
+		//$http.get('bussummary.json').then(function(response){
+			var data = response.data;
+			if(data.status.code == 1){
+				countdown( "countdown", 9, 0 );
+				$scope.origin = data.origin;
+				$scope.destination = data.destination;
+				var onDate = data.onwardDate.split('-').reverse().join('-');
+				$scope.onwardDate = onDate;
+				$scope.departure = data.blockBusDetail.departureTime;
+				$scope.busOperator = data.blockBusDetail.busOperator;
+				$scope.busType = data.blockBusDetail.busType;
+				$scope.boarding = data.blockBusDetail.boardingPoint.loc;
+				$scope.boardingTime = data.blockBusDetail.boardingPoint.time;
+				if(data.blockBusDetail.droppingPoint != null){
+					$scope.dropping = data.blockBusDetail.droppingPoint.loc;
+					$scope.droppingTime = data.blockBusDetail.droppingPoint.time;
+				}else{
+					$scope.dropping = data.destination;
+					$scope.droppingTime = data.blockBusDetail.arrivalTime;
+				}
+				
+				$scope.basePrice = data.blockFareDetail.basePrice;
+				
+				var payment = $('#isagent').val();
+				
+				if(payment == "card"){
+				 
+					var addpercent = (data.blockFareDetail.bookingPrice/parseFloat(100)) * parseFloat(2.0);
+					$scope.convience = addpercent;
+					$scope.bookingPrice = data.blockFareDetail.bookingPrice + addpercent ;
+					$scope.PayGatewayPrice = parseFloat(Math.ceil($scope.bookingPrice)).toFixed(2);
+				}else{
+					$('#convienceCharges').hide();
+					$scope.bookingPrice = data.blockFareDetail.bookingPrice;
+				}
+			$scope.TotalPayable = data.blockFareDetail.totalPayableAmount;
+			$scope.TotalCardWithoutPayable =  data.blockFareDetail.totalPayableAmount;
+			$scope.taxes = data.blockFareDetail.taxes;
+		//corporate TaxesbusServiceTax
+			if(data.blockFareDetail.busServiceTax!=null){
+				$scope.GSTServiceTaxes=false;
+				$scope.ServiceTaxes = true;
+			    $scope.baseServicetax = data.blockFareDetail.busServiceTax.baseServicetax;
+			    $scope.kkc = data.blockFareDetail.busServiceTax.kkc;
+			    $scope.sbc = data.blockFareDetail.busServiceTax.sbc;
+			    $scope.managementFee = data.blockFareDetail.busServiceTax.managementFee;
+			    $scope.totalServiceTax = data.blockFareDetail.busServiceTax.totalServiceTax;
+			      }
+			//Corporate Tax End	
+			/*#######GST Price ADDING#########*/
+			if(data.blockFareDetail.busGstTax!=null ){
+				$scope.GSTServiceTaxes=true;
+				$scope.ServiceTaxes = false;
+				$scope.CGSTTax = data.blockFareDetail.busGstTax.cgst;
+				$scope.SGSTTax= data.blockFareDetail.busGstTax.sgst;
+				$scope.IGSTTax= data.blockFareDetail.busGstTax.igst;
+				$scope.UGSTTax = data.blockFareDetail.busGstTax.ugst;
+				$scope.GSTTax= data.blockFareDetail.busGstTax.totalTax;
+				$scope.managementFee = data.blockFareDetail.busGstTax.managementFee;
+			//$scope.totalServiceTax = data.blockFareDetail.busServiceTax.totalServiceTax;
+			}
+				
+		//Passenger Details
+				$scope.passengerDetails = data.busPaxDetails;
+		//PassengerDetails End
+				
+			//Cancellation Policy
+				$scope.cancelationPolicy(data.blockBusDetail.cancellationPolicy);
+				$scope.bookParams = data;				
+				$scope.setPaymentSessionPrice($scope.bookingPrice);
+				/*labeling Codes*/
+				$scope.whitelabelCardAccess = angular.element('#iswhitelabel').val(); 				
+				if($scope.whitelabelCardAccess == "true"){
+					 setTimeout(function(){
+						
+						 $('#Cardoption').click();
+						 
+						 }, 2000);
+				}
+				// end of Labeling
+				
+				
+			}else{
+				$scope.errormeg = "Sorry we could not block the Tickets. please try again.";
+								
+				$scope.errorDisplay($scope.errormeg,$scope.ErrorBusTravelDetails);
+			}
+			
+		},function(errorStatus){			 
+			$scope.httpvalue = errorStatus.status;
+			$scope.errormeg = "Sorry we could not block the Tickets. please try again.";
+			$scope.errorDisplay($scope.errormeg,$scope.ErrorBusTravelDetails);
+		});
+		
+	}
+	$scope.setPaymentSessionPrice = function(sessionValue){
+		paymentgatewayprice = parseFloat(Math.ceil(sessionValue)).toFixed(2);
+
+		$http({
+			method: 'Get',
+			url: 'SetPricevalue',
+			params: {Totalprice : paymentgatewayprice},
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}
+		}).then(function(result) {
+			//console.log("result-paymentgatewayprice",result);
+		}, function(error) {
+			//console.log(error);
+		});
+	}
+	$scope.cancelationPolicy = function(data){
+		
+		var parts=[];
+		parts = data.split('}');
+		 var cancellen=parts.length;
+		 var final={};
+		 $scope.cancel=[];
+		 angular.forEach(parts, function(value,index) {
+			 var result;
+			
+			 var cuttime=[];
+			 var cutpercentage=[];
+			 if(index==0){
+				 
+				 result=value.substring(2).split(','); 
+				 cuttime=result[0].replace(/"/g, '').split(':');
+				 cutpercentage=result[1].replace(/"/g, '').split(':');
+				 $scope.final={"cutoffTime":cuttime[1],"refundInPercentage":cutpercentage[1]};
+				 $scope.cancel.push( $scope.final);
+			 }
+			 else if(index != cancellen-1)
+			 {
+			  result = value.slice(2).split(',');
+			   cuttime=result[0].replace(/"/g, '').split(':');
+			   cutpercentage=result[1].replace(/"/g, '').split(':');
+			   $scope.final={"cutoffTime":cuttime[1],"refundInPercentage":cutpercentage[1]};
+			   $scope.cancel.push($scope.final);
+			 }
+		 });
+		
+	}
+	$scope.CardValue = '';
+	$scope.addCharges = function(CCharges){
+			
+		if(CCharges =="Card"){
+			$('#Walletoption').attr('disabled', false);
+			$('#Cardoption').attr('disabled', true);
+			$('#payoptiontext').show();	
+			$('#convienceCharges').show();
+			$('#WalletButton').hide();
+			$('#CardButton').show();
+			$('#isagent').val("Card");
+			$scope.Price = $scope.TotalCardWithoutPayable;
+			var addpercent = ($scope.Price/parseFloat(100)) * parseFloat(2.0);
+			$scope.convience = addpercent;	
+			$scope.TotalPayable = $scope.Price + $scope.convience;	
+			$scope.setPaymentSessionPrice($scope.TotalPayable);
+			$scope.CardValue = parseFloat(Math.ceil($scope.TotalPayable)).toFixed(2);
+		}else{
+			$('#CardButton').hide();
+			$('#WalletButton').show();
+			$('#Walletoption').attr('disabled', true);
+			$('#Cardoption').attr('disabled', false);
+			$('#payoptiontext').hide();	
+			$('#convienceCharges').hide();
+			$('#isagent').val("Cash");
+			$scope.convience = 0.00;	
+			$scope.TotalPayable = $scope.TotalCardWithoutPayable;
+			
+			
+		}		
+	}
+	
+
+	$scope.bookingParameter = function(){
+		var bookDataParam = {};		
+		bookDataParam.app_key = angular.element('#ay').val();
+		bookDataParam.searchkey =  $scope.bookParams.searchkey;
+		bookDataParam.transactionkey = $scope.bookParams.transactionkey;
+		bookDataParam.blockTicketKey = $scope.bookParams.blockTicketKey;
+		bookDataParam.payMode = angular.element('#isagent').val();
+		
+		return bookDataParam;
+		
+		
+	}
+
+	$scope.busUserCardBook = function(){
+	 				
+				$("#reference_no").val($scope.bookParams.pgRefNo);
+				$("#totalamt").val($scope.PayGatewayPrice);
+				$("#customername").val($scope.bookParams.busPaxDetails[0].firstName);					
+				$scope.usetip = "Use this Payment gateway id " + $scope.bookParams.pgRefNo  + " Booking Amount is " +$scope.bookParams.bookingPrice;
+				
+					var frm = $window.document.getElementById("frmTransaction");
+					
+					frm.submit();
+				
+	}
+	$scope.AgentBusWalletBook = function(){
+		//$scope.ImageLoader = true;
+		var Bk_Data = $scope.bookingParameter();
+		
+		transporter.getwallet().then(function(response){
+
+			$scope.agentbalance = Math.round(response.data.jsonResult.walletbal).toFixed(2);
+			$scope.agentDepositBalance = Math.round(response.data.jsonResult.walletdepbal).toFixed(2);
+			
+			if(parseFloat($scope.agentDepositBalance) >= parseFloat($scope.TotalPayable).toFixed(2)){
+				$location.path('/BusAgentBooking');
+				localStorageService.set('AgentBusConfirmData',Bk_Data);
+			}
+			else if(parseFloat($scope.agentbalance) >= parseFloat($scope.TotalPayable).toFixed(2)){
+				//	console.log("route");
+				$location.path('/BusAgentBooking');
+				localStorageService.set('AgentBusConfirmData',Bk_Data);
+			}else if(parseFloat($scope.agentbalance) == 0){
+				
+				$scope.insufficientFundopen();
+				$scope.ImageLoader = false;
+			}
+			else{				
+				$scope.insufficientFundopen();
+				$scope.ImageLoader = false;
+			}
+
+		},function(){
+			$scope.errormeg = "Unable to process your Request";			
+			$scope.errorDisplay($scope.errormeg,$scope.ErrorBusTravelDetails);
+		});
+		 
+	}
+	 
+	$scope.AgentBusCardBook = function(){/*
+		var Bk_Data = $scope.bookingParameter();		 
+		var PayFormPrice =  parseFloat(Math.ceil($scope.TotalPayable)).toFixed(2);	
+		busServices.busBooking(Bk_Data).then(function(response){
+		//$http.get('busVocher.json').then(function(response){
+			console.log("response",response);
+			var bookdata = response.data;
+			if(bookdata.status.code == 1){
+				
+				$("#reference_no").val($scope.bookParams.pgRefNo);
+				$("#totalamt").val(PayFormPrice);
+				$("#customername").val($scope.bookParams.busPaxDetails[0].firstName);					
+				$scope.usetip = "Use this Payment gateway id " + $scope.bookParams.pgRefNo  + " Booking Amount is " +$scope.bookParams.bookingPrice;
+				 
+				$scope.resultset = true;				 
+				if($scope.resultset)
+				{
+					var frm = $window.document.getElementById("frmTransaction");
+					console.log("frm",frm);
+					frm.submit();
+				}
+				
+			}
+						
+		},function(){
+			$scope.errormeg = "Unable to process your Request";			
+			$scope.errorDisplay($scope.errormeg,$scope.ErrorBusTravelDetails);
+		});
+		 
+	*/
+		
+		$("#reference_no").val($scope.bookParams.pgRefNo);
+		$("#totalamt").val($scope.CardValue);
+		$("#customername").val($scope.bookParams.busPaxDetails[0].firstName);					
+		$scope.usetip = "Use this Payment gateway id " + $scope.bookParams.pgRefNo  + " Booking Amount is " +$scope.bookParams.bookingPrice;
+		
+			var frm = $window.document.getElementById("frmTransaction");
+			
+			frm.submit();
+			}
+
+	$scope.insufficientFundopen = function(){
+		//$('#insufficientFund').modal('show');
+		$(document).ready(function() {var modalInstance = $modal.open({
+			animation: $scope.animationsEnabled,
+			templateUrl: 'views/InsufficientFund.jsp',
+			controller: 'InsufficientFundCtrl',
+			backdrop: 'static',
+			keyboard: false,
+			resolve: {
+				items: function () {
+					return $scope.items;
+				}
+			}
+		});
+
+		modalInstance.result.then(function (selectedItem) {
+			$scope.agentFlightBook();
+
+		}, function () {
+			$log.info('Modal dismissed at: ' + new Date());
+		});
+		});
+	}
+	$scope.init();
+});

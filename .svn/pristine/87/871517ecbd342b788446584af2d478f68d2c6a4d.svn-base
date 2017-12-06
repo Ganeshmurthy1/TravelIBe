@@ -1,0 +1,590 @@
+<%@taglib prefix="s" uri="/struts-tags"%>
+<%-- <s:if test="#session.isCorporate == true">  
+<div data-ng-include="header" data-ng-controller="CorporateheaderCtrl"></div>
+ </s:if>
+ <s:else>
+ <div data-ng-include="header" data-ng-controller="HeadCtrl"></div> 
+ </s:else> --%>
+      <div class="">
+        <!-- Header Ends -->
+<div class="">
+ <s:if test="hasActionErrors()">
+  
+  <div class="login-pop-up clearfix" id="error-alert" style="display: block;">
+  <div class="login-pop-continer">
+    <div class="login-pop-header col-sm-12 clearfix">
+
+      <div class="col-xs-6">
+        <p class="h4">Error</p>
+      </div>
+      <div class="col-xs-6">
+        <p class="pull-right"><a href="#" class="b-cl"><i class="fa fa-times"></i></a></p>
+      </div>
+
+    </div>
+    <div class="login-pop-content">
+      <p class="clearfix"><s:actionerror /></p>
+      <div class=" clearfix">
+        <button type="button"  class="btn btn-primary b-ok pull-right">ok </button>
+      </div>
+    </div>
+    <div class="login-pop-footer cleqarfix">
+      
+    </div>
+  </div>
+</div>  
+  
+					</s:if>
+					<s:if test="hasActionMessages()">
+					
+					 <div class="login-pop-up clearfix" id="success-alert">
+  <div class="login-pop-continer">
+    <div class="login-pop-header col-sm-12 clearfix">
+
+      <div class="col-xs-6">
+        <p class="h4">Success</p>
+      </div>
+      <div class="col-xs-6">
+        <p class="pull-right"><a href="#" class="b-cl"><i class="fa fa-times"></i></a></p>
+      </div>
+
+    </div>
+    <div class="login-pop-content">
+      <p> <strong>Confirmation:</strong>
+                            A confirmation email has been sent to your
+                            email.<br>
+                            Thank you for your registration.</p>
+      <div class=" clearfix">
+        <button type="button"  class="btn btn-primary b-ok pull-right">ok </button>
+      </div>
+    </div>
+    <div class="login-pop-footer cleqarfix">
+      
+    </div>
+  </div>
+</div> 
+					</s:if>
+					
+					 
+		
+ 
+
+<article class="container ">
+
+
+<div class="row">
+
+ <div class="signup-color hidden-xs col-sm-4">
+			<figure>
+			<!-- 	<img alt="User-Register" src="images/sign-1.jpg" class="">	 -->	
+			<img alt="User-Register" src="images/signup.png" class="">
+			</figure>
+		</div>  
+    <div class="col-xs-12 profhead visible-xs">
+    <div class="signup-color  col-xs-4">
+			<figure>
+			<img alt="User-Register" src="images/signup.png" class="">
+			</figure>
+		</div> 
+	<div class="col-xs-8 profilereg pull-right">
+	
+                  <h3><span>Register Here..</span> </h3>
+                  
+</div>
+                   
+                  </div>
+                  
+             </div>
+             
+    <div class="col-sm-8 visible-xs user-prof">
+	
+                   <div class="user-signup enquery-fform ">
+
+ <form class="form-horizontal" id="registerForm">
+ 
+ 	<div class="col-sm-6">
+ 	<div class="form-group">
+                            <label for="inputEmail3" class="  control-label">First Name</label>
+                             
+                              <input type="Text" class="form-control" id="fname" name="firstName" placeholder="First Name" autocomplete="off" required onkeypress="return isAlphabetKey(event,this);">
+                            
+                          </div>
+ 	
+ 	</div>
+ 	<div class="col-sm-6">
+ 	
+ 	 <div class="form-group">
+                            <label for="inputEmail3" class="  control-label">Last Name</label>
+                           
+                              <input type="Text" class="form-control" id="lname" name="lastName" placeholder="Last Name" autocomplete="off" required onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                          
+                           	<div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="inputPassword3" class=" control-label">Password</label>
+                           
+                              <input type="password" class="form-control" id="pass" name="password"  placeholder="Password" autocomplete="off" required>
+                            </div>
+                          </div>
+                            
+                          
+                           	<div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Email</label>
+                            
+                              <input type="email" class="form-control" id="mail" name="email" placeholder="Email" autocomplete="off" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" oninvalid="setCustomValidity('Email address not vaild')" onchange="try{setCustomValidity('')}catch(e){}">
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                           <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Mobile</label>
+                             
+                              <input type="tel" class="form-control" id="mob" name="mobile" placeholder="Mobile"  maxlength="10" onkeypress="return isNumberKey(event,this)" required autocomplete="off" oninvalid="setCustomValidity('Mobile number not vaild')" onchange="try{setCustomValidity('')}catch(e){}">
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                           <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Phone</label>
+                           
+                              <input type="tel" class="form-control" id="ph" name="phone" placeholder="Phone" required maxlength="15" onkeypress="return isNumberKey(event,this)"  autocomplete="off" >
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Address</label>
+                             
+                              <input type="tel" class="form-control" id="address" name="streetAddress" placeholder="Address" required   autocomplete="off" >
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                           <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">City</label>
+                             
+                              <input type="tel" class="form-control" id="city" name="city" placeholder="City" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">State</label>
+                             
+                              <input type="tel" class="form-control" id="state" name="state" placeholder="State" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>  
+                          	<div class="col-sm-6">                        
+                          <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Country</label>
+                             
+                              <input type="tel" class="form-control" id="country" name="country" placeholder="Country" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                           <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">ZipCode</label>
+                           
+                              <input type="tel" class="form-control" id="zipcode" name="zipCode" placeholder="ZipCode" required  autocomplete="off" >
+                            </div>
+                          </div>
+                          
+                            <div class="form-group">
+                            
+                              <div class="col-sm-10"> 
+                             <label >
+                                  <input type="checkbox"  required oninvalid="setCustomValidity('Terms of Services not accepted yet')" onchange="try{setCustomValidity('')}catch(e){}"> <span class="areg">I agree all your <a data-toggle="modal" data-target="#termsModal">Terms of
+                                                              Services</a></span>
+                                </label>
+                              </div>
+                          </div>   
+ 	 
+
+                           
+                         
+                          <!--  <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                            <div class="col-sm-10">
+                              <input type="password" class="form-control" id="pass" name="password"  placeholder="Password" autocomplete="off" required>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                              <input type="email" class="form-control" id="mail" name="email" placeholder="Email" autocomplete="off" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" oninvalid="setCustomValidity('Email address not vaild')" onchange="try{setCustomValidity('')}catch(e){}">
+                            </div>
+                          </div>
+                          
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Mobile</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="mob" name="mobile" placeholder="Mobile"  maxlength="10" onkeypress="return isNumberKey(event,this)" required autocomplete="off" oninvalid="setCustomValidity('Mobile number not vaild')" onchange="try{setCustomValidity('')}catch(e){}">
+                            </div>
+                          </div>
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Phone</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="ph" name="phone" placeholder="Phone" required maxlength="15" onkeypress="return isNumberKey(event,this)"  autocomplete="off" >
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Address</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="address" name="streetAddress" placeholder="Address" required   autocomplete="off" >
+                            </div>
+                          </div>
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">City</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="city" name="city" placeholder="City" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">State</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="state" name="state" placeholder="State" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>                          
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Country</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="country" name="country" placeholder="Country" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">ZipCode</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="zipcode" name="zipCode" placeholder="ZipCode" required  autocomplete="off" >
+                            </div>
+                          </div>
+                            <div class="form-group">
+                             <label for="inputEmail3" class="col-sm-2 control-label"></label>
+                              <div class="col-sm-10">
+                              <input type="checkbox" class="form-control" id="zipcode" name="zipCode" placeholder="ZipCode" required  autocomplete="off" >
+                            
+                             <label>
+                                  <input type="checkbox" required oninvalid="setCustomValidity('Terms of Services not accepted yet')" onchange="try{setCustomValidity('')}catch(e){}"> I agree all your <a data-toggle="modal" data-target="#termsModal">Terms of
+                                                              Services</a>
+                                </label>
+                              </div>
+                          </div> -->
+                          <div class="form-group">
+                            <div class=" col-sm-12 text-center">
+                              <button id="regisub" type="submit" class="btn btn-primary sign">Sign
+                                Up</button>
+                            </div>
+                          </div>
+
+                          
+                        </form>
+                   </div>
+	</div>         
+             
+    
+    
+    
+	<div class="col-sm-8 hidden-xs pull-right">
+	
+                   <div class="user-signup enquery-fform pull-right">
+                  <h3><span>Sign up</span> </h3>
+
+
+ <form class="form-horizontal" id="registerForm">
+ 
+ 	<div class="col-sm-6">
+ 	<div class="form-group">
+                            <label for="inputEmail3" class="  control-label">First Name</label>
+                             
+                              <input type="Text" class="form-control" id="fname" name="firstName" placeholder="First Name" autocomplete="off" required onkeypress="return isAlphabetKey(event,this);">
+                            
+                          </div>
+ 	
+ 	</div>
+ 	<div class="col-sm-6">
+ 	
+ 	 <div class="form-group">
+                            <label for="inputEmail3" class="  control-label">Last Name</label>
+                           
+                              <input type="Text" class="form-control" id="lname" name="lastName" placeholder="Last Name" autocomplete="off" required onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                          
+                           	<div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="inputPassword3" class=" control-label">Password</label>
+                           
+                              <input type="password" class="form-control" id="pass" name="password"  placeholder="Password" autocomplete="off" required>
+                            </div>
+                          </div>
+                            
+                          
+                           	<div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Email</label>
+                            
+                              <input type="email" class="form-control" id="mail" name="email" placeholder="Email" autocomplete="off" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" oninvalid="setCustomValidity('Email address not vaild')" onchange="try{setCustomValidity('')}catch(e){}">
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                           <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Mobile</label>
+                             
+                              <input type="tel" class="form-control" id="mob" name="mobile" placeholder="Mobile"  maxlength="10" onkeypress="return isNumberKey(event,this)" required autocomplete="off" oninvalid="setCustomValidity('Mobile number not vaild')" onchange="try{setCustomValidity('')}catch(e){}">
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                           <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Phone</label>
+                           
+                              <input type="tel" class="form-control" id="ph" name="phone" placeholder="Phone" required maxlength="15" onkeypress="return isNumberKey(event,this)"  autocomplete="off" >
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Address</label>
+                             
+                              <input type="tel" class="form-control" id="address" name="streetAddress" placeholder="Address" required   autocomplete="off" >
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                           <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">City</label>
+                             
+                              <input type="tel" class="form-control" id="city" name="city" placeholder="City" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">State</label>
+                             
+                              <input type="tel" class="form-control" id="state" name="state" placeholder="State" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>  
+                          	<div class="col-sm-6">                        
+                          <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">Country</label>
+                             
+                              <input type="tel" class="form-control" id="country" name="country" placeholder="Country" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                          	<div class="col-sm-6">
+                           <div class="form-group">
+                            <label for="inputEmail3" class=" control-label">ZipCode</label>
+                           
+                              <input type="tel" class="form-control" id="zipcode" name="zipCode" placeholder="ZipCode" required  autocomplete="off" >
+                            </div>
+                          </div>
+                          
+                            <div class="form-group">
+                            
+                              <div class="col-sm-10"> 
+                             <label >
+                                  <input type="checkbox"  required oninvalid="setCustomValidity('Terms of Services not accepted yet')" onchange="try{setCustomValidity('')}catch(e){}"> <span class="areg">I agree all your <a data-toggle="modal" data-target="#termsModal">Terms of
+                                                              Services</a></span>
+                                </label>
+                              </div>
+                          </div>   
+ 	 
+
+                           
+                         
+                          <!--  <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+                            <div class="col-sm-10">
+                              <input type="password" class="form-control" id="pass" name="password"  placeholder="Password" autocomplete="off" required>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                            <div class="col-sm-10">
+                              <input type="email" class="form-control" id="mail" name="email" placeholder="Email" autocomplete="off" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" oninvalid="setCustomValidity('Email address not vaild')" onchange="try{setCustomValidity('')}catch(e){}">
+                            </div>
+                          </div>
+                          
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Mobile</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="mob" name="mobile" placeholder="Mobile"  maxlength="10" onkeypress="return isNumberKey(event,this)" required autocomplete="off" oninvalid="setCustomValidity('Mobile number not vaild')" onchange="try{setCustomValidity('')}catch(e){}">
+                            </div>
+                          </div>
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Phone</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="ph" name="phone" placeholder="Phone" required maxlength="15" onkeypress="return isNumberKey(event,this)"  autocomplete="off" >
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Address</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="address" name="streetAddress" placeholder="Address" required   autocomplete="off" >
+                            </div>
+                          </div>
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">City</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="city" name="city" placeholder="City" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">State</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="state" name="state" placeholder="State" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>                          
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Country</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="country" name="country" placeholder="Country" required  autocomplete="off" onkeypress="return isAlphabetKey(event,this);">
+                            </div>
+                          </div>
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">ZipCode</label>
+                            <div class="col-sm-10">
+                              <input type="tel" class="form-control" id="zipcode" name="zipCode" placeholder="ZipCode" required  autocomplete="off" >
+                            </div>
+                          </div>
+                            <div class="form-group">
+                             <label for="inputEmail3" class="col-sm-2 control-label"></label>
+                              <div class="col-sm-10">
+                              <input type="checkbox" class="form-control" id="zipcode" name="zipCode" placeholder="ZipCode" required  autocomplete="off" >
+                            
+                             <label>
+                                  <input type="checkbox" required oninvalid="setCustomValidity('Terms of Services not accepted yet')" onchange="try{setCustomValidity('')}catch(e){}"> I agree all your <a data-toggle="modal" data-target="#termsModal">Terms of
+                                                              Services</a>
+                                </label>
+                              </div>
+                          </div> -->
+                          <div class="form-group">
+                            <div class=" col-sm-12 text-center">
+                              <button id="regisub" type="submit" class="btn btn-primary sign">Sign
+                                Up</button>
+                            </div>
+                          </div>
+
+                          
+                        </form>
+                   </div>
+	</div>
+</div>
+
+
+
+
+
+</article>
+</div>
+ </div>
+
+
+<!-- Modal -->
+  <div class="modal fade" id="termsModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title text-center">Terms and Conditions</h4>
+        </div>
+        <div class="modal-body">
+         <ul>
+    <li>Fares are subject to availability. If there is any fare change we
+  will notify you immediately.</li>
+
+  <li>Online Date/Flight change not allowed.</li>
+
+  <li>All reservations made through our website are as per the terms
+  and conditions of the concerned airlines.</li>
+
+
+
+  <li> The primary guest must be at least 18 years of age to check into
+this hotel</li>
+  <li>It is mandatory for all guests above 18 years of age to carry a
+valid photo identity card &amp; address proof at the time of check-in. You can
+carry any of the following documents as a valid proof - Driving License,
+Passport or Voters ID. If your check-in is denied by the hotel due to lack
+of required documents, you cannot claim a refund &amp; your booking will be
+considered as NO SHOW.</li>
+
+<li>In case of an increase in the hotel tariff (for example Christmas,
+New Year, International Event, Holidays) the customer is liable to pay the
+difference if the stay period falls during these dates.</li>
+
+<li>Tayyarah will not be responsible for any service issues at the
+hotel.</li>
+
+<li>If you wish to book multiple rooms, you must use a different name
+for each room or the duplicate reservation may be cancelled by the hotel.</li>
+
+<li>Most hotels do not allow unmarried / unrelated couples to
+check-in. This is at full discretion of the hotel management. No refund
+would be applicable in case the hotel denies check-in under such
+circumstances.</li>
+
+<li>The standard check-in time is 12:00 PM and the standard check-out
+time is 12:00 PM. Early check-in or late check-out is strictly subjected to
+availability and may be chargeable by the hotel. Any early check-in or late
+check-out request must be directed and reconfirmed with hotel directly.</li>  
+</ul> 
+        </div>
+       <!--  <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div> -->
+      </div>
+      
+    </div>
+  </div> 
+   <div class="modal fade " id="sucessmsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                     <div class="modal-header">
+								          <button type="button" class="close" data-dismiss="modal">&times;</button>
+								           </div>
+                    <div class="modal-body form-module " style="margin-top:15px;">
+                              <div class="text-center lioghead" id="regimessage"></div>
+                            
+                       
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+         <div class="modal fade " id="errmsg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                     <div class="modal-header">
+								          <button type="button" class="close" data-dismiss="modal">&times;</button>
+								           </div>
+                    <div class="modal-body form-module " style="margin-top:15px;">
+                              <div class="text-center lioghead" id="errregimessage1"></div><br><br>
+                               <div class="text-center" id="errregimessage2"></div>
+                            
+                       
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+        
+        
+     <%--    <script>
+        
+        $(function() {
+        	var loc = window.location.pathname; 
+        	var protocol = window.location.protocol;
+        	var hostname = window.location.hostname;
+        	var port = window.location.port;
+        	alert(protocol+hostname+port+loc); 
+        	  if(loc ==loc+"/#/UserRegister") {
+        	    $('body').addClass('bck');
+        	    $('div.mainPageHeight').addClass('bg-color');
+        	    
+        	  }  
+        	});
+        </script>
+   --%>
+        <!-- Your site ends -->
+<%-- <s:if test="#session.isCorporate == true">  
+<div data-ng-include="Corporatefooter" data-ng-controller="CorporateFooterCtrl"></div> 
+</s:if>
+<s:else>
+<div data-ng-include="footer" data-ng-controller="FootCtrl"></div>
+</s:else> --%>
